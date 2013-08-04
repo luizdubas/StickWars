@@ -1,0 +1,15 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\DEBUGCharControl.cs">
+    <Files>
+      <File FileName="Assets\Scripts\AbstractSource.cs" Line="8" Column="9" />
+      <File FileName="Assets\Scripts\Interfaces.cs" Line="17" Column="25" />
+      <File FileName="Assets\Standard Assets (Mobile)\Scripts\Joystick.js" Line="90" Column="1" />
+      <File FileName="Assets\DEBUGCharControl.cs" Line="12" Column="33" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
