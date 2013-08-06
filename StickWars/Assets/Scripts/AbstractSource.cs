@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Fonte de material abstrata
+/// </summary>
 public class AbstractSource : MonoBehaviour, IMaterialSource {
 	public int _amount = 1;
 	public int _squareSize = 1;
