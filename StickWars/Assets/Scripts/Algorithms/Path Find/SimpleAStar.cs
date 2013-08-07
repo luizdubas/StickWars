@@ -29,7 +29,7 @@ public class SimpleAStar : PathFinding{
         InitMovements();
 	}
 	
-	public void setMapConfiguration(int sizeX, int sizeY, float squareWidth, float SquareHeight){
+	public void setMapConfiguration(int sizeX, int sizeY, float squareWidth, float squareHeight){
 		_squares = new Square[sizeX, sizeY];
 		
 		this.sizeX = sizeX;
@@ -47,7 +47,7 @@ public class SimpleAStar : PathFinding{
         foreach (Vector2 point in AllSquares()){
 			x = point.x;
 			y = point.y;
-            _squares[(int)x, (int)y] = new Square((int)x, (int)y, new Vector2( x + (squareWidth / 2), (y * -1) + (squareHeight / 2) ) );
+            _squares[(int)x, (int)y] = new Square((int)x, (int)y, new Vector2( x + (squareWidth / 2), (y * -1) + (squareHeight / 2 * -1) ) );
         }
     }
 
@@ -101,6 +101,14 @@ public class SimpleAStar : PathFinding{
         }
     }
 
+	private void printMap(){
+		for( var i = 0; i < sizeX; i++ ){
+			for( var j = 0; j < sizeY; j++ ){
+				Debug.Log ( "x: " + i + " y: "+ j +" = " + _squares[ i, j ].ContentCode );
+			}
+		}
+	}
+	
     public bool PathFind( Vector2 start, Vector2 target ){
 	
 		if( !mapBuilded ){
@@ -113,6 +121,8 @@ public class SimpleAStar : PathFinding{
         
 		Debug.Log("2");
 		
+		printMap();
+		
 		/*
          * 
          * Find path from hero to monster. First, get coordinates
@@ -122,7 +132,7 @@ public class SimpleAStar : PathFinding{
         Vector2 startingPoint = FindCode(SquareContent.Target);
         int heroX = (int) startingPoint.x;
         int heroY = (int) startingPoint.y;
-		Debug.Log("3");
+		Debug.Log("startingPoint = "+startingPoint);
 		
         if (heroX == -1 || heroY == -1){
             return false;
@@ -133,22 +143,21 @@ public class SimpleAStar : PathFinding{
          * 
          * */
         _squares[heroX, heroY].DistanceSteps = 0;
-		Debug.Log("4");
 		
-//        for (int i = 0; i < 1; i++){
-		while(true){
+        for (int i = 0; i < 10; i++){
+//		while(true){
             bool madeProgress = false;
 			
-			Debug.Log("5");
+			Debug.Log("madeProgress = "+madeProgress);
             /*
              * 
              * Look at each square on the board.
              * 
              * */
             foreach (Vector2 mainPoint in AllSquares()){
+//				Debug.Log("Main POINT");
                 int x = (int) mainPoint.x;
                 int y = (int) mainPoint.y;
-				Debug.Log("6");
 
                 if (SquareOpen(x, y)){
                     int passHere = _squares[x, y].DistanceSteps;

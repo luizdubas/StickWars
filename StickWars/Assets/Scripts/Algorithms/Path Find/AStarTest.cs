@@ -59,19 +59,16 @@ public class AStarTest : MonoBehaviour {
 			if( Physics.Raycast( ray, out hit) ){
 				GameObject hero = GameObject.Find("hero");
 				
-				pathFinder.clearSquares();
-				
 				Vector2 start = new Vector2( hero.transform.position.x, hero.transform.position.z * -1 );
 				Vector2 target = new Vector2( hit.point.x, hit.point.z * -1 );
-				
 				
 				Debug.Log("START");
 				Debug.Log(start);
 				Debug.Log("TARGET");
 				Debug.Log(target);
 				
-				
 				right = pathFinder.PathFind( start, target );
+/*
 				if( right ){
 					Debug.Log("path finding");
 					path = pathFinder.getPath();
@@ -83,7 +80,8 @@ public class AStarTest : MonoBehaviour {
 					time = 0;
 					walk = true;
 				}
-			}
+*/
+			}	
 		}
 	}
 	
