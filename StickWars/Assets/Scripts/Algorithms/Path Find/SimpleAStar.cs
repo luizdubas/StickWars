@@ -121,7 +121,8 @@ public class SimpleAStar : PathFinding{
         
 		Debug.Log("2");
 		
-		printMap();
+//		printMap();
+
 		
 		/*
          * 
@@ -144,8 +145,8 @@ public class SimpleAStar : PathFinding{
          * */
         _squares[heroX, heroY].DistanceSteps = 0;
 		
-        for (int i = 0; i < 10; i++){
-//		while(true){
+//        for (int i = 0; i < 10; i++){
+		while(true){
             bool madeProgress = false;
 			
 			Debug.Log("madeProgress = "+madeProgress);
@@ -155,19 +156,33 @@ public class SimpleAStar : PathFinding{
              * 
              * */
             foreach (Vector2 mainPoint in AllSquares()){
-//				Debug.Log("Main POINT");
+//				Debug.Log(mainPoint);
                 int x = (int) mainPoint.x;
                 int y = (int) mainPoint.y;
 
                 if (SquareOpen(x, y)){
+//					Debug.Log("OPEN");
                     int passHere = _squares[x, y].DistanceSteps;
 
                     foreach (Vector2 movePoint in ValidMoves(x, y)){
+						//Debug.Log("Valida Move ");
+						//Debug.Log(movePoint);
                         int newX = (int) movePoint.x;
                         int newY = (int) movePoint.y;
                         int newPass = passHere + 1;
-
+						
+						//Debug.Log("_squares[newX, newY].DistanceSteps = " + _squares[newX, newY].DistanceSteps );
+						//Debug.Log(" newPass  = " + newPass );
+						
                         if (_squares[newX, newY].DistanceSteps > newPass){
+							/*
+							Debug.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+							Debug.Log( _squares[newX, newY].DistanceSteps );
+							Debug.Log( newPass );
+							Debug.Log( mainPoint );
+							Debug.Log( movePoint );
+							*/
+							
                             _squares[newX, newY].DistanceSteps = newPass;
                             madeProgress = true;
                         }
@@ -199,8 +214,8 @@ public class SimpleAStar : PathFinding{
         }
 
 		
-        //for (int i = 0; i < 100; i++){
-		while(true){
+        for (int i = 0; i < 50; i++){
+//		while(true){
             /*
              * 
              * Look through each direction and find the square
@@ -227,7 +242,10 @@ public class SimpleAStar : PathFinding{
                  * 
                  * */
                 _squares[(int) lowestPoint.x, (int) lowestPoint.y].IsPath = true;
-					
+				
+				Debug.Log("LOWEST");
+				Debug.Log(lowestPoint);
+				
 				path.Add( _squares[(int) lowestPoint.x, (int) lowestPoint.y] );
             
 			}else{

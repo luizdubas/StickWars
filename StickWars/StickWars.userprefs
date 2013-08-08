@@ -1,6 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Algorithms\Path Find\SimpleAStar.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Algorithms\Path Find\AStarTest.cs" Line="36" Column="10" />
+      <File FileName="Assets\Scripts\Algorithms\Path Find\PathFinding.cs" Line="21" Column="1" />
+      <File FileName="Assets\Scripts\Algorithms\Square.cs" Line="12" Column="1" />
+      <File FileName="Assets\Scripts\Algorithms\Path Find\SimpleAStar.cs" Line="174" Column="61" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

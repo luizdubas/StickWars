@@ -68,7 +68,7 @@ public class AStarTest : MonoBehaviour {
 				Debug.Log(target);
 				
 				right = pathFinder.PathFind( start, target );
-/*
+
 				if( right ){
 					Debug.Log("path finding");
 					path = pathFinder.getPath();
@@ -80,7 +80,6 @@ public class AStarTest : MonoBehaviour {
 					time = 0;
 					walk = true;
 				}
-*/
 			}	
 		}
 	}
