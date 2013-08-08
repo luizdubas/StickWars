@@ -243,6 +243,9 @@ public class SimpleAStar : PathFinding{
                  * */
                 _squares[(int) lowestPoint.x, (int) lowestPoint.y].IsPath = true;
 				
+				pointX = (int) lowestPoint.X;
+                pointY = (int) lowestPoint.Y;
+				
 				Debug.Log("LOWEST");
 				Debug.Log(lowestPoint);
 				
