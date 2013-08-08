@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: fa9c2c522798cca428e62b596707b6b4
+guid: dfde7678e1138e84387883b7379d8956
 TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
-    linearTexture: 1
+    enableMipMap: 1
+    linearTexture: 0
     correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
@@ -24,17 +24,13 @@ TextureImporter:
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
-    wrapMode: 1
-  nPOTScale: 0
+    wrapMode: -1
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  alphaIsTransparency: 1
-  textureType: 2
-  buildTargetSettings:
-  - buildTarget: WP8
-    maxTextureSize: 256
-    textureFormat: -1
-    compressionQuality: 50
+  alphaIsTransparency: 0
+  textureType: -1
+  buildTargetSettings: []
   userData: 
