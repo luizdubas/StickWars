@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AStarTest : MonoBehaviour {
+public class AStarTest2 : MonoBehaviour {
 	
 	PathFinding pathFinder;
 	List<Square> path = null;
@@ -13,7 +13,7 @@ public class AStarTest : MonoBehaviour {
 	float walkVelocity = 0.15f;
 	
 	void Start () {
-		pathFinder = new SimpleAStar(20, 20, 1, 1);
+		pathFinder = new SimpleAStar(100, 100, 5, 5);
 		setWalls();
 		
 		walk = false;

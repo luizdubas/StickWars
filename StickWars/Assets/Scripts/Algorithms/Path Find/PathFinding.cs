@@ -10,6 +10,7 @@ interface PathFinding{
 	
 	void clearStartAndTarget();
 	void clearSquares();
+	void ClearLogic();
 	
 	bool PathFind( Vector2 start, Vector2 target );
 	

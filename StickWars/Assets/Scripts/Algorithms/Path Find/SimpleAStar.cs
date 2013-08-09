@@ -65,10 +65,20 @@ public class SimpleAStar : PathFinding{
 	*/
 	
 	public void setStart(Vector2 target){
+		Vector2 oldPosition = FindCode(SquareContent.Start);
+
+		if( oldPosition.x > -1 && oldPosition.y > -1 ){
+		_squares[(int) oldPosition.x, (int)oldPosition.y].ContentCode = SquareContent.Empty;		
+		}
 		_squares[(int) target.x, (int)target.y].ContentCode = SquareContent.Start;
 	}
 	
 	public void setTarget(Vector2 target){
+		Vector2 oldPosition = FindCode(SquareContent.Target);
+
+		if( oldPosition.x > -1 && oldPosition.y > -1 ){
+			_squares[(int) oldPosition.x, (int)oldPosition.y].ContentCode = SquareContent.Empty;		
+		}
 		_squares[(int) target.x,(int) target.y].ContentCode = SquareContent.Target;
 	}
 	
@@ -114,26 +124,20 @@ public class SimpleAStar : PathFinding{
 		if( !mapBuilded ){
 			return false;
 		}
-		Debug.Log("1");
 		
-		_squares[(int) start.x,(int) start.y].ContentCode = SquareContent.Start;
-		_squares[(int) target.x,(int) target.y].ContentCode = SquareContent.Target;
-        
-		Debug.Log("2");
+		setStart( start );
+		setTarget( target );
 		
 //		printMap();
 
-		
 		/*
          * 
-         * Find path from hero to monster. First, get coordinates
-         * of hero.
+         * Find path from start to target. First, get coordinates of start.
          * 
          * */
         Vector2 startingPoint = FindCode(SquareContent.Target);
         int heroX = (int) startingPoint.x;
         int heroY = (int) startingPoint.y;
-		Debug.Log("startingPoint = "+startingPoint);
 		
         if (heroX == -1 || heroY == -1){
             return false;
@@ -145,44 +149,27 @@ public class SimpleAStar : PathFinding{
          * */
         _squares[heroX, heroY].DistanceSteps = 0;
 		
-//        for (int i = 0; i < 10; i++){
 		while(true){
             bool madeProgress = false;
 			
-			Debug.Log("madeProgress = "+madeProgress);
             /*
              * 
              * Look at each square on the board.
              * 
              * */
             foreach (Vector2 mainPoint in AllSquares()){
-//				Debug.Log(mainPoint);
                 int x = (int) mainPoint.x;
                 int y = (int) mainPoint.y;
 
                 if (SquareOpen(x, y)){
-//					Debug.Log("OPEN");
                     int passHere = _squares[x, y].DistanceSteps;
 
                     foreach (Vector2 movePoint in ValidMoves(x, y)){
-						//Debug.Log("Valida Move ");
-						//Debug.Log(movePoint);
                         int newX = (int) movePoint.x;
                         int newY = (int) movePoint.y;
                         int newPass = passHere + 1;
 						
-						//Debug.Log("_squares[newX, newY].DistanceSteps = " + _squares[newX, newY].DistanceSteps );
-						//Debug.Log(" newPass  = " + newPass );
-						
                         if (_squares[newX, newY].DistanceSteps > newPass){
-							/*
-							Debug.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-							Debug.Log( _squares[newX, newY].DistanceSteps );
-							Debug.Log( newPass );
-							Debug.Log( mainPoint );
-							Debug.Log( movePoint );
-							*/
-							
                             _squares[newX, newY].DistanceSteps = newPass;
                             madeProgress = true;
                         }
@@ -213,9 +200,7 @@ public class SimpleAStar : PathFinding{
             return null;
         }
 
-		
-        for (int i = 0; i < 50; i++){
-//		while(true){
+		while(true){
             /*
              * 
              * Look through each direction and find the square
@@ -243,11 +228,8 @@ public class SimpleAStar : PathFinding{
                  * */
                 _squares[(int) lowestPoint.x, (int) lowestPoint.y].IsPath = true;
 				
-				pointX = (int) lowestPoint.X;
-                pointY = (int) lowestPoint.Y;
-				
-				Debug.Log("LOWEST");
-				Debug.Log(lowestPoint);
+				pointX = (int) lowestPoint.x;
+                pointY = (int) lowestPoint.y;
 				
 				path.Add( _squares[(int) lowestPoint.x, (int) lowestPoint.y] );
             
