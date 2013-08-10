@@ -39,7 +39,7 @@ public interface IMaterialSource
 public interface IUnit
 {
 	int ID { get; }
-	Player Owner { get; }
+	Player Owner { get; set; }
 	bool Selected { get; }
 	GameObject ParentObject { get; }
 	int HP { get; set; }
@@ -72,6 +72,8 @@ public interface IUnitClass
 public interface IBuilding
 {
 	int HP { get; }
+	Player Owner { get; set; }
+	Vector3 BuildingPosition { get; }
 	GameObject ParentObject { get; }
 	IUnit CreateUnit();
 	IUnit UpgradeUnit();

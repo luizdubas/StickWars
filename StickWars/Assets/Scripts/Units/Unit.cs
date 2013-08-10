@@ -8,10 +8,14 @@ public class Unit : MonoBehaviour, IUnit
 	int _hp;
 	bool _selected;
 	IUnitClass _unitClass;
+	Player _owner;
 	
 	public Player Owner {
 		get {
-			return null;
+			return _owner;
+		}
+		set {
+			_owner = value;
 		}
 	}
 	

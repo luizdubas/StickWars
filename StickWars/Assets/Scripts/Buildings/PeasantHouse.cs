@@ -1,20 +1,45 @@
 using UnityEngine;
-using System;
+using System.Collections.Generic;
 
 public class PeasantHouse : MonoBehaviour, IBuilding 
 {
-	public GameObject _unitToCreate;
+	int _unitNumber;
+	Queue<string> _peasantQueue;
+	Player _owner;
 
+	public int HP {
+		get {
+			return 200;
+		}
+	}
+	
+	public Player Owner{
+		get { return _owner; }
+		set { _owner = value; }
+	}
+	
+	public Vector3 BuildingPosition{
+		get { return this.gameObject.transform.position; }
+	}
+	
+	public GameObject ParentObject{
+		get { return this.gameObject; }
+	}
+	
 	#region Behaviour
 
 	// Use this for initialization
 	void Start () {
-	
+		_peasantQueue = new Queue<string>();
+		_unitNumber = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if( Input.GetButtonDown("Fire1")){
+			_peasantQueue.Enqueue("peasant"+_unitNumber);
+			_unitNumber++;
+			//esperar o numero de segundo para criar e ai sim criar a unidade
 			CreateUnit();
 		}
 	}
@@ -24,25 +49,23 @@ public class PeasantHouse : MonoBehaviour, IBuilding
 	#region IBuilding implementation
 	public IUnit CreateUnit ()
 	{
-		GameObject codeInstantiatedPrefab = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Prefabs/Peasant.prefab", typeof(GameObject)), new Vector3(10,0,10), Quaternion.identity ) as GameObject;
-		codeInstantiatedPrefab.name = "teste";
-		//GameObject obj = GameObject.Instantiate(testPrefab,new Vector3(10,0,10), Quaternion.identity);
-		return null;
+		Vector3 position = new Vector3(BuildingPosition.x,0,BuildingPosition.z + 14);
+		
+		GameObject peasant = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Prefabs/Peasant.prefab", typeof(GameObject)), 
+				position, Quaternion.identity ) as GameObject;
+		peasant.name = _peasantQueue.Dequeue();
+		Unit peasantUnit = peasant.GetComponent<Unit>();
+		if(peasantUnit != null)
+		{
+			Debug.Log("Here!!!");
+			peasantUnit.Owner = Owner;
+		}
+		return peasantUnit;
 	}
 
 	public IUnit UpgradeUnit ()
 	{
-		throw new NotImplementedException ();
-	}
-	
-	public GameObject ParentObject{
-		get { return this.gameObject; }
-	}
-
-	public int HP {
-		get {
-			return 200;
-		}
+		return null;
 	}
 	#endregion
 }

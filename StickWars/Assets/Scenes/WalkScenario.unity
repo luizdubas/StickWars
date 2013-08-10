@@ -846,7 +846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &834761594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1449,6 +1449,10 @@ Prefab:
       propertyPath: m_LocalRotation.w
       value: .707106769
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: cb13c9b27412be84ab76957bd51f1188, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cb13c9b27412be84ab76957bd51f1188, type: 2}
   m_RootGameObject: {fileID: 834761593}
@@ -1736,7 +1740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b6a65c3ae11c24f880022a44871431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitToCreate: {fileID: 100032, guid: d313d022130310c4185ff83632cebce3, type: 3}
 --- !u!1 &1791001269
 GameObject:
   m_ObjectHideFlags: 0
