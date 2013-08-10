@@ -6,6 +6,7 @@ public class Unit : MonoBehaviour, IUnit
 	public static int UNIT_ID = 0;
 	int _id;
 	int _hp;
+	bool _selected;
 	IUnitClass _unitClass;
 	
 	public Player Owner {
@@ -18,6 +19,14 @@ public class Unit : MonoBehaviour, IUnit
 		get {
 			return _id;
 		}
+	}
+	
+	public bool Selected{
+		get { return _selected; }
+	}
+	
+	public GameObject ParentObject{
+		get { return this.gameObject; }
 	}
 	
 	public int HP {
@@ -84,6 +93,11 @@ public class Unit : MonoBehaviour, IUnit
 	public void Destroy (IBuilding building)
 	{
 		throw new NotImplementedException ();
+	}
+	
+	public void OnSelected ()
+	{
+		_selected = true;
 	}
 	#endregion
 }

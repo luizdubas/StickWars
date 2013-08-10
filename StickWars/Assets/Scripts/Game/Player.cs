@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player
 {
-	//public List<IUnit> _units;
-	//public List<IBuilding> _buildings;
-	public int _sticks;
+	private	List<IUnit> _units;
+	private List<IBuilding> _buildings;
+	private int _sticks;
+	private int _circles;
 	
 	public Player ()
 	{			

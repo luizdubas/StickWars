@@ -47,6 +47,12 @@ public class PeasantClass : IUnitClass
 			return true;
 		}
 	}
+
+	public int SecondsToCreate {
+		get {
+			return 2;
+		}
+	}
 	
 	#region IUnitClass implementation
 	

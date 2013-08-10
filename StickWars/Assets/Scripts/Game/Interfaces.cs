@@ -40,6 +40,8 @@ public interface IUnit
 {
 	int ID { get; }
 	Player Owner { get; }
+	bool Selected { get; }
+	GameObject ParentObject { get; }
 	int HP { get; set; }
 	IUnitClass UnitClass { get; set; }
 	void MoveTo(Vector3 point);
@@ -50,6 +52,7 @@ public interface IUnit
 	void AttackBuilding(IBuilding building);
 	void Build(IBuilding building);
 	void Destroy(IBuilding building);
+	void OnSelected();
 }
 
 public interface IUnitClass
@@ -60,6 +63,7 @@ public interface IUnitClass
 	int Defense { get; }
 	int AttackRange { get; }
 	int MovementSpeed { get; }
+	int SecondsToCreate { get; }
 	bool CanBuild { get; }
 	int MaterialCost(MaterialType material);
 	bool CanCollect(MaterialType material);
@@ -68,6 +72,7 @@ public interface IUnitClass
 public interface IBuilding
 {
 	int HP { get; }
+	GameObject ParentObject { get; }
 	IUnit CreateUnit();
 	IUnit UpgradeUnit();
 }

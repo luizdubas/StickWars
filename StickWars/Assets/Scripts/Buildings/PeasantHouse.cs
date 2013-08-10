@@ -14,6 +14,9 @@ public class PeasantHouse : MonoBehaviour, IBuilding
 	
 	// Update is called once per frame
 	void Update () {
+		if( Input.GetButtonDown("Fire1")){
+			CreateUnit();
+		}
 	}
 	
 	#endregion
@@ -21,12 +24,19 @@ public class PeasantHouse : MonoBehaviour, IBuilding
 	#region IBuilding implementation
 	public IUnit CreateUnit ()
 	{
-		throw new NotImplementedException ();
+		GameObject codeInstantiatedPrefab = GameObject.Instantiate( Resources.LoadAssetAtPath("Assets/Prefabs/Peasant.prefab", typeof(GameObject)), new Vector3(10,0,10), Quaternion.identity ) as GameObject;
+		codeInstantiatedPrefab.name = "teste";
+		//GameObject obj = GameObject.Instantiate(testPrefab,new Vector3(10,0,10), Quaternion.identity);
+		return null;
 	}
 
 	public IUnit UpgradeUnit ()
 	{
 		throw new NotImplementedException ();
+	}
+	
+	public GameObject ParentObject{
+		get { return this.gameObject; }
 	}
 
 	public int HP {
