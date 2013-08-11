@@ -5,137 +5,78 @@ using System.Collections.Generic;
 public class SimpleAStar : PathFinding{
 
     private bool diagonal = false;
-	private bool mapBuilded = false;
 	private Vector2[] _movements;
-	private Square[,] _squares = null;
-	
-	private int sizeX;
-	private int sizeY;
+	private Map map = null;
 	
 	private float squareWidth;
 	private float squareHeight;
-    
-	public Square[,] getSquares(){
-        return _squares;
-    }
 
     public SimpleAStar(){
         InitMovements();
     }
 	
-	public SimpleAStar(int sizeX, int sizeY, float squareWidth, float squareHeight){
-		setMapConfiguration( sizeX, sizeY, squareWidth, squareHeight );
+	public SimpleAStar(Map map, bool diagonal){
+		this.map = map;
+		this.diagonal = diagonal;
 		
         InitMovements();
 	}
 	
-	public void setMapConfiguration(int sizeX, int sizeY, float squareWidth, float squareHeight){
-		_squares = new Square[sizeX, sizeY];
-		
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
-		this.squareWidth = squareWidth;
-		this.squareHeight = squareHeight;
-		
-		clearSquares();
-		
-		mapBuilded = true;
-	}
-
-    public void clearSquares(){
-		float x, y;
-        foreach (Vector2 point in AllSquares()){
-			x = point.x;
-			y = point.y;
-            _squares[(int)x, (int)y] = new Square((int)x, (int)y, new Vector2( x + (squareWidth / 2), (y * -1) + (squareHeight / 2 * -1) ) );
-        }
-    }
-
-	/*
-	public Vector2 getVectorPosition( Vector3 target ){
-		Vector2 position = new Vector2(0, 0);
-		
-		//Debug.Log(target);
-		position.x = (int) target.x;
-		position.y = (int) target.z * -1;
-		//Debug.Log(position);
-		
-		return position;
-	}
-	*/
-	
 	public void setStart(Vector2 target){
-		Vector2 oldPosition = FindCode(SquareContent.Start);
+		Vector2 oldPosition = map.FindByCode(SquareContent.Start);
 
 		if( oldPosition.x > -1 && oldPosition.y > -1 ){
-		_squares[(int) oldPosition.x, (int)oldPosition.y].ContentCode = SquareContent.Empty;		
+			map.getSquare( oldPosition.x, oldPosition.y).ContentCode = SquareContent.Empty;		
 		}
-		_squares[(int) target.x, (int)target.y].ContentCode = SquareContent.Start;
+		
+		map.getSquare( target.x, target.y).ContentCode = SquareContent.Start;
 	}
 	
 	public void setTarget(Vector2 target){
-		Vector2 oldPosition = FindCode(SquareContent.Target);
+		Vector2 oldPosition = map.FindByCode(SquareContent.Target);
 
 		if( oldPosition.x > -1 && oldPosition.y > -1 ){
-			_squares[(int) oldPosition.x, (int)oldPosition.y].ContentCode = SquareContent.Empty;		
+			map.getSquare( oldPosition.x, oldPosition.y).ContentCode = SquareContent.Empty;		
 		}
-		_squares[(int) target.x,(int) target.y].ContentCode = SquareContent.Target;
+		
+		map.getSquare( target.x, target.y).ContentCode = SquareContent.Target;
 	}
-	
-	public void setWalls(List<Vector2> walls){		
-		foreach( Vector2 vector2 in walls ){
-			_squares[(int)vector2.x,(int)vector2.y].ContentCode = SquareContent.Wall;
-		}
-			
-	}
-	
+
 	public void clearStartAndTarget(){
-		Vector2 point = FindCode(SquareContent.Target);
+		Vector2 point;
 		
-		point = FindCode(SquareContent.Target);
+		point = map.FindByCode(SquareContent.Target);
 		
-		_squares[(int) point.x,(int) point.y].ContentCode = SquareContent.Empty;
+		map.getSquare( point.x, point.y).ContentCode = SquareContent.Empty;
 		
-		point = FindCode(SquareContent.Start);
+		point = map.FindByCode(SquareContent.Start);
 		
-		_squares[(int) point.x,(int) point.y].ContentCode = SquareContent.Empty;
+		map.getSquare( point.x, point.y).ContentCode = SquareContent.Empty;
 	}
 
     public void ClearLogic(){
 
-        foreach (Vector2 point in AllSquares()){
-            int x = (int) point.x;
-            int y = (int) point.y;
-            _squares[x, y].DistanceSteps = 10000;
-            _squares[x, y].IsPath = false;
+        foreach (Vector2 point in map.AllSquares()){
+            map.getSquare( point.x, point.y ).DistanceSteps = 10000;
+            map.getSquare( point.x, point.y ).IsPath = false;
         }
     }
-
-	private void printMap(){
-		for( var i = 0; i < sizeX; i++ ){
-			for( var j = 0; j < sizeY; j++ ){
-				Debug.Log ( "x: " + i + " y: "+ j +" = " + _squares[ i, j ].ContentCode );
-			}
-		}
-	}
 	
     public bool PathFind( Vector2 start, Vector2 target ){
 	
-		if( !mapBuilded ){
+		if( !map.MapBuilded ){
 			return false;
 		}
 		
 		setStart( start );
 		setTarget( target );
 		
-//		printMap();
-
 		/*
          * 
          * Find path from start to target. First, get coordinates of start.
          * 
          * */
-        Vector2 startingPoint = FindCode(SquareContent.Target);
+        Vector2 startingPoint = map.FindByCode(SquareContent.Target);
         int heroX = (int) startingPoint.x;
         int heroY = (int) startingPoint.y;
 		
@@ -147,7 +88,7 @@ public class SimpleAStar : PathFinding{
          * Target starts at distance of 0.
          * 
          * */
-        _squares[heroX, heroY].DistanceSteps = 0;
+        map.getSquare(heroX, heroY).DistanceSteps = 0;
 		
 		while(true){
             bool madeProgress = false;
@@ -157,20 +98,20 @@ public class SimpleAStar : PathFinding{
              * Look at each square on the board.
              * 
              * */
-            foreach (Vector2 mainPoint in AllSquares()){
-                int x = (int) mainPoint.x;
+            foreach (Vector2 mainPoint in map.AllSquares()){
+				int x = (int) mainPoint.x;
                 int y = (int) mainPoint.y;
+				Square mainPointSquare = map.getSquare( x, y );
 
-                if (SquareOpen(x, y)){
-                    int passHere = _squares[x, y].DistanceSteps;
+                if (map.SquareOpen(mainPointSquare)){
+                    int passHere = mainPointSquare.DistanceSteps;
 
                     foreach (Vector2 movePoint in ValidMoves(x, y)){
-                        int newX = (int) movePoint.x;
-                        int newY = (int) movePoint.y;
+                        Square movePointSquare = map.getSquare( movePoint.x, movePoint.y );
                         int newPass = passHere + 1;
 						
-                        if (_squares[newX, newY].DistanceSteps > newPass){
-                            _squares[newX, newY].DistanceSteps = newPass;
+                        if (movePointSquare.DistanceSteps > newPass){
+                            movePointSquare.DistanceSteps = newPass;
                             madeProgress = true;
                         }
                     }
@@ -193,7 +134,7 @@ public class SimpleAStar : PathFinding{
          * Mark the path from monster to hero.
          * 
          * */
-        Vector2 startingPoint = FindCode(SquareContent.Start);
+        Vector2 startingPoint = map.FindByCode(SquareContent.Start);
         int pointX = (int)startingPoint.x;
         int pointY = (int)startingPoint.y;
         if (pointX == -1 && pointY == -1){
@@ -211,7 +152,7 @@ public class SimpleAStar : PathFinding{
             int lowest = 10000;
 
             foreach (Vector2 movePoint in ValidMoves(pointX, pointY)){
-                int count = _squares[(int) movePoint.x, (int) movePoint.y].DistanceSteps;
+                int count = map.getSquare(movePoint.x, movePoint.y).DistanceSteps;
                 if (count < lowest){
                     lowest = count;
                     lowestPoint.x = movePoint.x;
@@ -226,18 +167,19 @@ public class SimpleAStar : PathFinding{
                  * that number of steps.
                  * 
                  * */
-                _squares[(int) lowestPoint.x, (int) lowestPoint.y].IsPath = true;
+				Square lowestPointSquare = map.getSquare( lowestPoint.x, lowestPoint.y );
+                lowestPointSquare.IsPath = true;
 				
 				pointX = (int) lowestPoint.x;
                 pointY = (int) lowestPoint.y;
 				
-				path.Add( _squares[(int) lowestPoint.x, (int) lowestPoint.y] );
+				path.Add( lowestPointSquare );
             
 			}else{
                 break;
             }
 
-            if (_squares[pointX, pointY].ContentCode == SquareContent.Target){
+            if ( map.getSquare(pointX, pointY).ContentCode == SquareContent.Target){
                 /*
                  * 
                  * We went from monster to hero, so we're finished.
@@ -250,20 +192,12 @@ public class SimpleAStar : PathFinding{
 		return path;
     }
 
-    private IEnumerable AllSquares(){
-        for (int x = 0; x < sizeX; x++){
-            for (int y = 0; y < sizeY; y++){
-                yield return new Vector2(x, y);
-            }
-        }
-    }
-
-    private IEnumerable ValidMoves(int x, int y){
+	private IEnumerable ValidMoves(int x, int y){
         foreach (Vector2 movePoint in _movements){
             int newX = x + (int) movePoint.x;
             int newY = y + (int) movePoint.y;
 
-            if (ValidCoordinates(newX, newY) && SquareOpen(newX, newY)){
+            if (ValidCoordinates(newX, newY) && map.SquareOpen(newX, newY)){
                 yield return new Vector2(newX, newY);
             }
         }
@@ -300,37 +234,13 @@ public class SimpleAStar : PathFinding{
         if (y < 0){
             return false;
         }
-        if (x > sizeX-1){
+        if (x > map.SizeX - 1){
             return false;
         }
-        if (y > sizeY-1){
+        if (y > map.SizeY - 1){
             return false;
         }
         return true;
     }
 
-    private bool SquareOpen(int x, int y){
-
-        switch (_squares[x, y].ContentCode){
-            case SquareContent.Empty:
-                return true;
-            case SquareContent.Target:
-                return true;
-            case SquareContent.Start:
-                return true;
-            case SquareContent.Wall:
-            default:
-                return false;
-        }
-    }
-
-    private Vector2 FindCode(SquareContent contentIn){
-
-        foreach (Vector2 point in AllSquares()){
-            if (_squares[(int) point.x, (int) point.y].ContentCode == contentIn){
-                return new Vector2(point.x, point.y);
-            }
-        }
-        return new Vector2(-1, -1);
-    }
 }

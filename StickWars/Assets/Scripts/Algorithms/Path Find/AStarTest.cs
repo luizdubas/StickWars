@@ -11,72 +11,33 @@ public class AStarTest : MonoBehaviour {
 	float time;
 	
 	float walkVelocity = 0.15f;
+	GameObject hero;
+	
+	Map map;
 	
 	void Start () {
-		pathFinder = new SimpleAStar(20, 20, 1, 1);
-		setWalls();
+		
+		createMap();
+		
+		pathFinder = new SimpleAStar(map, false);
 		
 		walk = false;
 		time = 0;
+		hero = GameObject.Find("hero");
 	}
 	
-	public Vector2 getWorldPosition( Vector2 target ){
-		Vector2 position = new Vector2(0, 0);
+	void createMap(){
+		map = new Map();
 		
-		position.x = target.x + 0.5f;
-		position.y = (target.y + 0.5f) * - 1;
+		map.SizeX = 20;
+		map.SizeY = 20;
 		
-		return position;
-	}
-	
-	void Update () {
+		map.SquareWidth = 1;
+		map.SquareHeight = 1;
+		map.MapGameObject = GameObject.Find( "Map" );
 		
-		if( walk ){
-			time += Time.deltaTime;
-			if( time >= walkVelocity ){
-				time -= walkVelocity;
-				
-				Square posicao = path[index];
-				index++;
-				
-				GameObject hero = GameObject.Find("hero");
-				
-				hero.transform.position = new Vector3(posicao.Center.x , 0, posicao.Center.y );
-				
-				if( index == path.Count){
-					walk = false;
-					time = 0;
-					index = 0;
-				}
-			}
-		}
+		map.buildMap();
 		
-		if( Input.GetButtonDown("Fire1") && !walk){
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			bool right = false;
-			
-			if( Physics.Raycast( ray, out hit) ){
-				GameObject hero = GameObject.Find("hero");
-				
-				Vector2 start = new Vector2( hero.transform.position.x, hero.transform.position.z * -1 );
-				Vector2 target = new Vector2( hit.point.x, hit.point.z * -1 );
-				
-				pathFinder.ClearLogic();
-				right = pathFinder.PathFind( start, target );
-
-				if( right ){
-					path = pathFinder.getPath();
-							
-					index = 0;
-					time = 0;
-					walk = true;
-				}
-			}	
-		}
-	}
-	
-	void setWalls(){
 		List<Vector2> walls = new List<Vector2>();
 		
 		walls.Add( new Vector2(4,0) );
@@ -107,6 +68,47 @@ public class AStarTest : MonoBehaviour {
 		
 		walls.Add( new Vector2(10,11) );
 		
-		pathFinder.setWalls( walls );
+		map.addObstacles( walls );
 	}
+	
+	void Update () {
+		
+		if( walk ){
+			time += Time.deltaTime;
+			if( time >= walkVelocity ){
+				time -= walkVelocity;
+				
+				Square posicao = path[index];
+				index++;
+				
+				hero.transform.position = new Vector3(posicao.Center.x , 0, posicao.Center.y );
+				
+				if( index == path.Count){
+					walk = false;
+					time = 0;
+					index = 0;
+				}
+			}
+		}
+		
+		if( Input.GetButtonDown("Fire1") && !walk){
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+			bool right = false;
+			
+			if( Physics.Raycast( ray, out hit) ){
+				pathFinder.ClearLogic();
+				right = pathFinder.PathFind( map.getCoordinatesByWorldPosition( hero.transform.position ) , map.getCoordinatesByWorldPosition( hit.point ) );
+
+				if( right ){
+					path = pathFinder.getPath();
+							
+					index = 0;
+					time = 0;
+					walk = true;
+				}
+			}	
+		}
+	}
+
 }

@@ -11,22 +11,34 @@ public class AStarTest2 : MonoBehaviour {
 	float time;
 	
 	float walkVelocity = 0.15f;
+	GameObject hero;
+	
+	Map map;
 	
 	void Start () {
-		pathFinder = new SimpleAStar(100, 100, 5, 5);
-		setWalls();
+		
+		createMap();
+		
+		pathFinder = new SimpleAStar(map, false);
 		
 		walk = false;
 		time = 0;
+		hero = GameObject.Find("hero");
 	}
 	
-	public Vector2 getWorldPosition( Vector2 target ){
-		Vector2 position = new Vector2(0, 0);
+	void createMap(){
+		map = GameObject.Find("Map_100_100_5").GetComponent<Map>();
 		
-		position.x = target.x + 0.5f;
-		position.y = (target.y + 0.5f) * - 1;
+		map.SizeX = 100;
+		map.SizeY = 100;
 		
-		return position;
+		map.SquareWidth = 5;
+		map.SquareHeight = 5;
+		map.MapGameObject = GameObject.Find( "Map_100_100_5" );
+		
+		map.buildMap();
+		
+		map.createRandomsObstacles( 500, map.ObstaclePrefab );
 	}
 	
 	void Update () {
@@ -38,8 +50,6 @@ public class AStarTest2 : MonoBehaviour {
 				
 				Square posicao = path[index];
 				index++;
-				
-				GameObject hero = GameObject.Find("hero");
 				
 				hero.transform.position = new Vector3(posicao.Center.x , 0, posicao.Center.y );
 				
@@ -57,56 +67,17 @@ public class AStarTest2 : MonoBehaviour {
 			bool right = false;
 			
 			if( Physics.Raycast( ray, out hit) ){
-				GameObject hero = GameObject.Find("hero");
-				
-				Vector2 start = new Vector2( hero.transform.position.x, hero.transform.position.z * -1 );
-				Vector2 target = new Vector2( hit.point.x, hit.point.z * -1 );
-				
 				pathFinder.ClearLogic();
-				right = pathFinder.PathFind( start, target );
+				right = pathFinder.PathFind( map.getCoordinatesByWorldPosition( hero.transform.position ) , map.getCoordinatesByWorldPosition( hit.point ) );
 
 				if( right ){
 					path = pathFinder.getPath();
-							
+					
 					index = 0;
 					time = 0;
 					walk = true;
 				}
 			}	
 		}
-	}
-	
-	void setWalls(){
-		List<Vector2> walls = new List<Vector2>();
-		
-		walls.Add( new Vector2(4,0) );
-		
-		walls.Add( new Vector2(4,1) );
-		
-		walls.Add( new Vector2(0,2) );
-		walls.Add( new Vector2(3,2) );
-		walls.Add( new Vector2(8,2) );
-		
-		walls.Add( new Vector2(2,3) );
-		
-		walls.Add( new Vector2(3,4) );
-		
-		walls.Add( new Vector2(4,5) );
-		
-		walls.Add( new Vector2(2,6) );
-		walls.Add( new Vector2(4,6) );
-		
-		walls.Add( new Vector2(4,7) );
-		
-		walls.Add( new Vector2(2,8) );
-		walls.Add( new Vector2(8,8) );
-		
-		walls.Add( new Vector2(4,9) );
-		walls.Add( new Vector2(5,9) );
-		walls.Add( new Vector2(6,9) );
-		
-		walls.Add( new Vector2(10,11) );
-		
-		pathFinder.setWalls( walls );
 	}
 }

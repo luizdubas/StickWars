@@ -14,18 +14,22 @@ public enum SquareContent
 
 public class Square{
 	private bool _isPath = false;
+	
 	private int _distanceSteps = 10000;
-    private SquareContent _contentCode = SquareContent.Empty;
-	private Vector2 _center = Vector2.zero;
 	private int x;
 	private int y;
+	
+	private SquareContent _contentCode = SquareContent.Empty;
+	
+	private Vector2 _center = Vector2.zero;
+	
+	private GameObject obstacle;
+
 	
 	public Square(int x, int y, Vector2 _center){
 		this.x = x;
 		this.y = y;
 		this._center = _center;
-		
-//		Debug.Log( _center );
 	}
     
 	public SquareContent ContentCode{
@@ -58,21 +62,12 @@ public class Square{
 		set { y = value; }
 	}
 
-    public void FromChar(char charIn){
-        switch (charIn){
-            case 'W':
-                _contentCode = SquareContent.Wall;
-                break;
-            case 'T':
-                _contentCode = SquareContent.Target;
-                break;
-            case 'S':
-                _contentCode = SquareContent.Start;
-                break;
-            case ' ':
-            default:
-                _contentCode = SquareContent.Empty;
-                break;
-        }
-    }
+	public GameObject Obstacle {
+		get {
+			return this.obstacle;
+		}
+		set {
+			obstacle = value;
+		}
+	}
 }
