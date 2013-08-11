@@ -38,14 +38,14 @@ public class AStarTest2 : MonoBehaviour {
 		
 		map.buildMap();
 		
-		map.createRandomsObstacles( 500, map.ObstaclePrefab );
+		map.createRandomsObstacles( 2000, map.ObstaclePrefab );
 	}
 	
 	void Update () {
 		
 		if( walk ){
 			time += Time.deltaTime;
-			if( time >= walkVelocity ){
+			if( time >= walkVelocity && path.Count > 0 ){
 				time -= walkVelocity;
 				
 				Square posicao = path[index];
@@ -57,6 +57,8 @@ public class AStarTest2 : MonoBehaviour {
 					walk = false;
 					time = 0;
 					index = 0;
+					
+					path.Clear();
 				}
 			}
 		}

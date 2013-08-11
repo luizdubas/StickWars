@@ -202,6 +202,84 @@ public class Map : MonoBehaviour {
 		return new Vector2( x, y );
 	}
 	
+	public Square NearestFreeSquare( Vector2 position ){
+		return NearestFreeSquare( getSquare( position.x, position.y ) );
+	}
+	
+	public Square NearestFreeSquare( Square square ){
+		Square currentSquare = square;
+		
+		int currentX, currentY;
+
+		int spiralLevel;
+		int initialX, initialY;
+		int walkCount = 1;
+		
+		currentX = square.X;
+		currentY = square.Y;
+		
+		initialX = currentX;
+		initialY = currentY;
+		Debug.Log( "x = " + initialX + " y " + initialY );
+		
+		spiralLevel = 0;
+		
+		// direction mostra para onde o espiral ta indo (0 = direita) (1 = cima) (2 = esquerda) (3 = baixo)
+		int direction = 0;
+		
+		for( int index = 0; currentSquare.ContentCode == SquareContent.Wall; index++ ){
+			if( currentX == initialX && currentY == initialY && walkCount == 1 ){
+				Debug.Log("SPIRAL LEVEL ++");
+				spiralLevel++;	
+				initialY++;
+				currentY++;
+				direction = 0;
+				walkCount = 0;
+			}else{
+				Debug.Log("DIRECTION = "+direction);
+				switch(	direction ){
+				case 0:
+					currentX++;
+					break;
+				case 1:
+					currentY--;
+					break;
+				case 2:
+					currentX--;
+					break;
+				case 3:
+					currentY++;
+					break;
+				}
+				walkCount++;
+				
+				if( direction == 0 ){
+					if( walkCount == spiralLevel ){
+						direction = (direction + 1) % 4;
+						walkCount = 0;
+						Debug.Log("MUDANDO 1");
+					}
+					
+				}else{
+					if( walkCount == spiralLevel * 2 ){
+						Debug.Log("MUDANDO 2");
+						direction = (direction + 1) % 4;
+						walkCount = 0;
+					}
+				}
+			}
+			
+			if( currentX < 0 || currentY < 0 || currentX >= sizeX || currentY >= sizeY ){
+				Debug.Log("CONTINUE");
+				continue;	
+			}
+			currentSquare = squares[currentX, currentY];
+			Debug.Log("Spiral x = " + currentX + " y = " + currentY+" = " + currentSquare.ContentCode );
+		}
+		
+		return currentSquare;
+	}
+	
 	private void printMap(){
 		for( var i = 0; i < sizeX; i++ ){
 			for( var j = 0; j < sizeY; j++ ){

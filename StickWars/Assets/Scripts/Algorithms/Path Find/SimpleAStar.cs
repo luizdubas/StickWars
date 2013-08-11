@@ -69,6 +69,11 @@ public class SimpleAStar : PathFinding{
 		}
 		
 		setStart( start );
+		if( !map.SquareOpen( target.x, target.y ) ){
+			Square auxSquare = map.NearestFreeSquare( target );
+			target.x = auxSquare.X;
+			target.y = auxSquare.Y;
+		}
 		setTarget( target );
 		
 		/*
@@ -138,7 +143,7 @@ public class SimpleAStar : PathFinding{
         int pointX = (int)startingPoint.x;
         int pointY = (int)startingPoint.y;
         if (pointX == -1 && pointY == -1){
-            return null;
+            return path;
         }
 
 		while(true){
