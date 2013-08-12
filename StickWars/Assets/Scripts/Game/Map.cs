@@ -220,7 +220,6 @@ public class Map : MonoBehaviour {
 		
 		initialX = currentX;
 		initialY = currentY;
-		Debug.Log( "x = " + initialX + " y " + initialY );
 		
 		spiralLevel = 0;
 		
@@ -229,14 +228,12 @@ public class Map : MonoBehaviour {
 		
 		for( int index = 0; currentSquare.ContentCode == SquareContent.Wall; index++ ){
 			if( currentX == initialX && currentY == initialY && walkCount == 1 ){
-				Debug.Log("SPIRAL LEVEL ++");
 				spiralLevel++;	
 				initialY++;
 				currentY++;
 				direction = 0;
 				walkCount = 0;
 			}else{
-				Debug.Log("DIRECTION = "+direction);
 				switch(	direction ){
 				case 0:
 					currentX++;
@@ -257,12 +254,10 @@ public class Map : MonoBehaviour {
 					if( walkCount == spiralLevel ){
 						direction = (direction + 1) % 4;
 						walkCount = 0;
-						Debug.Log("MUDANDO 1");
 					}
 					
 				}else{
 					if( walkCount == spiralLevel * 2 ){
-						Debug.Log("MUDANDO 2");
 						direction = (direction + 1) % 4;
 						walkCount = 0;
 					}
@@ -270,11 +265,9 @@ public class Map : MonoBehaviour {
 			}
 			
 			if( currentX < 0 || currentY < 0 || currentX >= sizeX || currentY >= sizeY ){
-				Debug.Log("CONTINUE");
 				continue;	
 			}
 			currentSquare = squares[currentX, currentY];
-			Debug.Log("Spiral x = " + currentX + " y = " + currentY+" = " + currentSquare.ContentCode );
 		}
 		
 		return currentSquare;
