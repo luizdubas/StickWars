@@ -14,25 +14,28 @@ public class CameraControllerInGame : MonoBehaviour{
     public int PanSpeed = 50;
     public int PanAngleMin = 25;
     public int PanAngleMax = 80;
+	
+	public bool pannoramicCamera = false;
 
     void Update(){		
         // Init camera translation for this frame.
-        var translation = Vector3.zero;
-		var zoomDelta = 0;
+        Vector3 translation = Vector3.zero;
+		float zoomDelta = 0;
         
 		// Zoom in or out
-		//zoomDelta = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * Time.deltaTime;
+		zoomDelta = Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * Time.deltaTime;
         if (zoomDelta!=0){
             translation -= Vector3.up * ZoomSpeed * zoomDelta;
         }
 
         // Start panning camera if zooming in close to the ground or if just zooming out.
-        var pan = camera.transform.eulerAngles.x - zoomDelta * PanSpeed;
-        pan = Mathf.Clamp(pan, PanAngleMin, PanAngleMax);
-        if (zoomDelta < 0 || camera.transform.position.y < (ZoomMax / 2))
-        {
-            camera.transform.eulerAngles = new Vector3(pan, 0, 0);
-        }
+		if( pannoramicCamera ){
+			float pan = camera.transform.eulerAngles.x - zoomDelta * PanSpeed;
+			pan = Mathf.Clamp(pan, PanAngleMin, PanAngleMax);
+			if (zoomDelta < 0 || camera.transform.position.y < (ZoomMax / 2)){
+				camera.transform.eulerAngles = new Vector3(pan, 0, 0);
+			}
+		}
 
         // Move camera with arrow keys
         translation += new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -40,43 +43,35 @@ public class CameraControllerInGame : MonoBehaviour{
         // Move camera with mouse
         if (Input.GetMouseButton(2)){
             // Hold button and drag camera around
-            translation -= new Vector3(Input.GetAxis("Mouse X") * DragSpeed * Time.deltaTime, 0, 
-                               Input.GetAxis("Mouse Y") * DragSpeed * Time.deltaTime);
+            translation -= new Vector3(Input.GetAxis("Mouse X") * DragSpeed * Time.deltaTime, 0, Input.GetAxis("Mouse Y") * DragSpeed * Time.deltaTime);
         }else{
             // Move camera if mouse pointer reaches screen borders
-            if (Input.mousePosition.x < ScrollArea)
-            {
+            if (Input.mousePosition.x < ScrollArea){
                 translation += Vector3.right * -ScrollSpeed * Time.deltaTime;
             }
 
-            if (Input.mousePosition.x >= Screen.width - ScrollArea)
-            {
+            if (Input.mousePosition.x >= Screen.width - ScrollArea){
                 translation += Vector3.right * ScrollSpeed * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y < ScrollArea)
-            {
+            if (Input.mousePosition.y < ScrollArea){
                 translation += Vector3.forward * -ScrollSpeed * Time.deltaTime;
             }
 
-            if (Input.mousePosition.y > Screen.height - ScrollArea)
-            {
+            if (Input.mousePosition.y > Screen.height - ScrollArea){
                 translation += Vector3.forward * ScrollSpeed * Time.deltaTime;
             }
         }
 
         // Keep camera within level and zoom area
-        var desiredPosition = camera.transform.position + translation;
-        if (desiredPosition.x < -LevelArea || LevelArea < desiredPosition.x)
-        {
+        Vector3 desiredPosition = camera.transform.position + translation;
+        if (desiredPosition.x < -LevelArea || LevelArea < desiredPosition.x){
             translation.x = 0;
         }
-        if (desiredPosition.y < ZoomMin || ZoomMax < desiredPosition.y)
-        {
+        if (desiredPosition.y < ZoomMin || ZoomMax < desiredPosition.y){
             translation.y = 0;
         }
-        if (desiredPosition.z < -LevelArea || LevelArea < desiredPosition.z)
-        {
+        if (desiredPosition.z < -LevelArea || LevelArea < desiredPosition.z){
             translation.z = 0;
         }
 
