@@ -14,16 +14,34 @@ public class AStarTest2 : MonoBehaviour {
 	GameObject hero;
 	
 	Map map;
-	
-	void Start () {
+	CameraControllerInGame cameraController;
 		
+	void Start () {
 		createMap();
+		
+		startCameraController();
+				
+		hero = GameObject.Find("hero");
 		
 		pathFinder = new SimpleAStar(map, false);
 		
 		walk = false;
 		time = 0;
-		hero = GameObject.Find("hero");
+	}
+	
+	void startCameraController(){
+		
+		cameraController = GameObject.Find("Camera").GetComponent<CameraControllerInGame>();
+		
+		cameraController.setCameraPosition( new Vector3( 50, 40, -80 ) );
+		cameraController.setCameraRotation( new Vector3( 45, 0, 0 ) );
+		
+		cameraController.setMargins( 50, -80, -50, -20 );
+		cameraController.setMinMaxZoom( 10, 40 );
+		
+		cameraController.setMap( map );
+		
+		cameraController.activate();
 	}
 	
 	void createMap(){
@@ -38,7 +56,7 @@ public class AStarTest2 : MonoBehaviour {
 		
 		map.buildMap();
 		
-		map.createRandomsObstacles( 2000, map.ObstaclePrefab );
+		map.createRandomsObstacles( 1000, map.ObstaclePrefab );
 	}
 	
 	void Update () {

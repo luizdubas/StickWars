@@ -15,6 +15,12 @@ public class Map : MonoBehaviour {
 	private float mapWidth;
 	private float mapHeight;
 	
+	private Vector2 centerMap;
+	private float startLeft;
+	private float startTop;
+	private float endRight;
+	private float endBottom;
+	
 	private bool mapBuilded = false;
 	
 	private GameObject mapGameObject;
@@ -57,6 +63,14 @@ public class Map : MonoBehaviour {
 			
 			mapWidth  = sizeX * squareWidth;
 			mapHeight = sizeY * squareHeight;
+			
+			centerMap = new Vector2( mapGameObject.transform.position.x, mapGameObject.transform.position.z );
+			
+			startLeft = centerMap.x - ( mapWidth  / 2);
+			startTop  = centerMap.y + ( mapHeight / 2);
+			
+			endRight  = centerMap.x + ( mapWidth  / 2);
+			endBottom = centerMap.y - ( mapHeight / 2);
 			
 			clearSquares();
 		}
@@ -174,15 +188,8 @@ public class Map : MonoBehaviour {
 	}
 	
 	public Vector2 getCoordinatesByWorldPosition( Vector2 worldPosition ){
-		Vector2 centerMap;
-		float startLeft, startTop;
 		float auxLeft, auxTop;
 		int x, y;
-		
-		centerMap = new Vector2( mapGameObject.transform.position.x, mapGameObject.transform.position.z );
-		
-		startLeft = centerMap.x - ( mapWidth  / 2);
-		startTop = centerMap.y + ( mapHeight / 2);
 		
 		auxLeft = startLeft;
 		auxTop  = startTop;
@@ -281,6 +288,7 @@ public class Map : MonoBehaviour {
 		}
 	}
 
+
 	public Square[,] Squares {
 		get {
 			return this.squares;
@@ -343,6 +351,51 @@ public class Map : MonoBehaviour {
 			mapHeight = value;
 		}
 	}
+	
+	public Vector2 CenterMap {
+		get {
+			return this.centerMap;
+		}
+		set {
+			centerMap = value;
+		}
+	}
+
+	public float StartLeft {
+		get {
+			return this.startLeft;
+		}
+		set {
+			startLeft = value;
+		}
+	}
+
+	public float StartTop {
+		get {
+			return this.startTop;
+		}
+		set {
+			startTop = value;
+		}
+	}
+
+	public float EndRight {
+		get {
+			return this.endRight;
+		}
+		set {
+			endRight = value;
+		}
+	}
+
+	public float EndBottom {
+		get {
+			return this.endBottom;
+		}
+		set {
+			endBottom = value;
+		}
+	}
 
 	public bool MapBuilded {
 		get {
@@ -361,5 +414,4 @@ public class Map : MonoBehaviour {
 			mapGameObject = value;
 		}
 	}
-	
 }

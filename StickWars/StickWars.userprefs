@@ -1,15 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Game\CameraControllerInGame.cs">
-    <Files>
-      <File FileName="Assets\Scripts\Game\CameraControllerInGame.cs" Line="26" Column="63" />
-      <File FileName="Assets\Scripts\Game\Map.cs" Line="222" Column="23" />
-      <File FileName="Assets\Scripts\Algorithms\Path Find\SimpleAStar.cs" Line="146" Column="24" />
-      <File FileName="Assets\Scripts\Algorithms\Path Find\AStarTest2.cs" Line="42" Column="3" />
-      <File FileName="Assets\Scripts\Algorithms\Square.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Algorithms\Path Find\PathFinding.cs" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
