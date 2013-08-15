@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Algorithms\Path Find\AStarTest2.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Algorithms\Path Find\AStarTest2.cs" Line="85" Column="14" />
+      <File FileName="Assets\Scripts\Game\CameraControllerInGame.cs" Line="145" Column="20" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

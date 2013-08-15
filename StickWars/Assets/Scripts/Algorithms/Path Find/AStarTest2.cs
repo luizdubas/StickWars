@@ -4,17 +4,19 @@ using System.Collections.Generic;
 
 public class AStarTest2 : MonoBehaviour {
 	
-	PathFinding pathFinder;
-	List<Square> path = null;
-	int index = 0;
-	bool walk;
-	float time;
+	private PathFinding pathFinder;
+	private List<Square> path = null;
+	private int index = 0;
+	private bool walk;
+	private float time;
 	
-	float walkVelocity = 0.15f;
-	GameObject hero;
+	private float walkVelocity = 0.15f;
+	private GameObject hero;
 	
-	Map map;
-	CameraControllerInGame cameraController;
+	private Map map;
+	private CameraControllerInGame cameraController;
+	
+	private bool debug = true;
 		
 	void Start () {
 		createMap();
@@ -59,8 +61,7 @@ public class AStarTest2 : MonoBehaviour {
 		map.createRandomsObstacles( 1000, map.ObstaclePrefab );
 	}
 	
-	void Update () {
-		
+	void Update () {		
 		if( walk ){
 			time += Time.deltaTime;
 			if( time >= walkVelocity && path.Count > 0 ){
@@ -93,6 +94,10 @@ public class AStarTest2 : MonoBehaviour {
 				if( right ){
 					path = pathFinder.getPath();
 					
+					if( debug ){
+						
+					}
+					
 					index = 0;
 					time = 0;
 					walk = true;
@@ -100,4 +105,10 @@ public class AStarTest2 : MonoBehaviour {
 			}	
 		}
 	}
+	
+	void drawPath(){
+		
+	}
+	
+	
 }

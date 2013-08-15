@@ -16,7 +16,7 @@ public class CameraControllerInGame : MonoBehaviour{
 	private bool pannoramicCamera = false;
 	private bool middleMouseButtonMovement = false;
 	
-	private bool active = false;
+	private bool enable = false;
 	
 	private float leftMargin;
 	private float rightMargin;
@@ -31,7 +31,7 @@ public class CameraControllerInGame : MonoBehaviour{
 	}
 	
 	void Awake( ){
-		active = false;
+		enable = false;
 		
 		leftMargin = 0;
 		rightMargin = 0;
@@ -53,7 +53,7 @@ public class CameraControllerInGame : MonoBehaviour{
 	}
 
     void Update(){		
-		if( active ){
+		if( enable ){
 	        // Init camera translation for this frame.
 	        Vector3 translation = Vector3.zero;
 			float zoomDelta = 0;
@@ -164,13 +164,13 @@ public class CameraControllerInGame : MonoBehaviour{
 		}
 		
 		if( validConfiguration ){
-			active = true;
+			enable = true;
 		}
 		
 		return validConfiguration;
 	}
 	
 	public void deactivate(){
-		active = false;	
+		enable = false;	
 	}
 }
