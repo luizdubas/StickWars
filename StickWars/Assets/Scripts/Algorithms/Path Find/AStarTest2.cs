@@ -17,13 +17,13 @@ public class AStarTest2 : MonoBehaviour {
 	private CameraControllerInGame cameraController;
 	
 	private bool debug = true;
-		
+	
 	void Start () {
+		hero = GameObject.Find("hero");
+		
 		createMap();
 		
 		startCameraController();
-				
-		hero = GameObject.Find("hero");
 		
 		pathFinder = new SimpleAStar(map, false);
 		
@@ -35,10 +35,10 @@ public class AStarTest2 : MonoBehaviour {
 		
 		cameraController = GameObject.Find("Camera").GetComponent<CameraControllerInGame>();
 		
-		cameraController.setCameraPosition( new Vector3( 50, 40, -80 ) );
-		cameraController.setCameraRotation( new Vector3( 45, 0, 0 ) );
+		cameraController.setCameraPosition( new Vector3( 40, 40, -70 ) );
+		cameraController.setCameraRotation( new Vector3( 50, 0, 0 ) );
 		
-		cameraController.setMargins( 50, -80, -50, -20 );
+		cameraController.setMargins( 40, -70, -40, -20 );
 		cameraController.setMinMaxZoom( 10, 40 );
 		
 		cameraController.setMap( map );
@@ -61,7 +61,8 @@ public class AStarTest2 : MonoBehaviour {
 		map.createRandomsObstacles( 1000, map.ObstaclePrefab );
 	}
 	
-	void Update () {		
+	void Update () {
+
 		if( walk ){
 			time += Time.deltaTime;
 			if( time >= walkVelocity && path.Count > 0 ){
@@ -70,7 +71,7 @@ public class AStarTest2 : MonoBehaviour {
 				Square posicao = path[index];
 				index++;
 				
-				hero.transform.position = new Vector3(posicao.Center.x , 0, posicao.Center.y );
+				hero.transform.position = new Vector3(posicao.Center.x , hero.transform.position.y, posicao.Center.y );
 				
 				if( index == path.Count){
 					walk = false;
@@ -82,7 +83,7 @@ public class AStarTest2 : MonoBehaviour {
 			}
 		}
 		
-		if( Input.GetButtonDown("Fire1") && !walk){
+		if( Input.GetButtonDown("Fire2") && !walk){
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 			bool right = false;
