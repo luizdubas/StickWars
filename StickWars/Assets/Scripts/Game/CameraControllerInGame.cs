@@ -16,6 +16,14 @@ public class CameraControllerInGame : MonoBehaviour{
 	private bool pannoramicCamera = false;
 	private bool middleMouseButtonMovement = false;
 	
+	private bool  rotation = true;
+	private float rotationTime = 1;
+	private float rotationFactor = 0;
+	private bool  rotatingRight = false;
+	private bool  rotatingLeft = false;
+	private float rotationTimeCount = 0;
+	private float rotationInitialEullerY;
+	
 	private bool enable = false;
 	
 	private float leftMargin;
@@ -63,6 +71,45 @@ public class CameraControllerInGame : MonoBehaviour{
 	        if (zoomDelta!=0){
 	            translation -= Vector3.up * ZoomSpeed * zoomDelta;
 	        }
+			
+			if( rotation ){
+				if( rotatingLeft || rotatingRight ){
+					rotationTimeCount += Time.deltaTime;
+					
+					if( rotationTimeCount <= rotationTime ){
+						if( rotatingRight ){
+							camera.transform.eulerAngles = new Vector3( camera.transform.eulerAngles.x, camera.transform.eulerAngles.y + ( rotationFactor * Time.deltaTime ), camera.transform.eulerAngles.z );
+						}else if( rotatingLeft ){
+							camera.transform.eulerAngles = new Vector3( camera.transform.eulerAngles.x, camera.transform.eulerAngles.y + ( rotationFactor * Time.deltaTime ), camera.transform.eulerAngles.z );
+						}
+					}else{
+						float aux;
+						if( rotatingRight ){
+							camera.transform.eulerAngles = new Vector3( camera.transform.eulerAngles.x, rotationInitialEullerY  - 90, camera.transform.eulerAngles.z );
+
+						}else if( rotatingLeft ){
+							camera.transform.eulerAngles = new Vector3( camera.transform.eulerAngles.x, rotationInitialEullerY + 90, camera.transform.eulerAngles.z );
+						}
+
+						rotationTimeCount = 0;
+						rotatingLeft = false;
+						rotatingRight = false;
+					}
+				}else{
+					if( Input.GetKeyDown("e") ){
+						rotationTimeCount = 0;
+						rotatingRight = true;
+						rotationFactor = -90 / rotationTime;
+						rotationInitialEullerY = camera.transform.eulerAngles.y;
+					}
+					if( Input.GetKeyDown("q") ){
+						rotationTimeCount = 0;
+						rotatingLeft = true;
+						rotationFactor = 90 / rotationTime;
+						rotationInitialEullerY = camera.transform.eulerAngles.y;
+					}
+				}
+			}
 	
 	        // Start panning camera if zooming in close to the ground or if just zooming out.
 			if( pannoramicCamera ){
@@ -85,19 +132,73 @@ public class CameraControllerInGame : MonoBehaviour{
 	        }
 	        // Move camera if mouse pointer reaches screen borders
 	        if (Input.mousePosition.x < ScrollArea){
-	            translation += Vector3.right * -ScrollSpeed * Time.deltaTime;
+				switch( (int) camera.transform.eulerAngles.y % 360 ){
+				case 0:
+					translation += Vector3.right * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 90:
+					translation += Vector3.back * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 180:
+					translation += Vector3.left * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 270:
+					translation += Vector3.forward * -ScrollSpeed * Time.deltaTime;
+					break;
+				}
 	        }
 	
 	        if (Input.mousePosition.x >= Screen.width - ScrollArea){
-	            translation += Vector3.right * ScrollSpeed * Time.deltaTime;
+				switch( (int) camera.transform.eulerAngles.y % 360 ){
+				case 0:
+					translation += Vector3.right * ScrollSpeed * Time.deltaTime;
+					break;
+				case 90:
+					translation += Vector3.back * ScrollSpeed * Time.deltaTime;
+					break;
+				case 180:
+					translation += Vector3.left * ScrollSpeed * Time.deltaTime;
+					break;
+				case 270:
+					translation += Vector3.forward * ScrollSpeed * Time.deltaTime;
+					break;
+				}
+	            
 	        }
 	
 	        if (Input.mousePosition.y < ScrollArea){
-	            translation += Vector3.forward * -ScrollSpeed * Time.deltaTime;
+				switch( (int) camera.transform.eulerAngles.y % 360 ){
+				case 0:
+					translation += Vector3.forward * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 90:
+					translation += Vector3.right * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 180:
+					translation += Vector3.back * -ScrollSpeed * Time.deltaTime;
+					break;
+				case 270:
+					translation += Vector3.left * -ScrollSpeed * Time.deltaTime;
+					break;
+				}
+	            
 	        }
 	
 	        if (Input.mousePosition.y > Screen.height - ScrollArea){
-	            translation += Vector3.forward * ScrollSpeed * Time.deltaTime;
+				switch( (int) camera.transform.eulerAngles.y % 360 ){
+				case 0:
+					translation += Vector3.forward * ScrollSpeed * Time.deltaTime;
+					break;
+				case 90:
+					translation += Vector3.right * ScrollSpeed * Time.deltaTime;
+					break;
+				case 180:
+					translation += Vector3.back * ScrollSpeed * Time.deltaTime;
+					break;
+				case 270:
+					translation += Vector3.left * ScrollSpeed * Time.deltaTime;
+					break;
+				}
 	        }
 	
 	        // Keep camera within level and zoom area
@@ -146,20 +247,16 @@ public class CameraControllerInGame : MonoBehaviour{
 		bool validConfiguration = true;
 		
 		if( cameraGameObject.transform.position == Vector3.zero ){
-			Debug.Log("erro1");
 			validConfiguration = false;
 		}
 		if( cameraGameObject.transform.rotation == Quaternion.identity ){
-			Debug.Log("erro2");
 			validConfiguration = false;
 		}
 		if( map == null ){
-			Debug.Log("erro3");
 			validConfiguration = false;
 		}
 		
 		if( ZoomMin == -1 || ZoomMax == -1 ){
-			Debug.Log("erro4");
 			validConfiguration = false;
 		}
 		
