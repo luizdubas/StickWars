@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>First steps with NoesisGUI</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="first-steps-with-noesisgui">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">First steps with NoesisGUI</h1>
+
+<p><img alt="zip" class="align-middle" src="zip.png" /> <a class="reference external" href="FirstSteps.zip">Tutorial Data</a></p>
+<p>If you are reading this you are probably getting the first contact with NoesisGui. This is a brief tutorial where you will learn how to visualize .xaml files. Having learned that we will create a very simple user interface.</p>
+<p>The first step is launching <strong>XamlPlayer</strong>, whose executable is located in the <em>/Bin</em> folder.</p>
+<img alt="FirstStepsTutorialImg1.jpg" src="FirstStepsTutorialImg1.jpg" />
+<div class="admonition-tip admonition">
+<p class="first admonition-title">TIP</p>
+<p class="last">You can visualize fps and memory stats, that by default come disabled, by changing the .ini that is created next to the executable the first time you execute the player. Note that you should remove the semicolon to activate the line.</p>
+</div>
+<div class="highlight"><pre><span class="k">[Core.MemoryManager]</span>
+<span class="na">TrackMemory</span> <span class="o">=</span> <span class="s">true</span>
+
+<span class="k">[Drawing.VGL]</span>
+<span class="na">Fps</span> <span class="o">=</span> <span class="s">true</span>
+</pre></div>
+<p>The resources menu opens a browser that allows choosing the desired .xaml to be displayed. Resources must be located in a <a class="reference external" href="Resource.BuildTool.DataPackages.html">data package</a>. Data packages are located in the <em>/Data/Packages/</em> folder, and their content is always inside the <em>Content/</em> directory. Let's open the file Data/Packages/Gui/Samples/Content/tux.xaml (the <strong>uri</strong> for this resource is <em>Gui/Samples/tux.xaml</em>, and you will see reference it that way in the rest of the documents)</p>
+<img alt="FirstStepsTutorialImg2.jpg" src="FirstStepsTutorialImg2.jpg" />
+<p>We have included several examples inside the <em>Gui/Samples</em> package. It is recommended that you test all of them to get an overview of the different features offered by NoesisGui.</p>
+<p>Next step is creating our first user interface. Create a new file in the Data/Packages/Gui/Samples/Content with the content shown below, open the Resources menu, click on <strong>&quot;Scan for new resources&quot;</strong> and pick the new created file.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid&gt;</span>
+    <span class="nt">&lt;Button</span> <span class="na">Content=</span><span class="s">&quot;Click Me!&quot;</span> <span class="na">Width=</span><span class="s">&quot;120&quot;</span> <span class="na">Height=</span><span class="s">&quot;40&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<div class="admonition-tip admonition">
+<p class="first admonition-title">TIP</p>
+<p class="last">You don't need to reopen the player each time you make changes to your file. Simply hit <strong>F5</strong> and the content will reload.</p>
+</div>
+<img alt="FirstStepsTutorialImg3.jpg" src="FirstStepsTutorialImg3.jpg" />
+<p>By default all content visualized by XamlPlayer uses the NoesisStyle <strong>theme</strong>. This default theme can be changed by using a resource dictionary. More examples of themes can be found in the <em>Gui/Themes</em> package.</p>
+<div class="highlight"><pre> <span class="nt">&lt;Grid&gt;</span>
+<span class="hll">     <span class="nt">&lt;Grid.Resources&gt;</span>
+</span><span class="hll">         <span class="nt">&lt;ResourceDictionary</span> <span class="na">Source=</span><span class="s">&quot;../../../../Gui/Themes/Content/SimpleStyle.xaml&quot;</span><span class="nt">/&gt;</span>
+</span><span class="hll">     <span class="nt">&lt;/Grid.Resources&gt;</span>
+</span>     <span class="nt">&lt;Button</span> <span class="na">Content=</span><span class="s">&quot;Click Me!&quot;</span> <span class="na">Width=</span><span class="s">&quot;120&quot;</span> <span class="na">Height=</span><span class="s">&quot;40&quot;</span><span class="nt">/&gt;</span>
+ <span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<p>Apart from xaml resources you can use <strong>fonts</strong> to change the aspect of texts. You can find several sample fonts in the <em>Gui/Samples/Fonts/</em> folder. A font is defined by a <strong>.font</strong> file that lists all the files associated to that font. If you have extra truetypes for bold weighting or italic style you would have to list them in the .font file. For example, the <em>Let Me Ride.font</em> contains a single .ttf file:</p>
+<pre class="literal-block">
+LetMeRide.ttf
+</pre>
+<p>Changing the font of any element is very easy. For example, let's change the font of the above button:</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid&gt;</span>
+    <span class="nt">&lt;Button</span> <span class="na">Content=</span><span class="s">&quot;Click Me!&quot;</span> <span class="na">Width=</span><span class="s">&quot;120&quot;</span> <span class="na">Height=</span><span class="s">&quot;40&quot;</span> <span class="na">FontFamily=</span><span class="s">&quot;Fonts/#Let Me Ride&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="FirstStepsTutorialImg4.jpg" src="FirstStepsTutorialImg4.jpg" />
+<p>And that is all for the first tutorial. Please continue reading the rest of tutorials to learn more things about NoesisGui.</p>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

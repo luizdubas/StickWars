@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Routed Events Overview</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="routed-events-overview">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Routed Events Overview</h1>
+
+<p>This section describes the concept of routed events, routed events terminology, describes how routed events are routed through a tree of elements, summarizes how you handle routed events, and introduces how to create your own custom routed events.</p>
+<p>A routed event is a type of event that can invoke handlers on multiple listeners in an element tree, rather than just on the object that raised the event.</p>
+<div class="section" id="c-implementation">
+<h1>C++ Implementation</h1>
+<p>Each routed event is referenced as an instance of a RoutedEvent class. That handle or identifier must be stored as a class public member, and registered in the UIElementData metadata.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyControl</span><span class="o">:</span> <span class="k">public</span> <span class="n">Gui</span><span class="o">::</span><span class="n">ContentControl</span>
+<span class="p">{</span>
+    <span class="c1">//...</span>
+
+    <span class="c1">/// Routed events</span>
+    <span class="c1">//@{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedEvent</span><span class="o">*</span> <span class="n">DownloadCompletedEvent</span><span class="p">;</span>
+    <span class="c1">//@}</span>
+
+    <span class="n">NS_DECLARE_REFLECTION</span><span class="p">(</span><span class="n">MyControl</span><span class="p">,</span> <span class="n">Gui</span><span class="o">::</span><span class="n">ContentControl</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+<div class="section" id="event-name-conventions">
+<h2>Event Name Conventions</h2>
+<p>There are established naming conventions regarding routed events too. The routed event itself will have a basic name, <strong>DownloadCompleted</strong>. That name must be unique within each registering type. When you create the identifier field, name this field by the name of the event as you registered it, plus the suffix <strong>Event</strong>. This field is your identifier for the routed event, and it will be used later as an input for the AddHandler and RemoveHandler calls made when registering event handlers. That's why previous example used <strong>DownloadCompletedEvent</strong> as event identifier.</p>
+</div>
+<div class="section" id="register-event">
+<h2>Register Event</h2>
+<p>In order for your event to support event routing, you must register that event into a table maintained by the type metadata, and give it a unique identifier. To register the event, you call the <em>RegisterEvent</em> method within the body of your reflection implementation function.</p>
+<div class="highlight"><pre><span class="n">NS_IMPLEMENT_REFLECTION</span><span class="p">(</span><span class="n">MyControl</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">NsMeta</span><span class="o">&lt;</span><span class="n">TypeId</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;MyControl&quot;</span><span class="p">);</span>
+
+    <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">UIElementData</span><span class="o">&gt;</span> <span class="n">data</span> <span class="o">=</span> <span class="n">NsMeta</span><span class="o">&lt;</span><span class="n">UIElementData</span><span class="o">&gt;</span><span class="p">(</span><span class="n">TypeOf</span><span class="o">&lt;</span><span class="n">SelfClass</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">data</span><span class="o">-&gt;</span><span class="n">RegisterEvent</span><span class="p">(</span><span class="n">DownloadCompletedEvent</span><span class="p">,</span> <span class="s">&quot;DownloadCompleted&quot;</span><span class="p">,</span> <span class="n">RoutingStrategy_Bubbling</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="register-event-handlers">
+<h2>Register Event Handlers</h2>
+<p>Each event will have a function named as the event that will return an Event object. Event class is defined by UIElement and implements <strong>operator +=</strong> to call <em>AddHandler()</em> and <strong>operator -=</strong> to call <em>RemoveHandler()</em>. That way users of the class can add handlers to an event using the operator += easier.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyControl</span><span class="o">:</span> <span class="k">public</span> <span class="n">ContentControl</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">UIElement</span><span class="o">::</span><span class="n">Event</span><span class="o">&lt;</span><span class="n">DownloadCompletedHandler</span><span class="o">&gt;</span> <span class="n">DownloadCompleted</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Event</span><span class="o">&lt;</span><span class="n">DownloadCompletedHandler</span><span class="o">&gt;</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">DownloadCompletedEvent</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//...</span>
+<span class="p">};</span>
+
+<span class="c1">// another component registers against the event...</span>
+<span class="n">DownloadHandler</span><span class="o">::</span><span class="n">DownloadHandler</span><span class="p">(</span><span class="k">const</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">MyControl</span><span class="o">&gt;&amp;</span> <span class="n">myControl</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">myControl</span><span class="o">-&gt;</span><span class="n">DownloadCompleted</span><span class="p">()</span> <span class="o">+=</span> <span class="n">MakeDelegate</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">DownloadHandler</span><span class="o">::</span><span class="n">OnDownloadCompleted</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DownloadHandler</span><span class="o">::</span><span class="n">OnDownloadCompleted</span><span class="p">(</span><span class="k">const</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">BaseComponent</span><span class="o">&gt;&amp;</span> <span class="n">sender</span><span class="p">,</span>
+    <span class="k">const</span> <span class="n">DownloadCompletedArgs</span><span class="o">&amp;</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="raise-the-event">
+<h2>Raise the Event</h2>
+<p>Each event will have an asociated virtual function with the name of the event prefixed by <strong>On</strong> that will raise the event, that will allow inheritors to handle the event and cancel it. For the previous example the function will be <strong>OnDownloadCompleted</strong>.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyControl</span><span class="o">:</span> <span class="k">public</span> <span class="n">ContentControl</span>
+<span class="p">{</span>
+<span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">OnDownloadCompleted</span><span class="p">(</span><span class="k">const</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">BaseComponent</span><span class="o">&gt;&amp;</span> <span class="n">downloadedContent</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">DownloadEventArgs</span> <span class="n">args</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">DownloadCompletedEvent</span><span class="p">,</span> <span class="n">downloadedContent</span><span class="p">);</span>
+        <span class="n">RaiseEvent</span><span class="p">(</span><span class="o">&amp;</span><span class="n">args</span><span class="p">);</span>
+    <span class="p">}</span>
+
+   <span class="c1">//...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

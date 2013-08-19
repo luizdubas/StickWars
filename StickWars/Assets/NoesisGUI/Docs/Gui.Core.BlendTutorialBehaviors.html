@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Behaviors</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="behaviors">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Behaviors</h1>
+
+<p>Behaviors are reusable pieces of packaged code that can be dragged onto any object, and then fine-tuned by changing their properties, to add interactivity to your application. Behaviors have a trigger, an action, and usually a target:</p>
+<ul class="simple">
+<li>The <em>trigger</em> is the event that invokes the behavior. The most useful triggers are user interface control events (like clicking) and those invoked by changes to system states (like storyboards ending or properties changing).</li>
+<li>The <em>action</em> specifies what the behavior should do. For example, an action might be to run a storyboard, or change a property of an element.</li>
+<li>The <em>target</em> is the element which the behavior will act upon.</li>
+</ul>
+<p>Noesis GUI Framework implements the following Behaviors among those provided by Blend:</p>
+<img alt="Behaviors.png" src="Behaviors.png" />
+<div class="section" id="gotostateaction">
+<h1>GoToStateAction</h1>
+<p>This action is used to transition a FrameworkElement to a specified VisualState when invoked. It has a <em>TargetName</em> property that if it is set, it will attempt to change the state of the targeted element. If not, it walks the element tree in an attempt to locate an alternative target that defines states, for example, a ControlTemplate or a UserControl.</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

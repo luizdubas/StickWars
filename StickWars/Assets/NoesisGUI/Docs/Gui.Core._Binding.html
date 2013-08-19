@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Binding</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="binding">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Binding</h1>
+
+<p>Connects the properties of source objects (DependencyObject or implementing the INotifyPropertyChange interface) to target objects (DependencyObject).
+Example:</p>
+<div class="line-block">
+<div class="line">&lt;TextBlock Text=&quot;{Binding Source={StaticResource myDataSource}, Path=PersonName}&quot;/&gt;</div>
+</div>
+<p><a class="reference external" href="http://msdn.microsoft.com/en-us/library/system.windows.data.binding.aspx">http://msdn.microsoft.com/en-us/library/system.windows.data.binding.aspx</a></p>
+<div class="section" id="inheritance-hierarchy">
+<h1>Inheritance Hierarchy</h1>
+<div class="line-block">
+<div class="line"><a class="reference external" href="Gui.Core._BaseBinding.html">BaseBinding</a></div>
+<div class="line-block">
+<div class="line">Binding</div>
+</div>
+</div>
+<p><a class="reference external" href="Gui.Core._ClassHierarchy.html">Class Hierarchy Index</a></p>
+</div>
+<div class="section" id="properties">
+<h1>Properties</h1>
+<div class="section" id="from-binding">
+<h2>From Binding</h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="24%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</th>
+<th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Converter</td>
+<td>Gets or sets the converter to use.
+NOTE: If you set the Converter and StringFormat properties, the converter is applied to the data value first, and then the StringFormat is applied</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>ConverterParameter</td>
+<td>Gets or sets the parameter to pass to the Converter</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>ElementName</td>
+<td>Gets or sets the name of the element to use as the binding source object.</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>FallbackValue</td>
+<td>Gets or sets the value to use when the binding is unable to return a value</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Mode</td>
+<td>Gets or sets the binding mode</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Path</td>
+<td>Gets or sets the path to the binding source property</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>RelativeSource</td>
+<td>Gets or sets the binding source by specifying its location relative to the position of the binding target.</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Source</td>
+<td>Gets or sets the object to use as the binding source.</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>UpdateSourceTrigger</td>
+<td>Gets or sets a value that determines the timing of binding source updates</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="from-basebinding">
+<h2>From <a class="reference external" href="Gui.Core._BaseBinding.html">BaseBinding</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="24%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</th>
+<th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>StringFormat</td>
+<td>Gets or sets a string that specifies how to format the binding if it displays the bound value as a string</td>
+</tr>
+</tbody>
+</table>
+<img alt="legend_dp-ro.png" src="legend_dp-ro.png" />
+</div>
+</div>
+<div class="section" id="events">
+<h1>Events</h1>
+<p>Binding has no events</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

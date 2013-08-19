@@ -9,8 +9,10 @@ public class Player
 	private List<IBuilding> _buildings;
 	private int _sticks;
 	private int _circles;
+	private bool _isHuman;
 	
-	public Player ()
-	{			
+	public Player (bool isHuman)
+	{		
+		_isHuman = isHuman;
 	}
 }

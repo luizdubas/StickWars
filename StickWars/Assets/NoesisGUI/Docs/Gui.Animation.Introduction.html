@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Animation</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="animation">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Animation</h1>
+
+<p>The animation system in the Gui allows changing the values of dependency properties over time.
+As in WPF, animations can be instantiated from a XAML file or directly from code.</p>
+<div class="section" id="important-concepts">
+<h1>Important concepts</h1>
+<p>Animations can only be applied to dependency properties in dependency objects, because the design of the later allows to store and represent an animated value without losing the original value in the property. For example, if a NsFloat32 property is set to a value of 10, and later there is an animation that modifies this value to get an eye-candy effect when the user clicks a button, the original value of 10 is preserved and can be obtained at any moment.</p>
+<p>In the animation system, there are three important objects that are needed for the magic to work:</p>
+<div class="section" id="timeline">
+<h2>Timeline</h2>
+<p>Is the object that describes how a value changes over time.</p>
+<p>A single timeline can be applied to many properties, and there are many types of timelines that vary from simple linear interpolations to the composition of several timelines using non-linear functions like splines.</p>
+<p>The timeline hierarchy is the most important concept in the animation package, so a detailed explanation is here: <a class="reference external" href="Gui.Animation.Timeline.html">Timeline</a></p>
+</div>
+<div class="section" id="clock">
+<h2>Clock</h2>
+<p>Every active timeline has al least one clock associated to it.</p>
+<p>The clock is the responsible of computing the current time, call the timeline to get the updated value, and assign the resulting value to the target property.</p>
+<p>A single clock can be applied to many properties in different objects. See more here <a class="reference external" href="Gui.Animation.Clocks.html">Clocks</a></p>
+</div>
+<div class="section" id="time-manager">
+<h2>Time Manager</h2>
+<p>Manages the running clocks, updating them in every tick.</p>
+<p>The time manager should not be accessed directly by the programmer, because there are methods in the timeline classes that allows the management of clocks from them.</p>
+</div>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

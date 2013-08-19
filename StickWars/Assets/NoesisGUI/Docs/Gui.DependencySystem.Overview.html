@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Dependency System Overview</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="dependency-system-overview">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Dependency System Overview</h1>
+<h2 class="subtitle" id="introduction">Introduction</h2>
+
+<p>One of the primary architectural philosophies used in building declarative interfaces was a preference for properties over methods or events. Properties are declarative and allow you to more easily specify intent instead of action. This also supported a model driven, or data driven, system for displaying user interface content. This philosophy had the intended effect of creating more properties that you could bind to, in order to better control the behavior of an application.</p>
+<p>In order to have more of the system driven by properties, a richer property system than what reflection provides was needed. A simple example of this richness is change notifications. In order to enable two way binding, you need both sides of the bind to support change notification. In order to have behavior tied to property values, you need to be notified when the property value changes.</p>
+<p>UI provides a richer property system, derived from the <a class="reference external" href="Gui.DependencySystem.DependencyObject.html">DependencyObject</a> type. The property system is truly a &quot;dependency&quot; property system in that it tracks dependencies between property expressions and automatically revalidates property values when dependencies change. For example, if you have a <a class="reference external" href="Gui.DependencySystem.DependencyProperty.html">DependencyProperty</a> that inherits (like FontSize), the system is automatically updated if the property changes on a parent of an element that inherits the value.</p>
+<p>One of the most important concepts in the property system are property expression. Through expressions a property value can be calculated and updated in many different forms: a expression can assign a value from a ResourceDictionary, can be binded to another object property or data binded.</p>
+<p>The property system also provides for sparse storage of property values. Because objects can have dozens (if not hundreds) of properties, and most of the values are in their default state (inherited, set by styles, etc.), not every instance of an object needs to have the full weight of every property defined on it.</p>
+<p>The final new feature of the property system is the notion of attached properties. UI elements are built on the principle of composition and component reuse. It is often the case that some containing element (like a Grid layout element) needs additional data on child elements to control its behavior (like the Row/Column information). Instead of associating all of these properties with every element, any object is allowed to provide property definitions for any other object.</p>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

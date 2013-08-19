@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Text Tutorial</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="text-tutorial">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Text Tutorial</h1>
+
+<p><img alt="zip" class="align-middle" src="zip.png" /> <a class="reference external" href="Text.zip">Tutorial Data</a></p>
+<p>Read-only text in XAML is mainly displayed using <strong>TextBlock</strong> elements. A TextBlock defines the content property <strong>Text</strong> where the user can specify any string. <em>FontFamily</em>, <em>FontSize</em>, <em>FontStyle</em>, <em>FontWeight</em>, <em>Foreground</em> and <em>Background</em> control how text displays in the element.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>
+  <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Hello World!&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<p>To insert a line break use the corresponding XML character code entity <strong>&quot;&amp;#10;&quot;</strong>.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>
+  <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Hello World!&amp;#10;After a line break.&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg1.jpg" src="TextTutorialImg1.jpg" />
+<p>The default font is taken from the active theme. In NoesisGUI, the default theme uses the <strong>Roboto</strong> font. This can be changed using the <strong>FontFamily</strong> property. FontFamily include a URI string that references a font file (.font), with the family name separated by a # character. Note that NoesisGUI does not support fonts on the user system. Referenced fonts must always be inside the project folder. The location of the font file is relative to the location of the .xaml file.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Using Different Fonts&quot;</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span>
+          <span class="na">FontFamily=</span><span class="s">&quot;Fonts/#K22 Ambelyn Condensed&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;70&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Using Different Fonts&quot;</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span>
+          <span class="na">FontFamily=</span><span class="s">&quot;Fonts/#Laffayette Comic Pro&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;28&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Using Different Fonts&quot;</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span>
+          <span class="na">FontFamily=</span><span class="s">&quot;Fonts/#Monkirta Pursuit NC&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;30&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg2.jpg" src="TextTutorialImg2.jpg" />
+<p>A font resource (.font) is a text file with a list of font references, one item per line. Note that referenced .ttf files must be found next to the .font file. The .font file can contain as many references as you wish, even a single one, but it is recommended that all the referenced files belongs to the same font family, being that family the name of the .font file. For example, Roboto.font contains:</p>
+<div class="highlight"><pre>Roboto-Regular.ttf
+Roboto-Italic.ttf
+Roboto-Bold.ttf
+Roboto-BoldItalic.ttf
+</pre></div>
+<p>Thanks to property value inheritance, the FontFamily property enables child elements in a tree of elements to obtain the value from parent elements.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span>
+     <span class="na">TextElement.FontFamily=</span><span class="s">&quot;Fonts/#Laffayette Comic Pro&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;One&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Two&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Three&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Four&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<div class="section" id="text-style-properties">
+<h1>Text style properties</h1>
+<p>TextBlock defines two properties that describe the style and weight of the text:</p>
+<ul class="simple">
+<li><strong>FontStyle</strong> which can be set to <em>Normal</em> (default) or <em>Italic</em></li>
+<li><strong>FontWeight</strong> which can be set to <em>Normal</em> (default) or <em>Bold</em></li>
+</ul>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Normal&quot;</span> <span class="na">FontStyle=</span><span class="s">&quot;Normal&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Normal&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Italic&quot;</span> <span class="na">FontStyle=</span><span class="s">&quot;Italic&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Normal&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Bold&quot;</span> <span class="na">FontStyle=</span><span class="s">&quot;Normal&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Bold Italic&quot;</span> <span class="na">FontStyle=</span><span class="s">&quot;Italic&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg3.jpg" src="TextTutorialImg3.jpg" />
+</div>
+<div class="section" id="text-alignment-properties">
+<h1>Text alignment properties</h1>
+<p>As any other UI element in Noesis, the TextBlock can be positioned relative to the parent container using the <strong>HorizontalAlignment</strong> and <strong>VerticalAlignment</strong> properties from <strong>FrameworkElement</strong>. The layout process uses these properties to assign a rectangle to the TextBox where the text will be displayed. How text is aligned inside that rectangle can be specified using the <strong>TextAlignment</strong> property, which accepts the <em>Left</em> (default), <em>Center</em> and <em>Right</em> values.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Left&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Left&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/Border&gt;</span>
+        <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Center&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/Border&gt;</span>
+        <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Right&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Right&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/Border&gt;</span>
+    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg4.jpg" src="TextTutorialImg4.jpg" />
+<p>In addition to text alignment, user can specify how text behaves when its size exceeds the horizontal limits of the arrange rectangle. This can be done through the <strong>TextWrapping</strong> property which can be set to <em>NoWrap</em> (default), <em>Wrap</em> and <em>WrapWithOverflow</em>.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Orientation=</span><span class="s">&quot;Horizontal&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;StackPanel&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;LEFT&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Left&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;14&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2,0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;TextBlock</span> <span class="na">TextAlignment=</span><span class="s">&quot;Left&quot;</span> <span class="na">TextWrapping=</span><span class="s">&quot;Wrap&quot;</span><span class="nt">&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac imperdiet
+neque. Mauris commodo faucibus nunc, vel vestibulum mi placerat sit amet. Aliquam
+tincidunt tincidunt sapien eu sagittis. Pellentesque mi sem, tristique volutpat
+sollicitudin vitae, tempor sed metus.
+                <span class="nt">&lt;/TextBlock&gt;</span>
+            <span class="nt">&lt;/Border&gt;</span>
+        <span class="nt">&lt;/StackPanel&gt;</span>
+        <span class="nt">&lt;StackPanel&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;CENTER&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;14&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2,0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;TextBlock</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">TextWrapping=</span><span class="s">&quot;Wrap&quot;</span><span class="nt">&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac imperdiet
+neque. Mauris commodo faucibus nunc, vel vestibulum mi placerat sit amet. Aliquam
+tincidunt tincidunt sapien eu sagittis. Pellentesque mi sem, tristique volutpat
+sollicitudin vitae, tempor sed metus.
+                <span class="nt">&lt;/TextBlock&gt;</span>
+            <span class="nt">&lt;/Border&gt;</span>
+        <span class="nt">&lt;/StackPanel&gt;</span>
+        <span class="nt">&lt;StackPanel&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;RIGHT&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Right&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;14&quot;</span> <span class="na">FontWeight=</span><span class="s">&quot;Bold&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2,0&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;Border</span> <span class="na">BorderBrush=</span><span class="s">&quot;DodgerBlue&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;1&quot;</span> <span class="na">Margin=</span><span class="s">&quot;2&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;TextBlock</span> <span class="na">TextAlignment=</span><span class="s">&quot;Right&quot;</span> <span class="na">TextWrapping=</span><span class="s">&quot;Wrap&quot;</span><span class="nt">&gt;</span>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac imperdiet
+neque. Mauris commodo faucibus nunc, vel vestibulum mi placerat sit amet. Aliquam
+tincidunt tincidunt sapien eu sagittis. Pellentesque mi sem, tristique volutpat
+sollicitudin vitae, tempor sed metus.
+                <span class="nt">&lt;/TextBlock&gt;</span>
+            <span class="nt">&lt;/Border&gt;</span>
+        <span class="nt">&lt;/StackPanel&gt;</span>
+    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg5.jpg" src="TextTutorialImg5.jpg" />
+</div>
+<div class="section" id="text-color-properties">
+<h1>Text color properties</h1>
+<p>TextBlock defines the following properties to set the color of the text and its background:</p>
+<ul class="simple">
+<li>The <strong>Foreground</strong> property is used to specify the color of the text.</li>
+<li>The <strong>Background</strong> property is used to specify the color that fills the arrangement rectangle of the TextBlock</li>
+</ul>
+<p>We also provide extensions to add stroking capabilities to TextBlock elements. These extensions are defined under the namespace NoesisGUIExtensions that should be included in the root element of the XAML file. Attached properties <strong>Text.Stroke</strong> and <strong>Text.StrokeThickness</strong> can be used to specify the color of the stroke and stroke thickness respectively (see highlighted lines in the following example).</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span>
+<span class="hll">  <span class="na">xmlns:noesis=</span><span class="s">&quot;clr-namespace:NoesisGUIExtensions&quot;</span><span class="nt">&gt;</span>
+</span>    <span class="nt">&lt;StackPanel</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span> <span class="na">TextElement.FontSize=</span><span class="s">&quot;25&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Foreground&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Margin=</span><span class="s">&quot;4&quot;</span> <span class="na">Foreground=</span><span class="s">&quot;DodgerBlue&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Background&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Margin=</span><span class="s">&quot;3&quot;</span> <span class="na">Padding=</span><span class="s">&quot;1&quot;</span> <span class="na">Background=</span><span class="s">&quot;DodgerBlue&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;TextBlock</span> <span class="na">Text=</span><span class="s">&quot;Stroke&quot;</span> <span class="na">TextAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">Margin=</span><span class="s">&quot;4&quot;</span>
+<span class="hll">          <span class="na">noesis:Text.Stroke=</span><span class="s">&quot;DodgerBlue&quot;</span>
+</span><span class="hll">          <span class="na">noesis:Text.StrokeThickness=</span><span class="s">&quot;2.5&quot;</span><span class="nt">/&gt;</span>
+</span>    <span class="nt">&lt;/StackPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+<img alt="TextTutorialImg6.jpg" src="TextTutorialImg6.jpg" />
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

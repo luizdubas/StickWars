@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>BaseClasses Information</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="baseclasses-information">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">BaseClasses Information</h1>
+
+<p>BaseClasses are used in Noesis as building blocks to create <a class="reference external" href="Core.Kernel.Component.html">components</a>. The purpose of a base class is implementing one or more interfaces and provide proper virtual functions to be overriden by the concrete classes. The virtual functions offered to the concrete classes are usually not the virtual functions appearing in the public interfaces. Base classes transform the public interfaces (the face offered to the users of the interface) to internal virtual functions (the face offered to the implementer of the interface). The pattern recommended for this task is the <a class="reference external" href="http://www.gotw.ca/publications/mill18.htm">Non-Virtual Interface</a>.</p>
+<p>All base classes should follow:</p>
+<ul class="simple">
+<li>The base class should be abstract. In Noesis we usually enforce this using a virtual pure destructor</li>
+<li>The base class should be non-copyable (copy constructor and assignment operator in the private section)</li>
+<li>The destructor is protected. Components cannot be deleted because they are reference counted. The Release() should be used instead.</li>
+</ul>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

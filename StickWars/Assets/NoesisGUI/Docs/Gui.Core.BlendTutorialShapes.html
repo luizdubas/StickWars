@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Shapes</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="shapes">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Shapes</h1>
+
+<p>A Shape is a basic 2D drawing that combines a <em>Geometry</em> with a <em>Pen</em> (for stroking) and <em>Brush</em> (for filling). Shape derives from FrameworkElement so it can be directly placed in a user interface without custom code or a complex hierarchy of objects.  Shape objects share the following common properties.</p>
+<ul class="simple">
+<li><em>Fill</em>: describes how the interior of the shape is painted.</li>
+<li><em>Stroke</em>: describes how the shape's outline is painted.</li>
+<li><em>StrokeThickness</em>: describes the thickness of the shape's outline.</li>
+<li><em>Strecth</em>: describes how the shape fills the available space in its container.</li>
+</ul>
+<p>More information about shapes can be found in the <a class="reference external" href="Gui.Core.ShapesTutorial.html">shapes tutorial</a></p>
+<p>Noesis GUI Framework implements the following Shape derived classes among those provided by Blend:</p>
+<img alt="Shapes.png" src="Shapes.png" />
+<p>It also implements <em>Path</em> elements create using the <em>Pen (P)</em> or <em>Pencil (Y)</em> tools. In fact, every shape can be converted to shape in Blend. This made possible to really create any shape and use it within NoesisGUI.</p>
+<div class="section" id="rectangle">
+<h1>Rectangle</h1>
+<p>Represents a rectangular graphical element in the UI logical tree. It defines its own <em>RadiusX</em> and <em>RadiusY</em> properties that enable you to give it rounded corners.</p>
+<img alt="Rectangle.png" src="Rectangle.png" />
+<p><a class="reference external" href="Gui.Core._Rectangle.html">Detailed Rectangle class information</a>.</p>
+</div>
+<div class="section" id="ellipse">
+<h1>Ellipse</h1>
+<p>An Ellipse is a graphical element that simply fills its rectangular available space with the largest possible elliptical shape.</p>
+<img alt="Ellipse.png" src="Ellipse.png" />
+<p><a class="reference external" href="Gui.Core._Ellipse.html">Detailed Ellipse class information</a>.</p>
+</div>
+<div class="section" id="line">
+<h1>Line</h1>
+<p>Line defines four properties called <em>X1</em>, <em>Y1</em>, <em>X2</em>, and <em>Y2</em> that represent a line segment connecting points (x1,y1) and (x2,y2). The values of Line's properties are not absolute coordinates, they are relative to the space given to the Line element by the layout system.</p>
+<p><a class="reference external" href="Gui.Core._Line.html">Detailed Line class information</a>.</p>
+</div>
+<div class="section" id="path">
+<h1>Path</h1>
+<p>Path adds a single <em>Data</em> property to Shape, which can be set to an instance of any <em>Geometry</em>. The Data property can also be filled with a string that uses the <a class="reference external" href="http://msdn.microsoft.com/en-us/library/ms752293.aspx">Path Markup Syntax</a> to specify complex geometries in a compact way. Therefore, Path turns out to be the easiest (and most fully featured) way to embed an arbitrary geometry directly into a user interface. All the other shapes can be alternatively represented with the general purpose Path.</p>
+<img alt="Path.png" src="Path.png" />
+<p><a class="reference external" href="Gui.Core._Path.html">Detailed Path class information</a>.</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>An introduction to RenderSystem</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="an-introduction-to-rendersystem">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">An introduction to RenderSystem</h1>
+
+<p>The RenderSystem is the KernelSystem in charge of rendering 3D content. It is basically an abstraction over a low level graphic API like DirectX or OpenGL. The package with all the virtual definition is located in the <strong>Render/RenderSystem</strong> package. Different implementations are provided in packages under the Render module. At this time, only a DirectX9 implementation is provided. It is implemented in the <strong>Render/DX9RenderSystem</strong> package.</p>
+<p>The RenderSystem is a thin layer abstracting a platform API with the following group of functions:</p>
+<ul class="simple">
+<li><strong>Resource Management Functions</strong>: functions provided to create graphics resources. Those functions are located in the <em>IRenderSystem.h</em> interface</li>
+<li><strong>Command Buffers Functions</strong>: apart from the Resource Management Functions, the rest of the functionality is exposed through command buffers. A command buffer is an array of commands to be executed by the RenderSystem. Those functionality is exposed in the <em>CommandBuffer</em> class</li>
+</ul>
+<div class="highlight"><pre><span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">/// IRenderSystem</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="n">NS_INTERFACE</span> <span class="n">IRenderSystem</span><span class="o">:</span> <span class="k">public</span> <span class="n">Core</span><span class="o">::</span><span class="n">ICommon</span>
+<span class="p">{</span>
+    <span class="c1">/// Creates a RenderView</span>
+    <span class="c1">/// \param windowHandle operating system window handle</span>
+    <span class="c1">/// \param fullScreen If this render view is full screen</span>
+    <span class="c1">/// \param width Width in pixel of the render view. (=0 client area of the window)</span>
+    <span class="c1">/// \param height Height in pixels of the render view (=0 client area of the window)</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IRenderView</span><span class="o">&gt;</span> <span class="n">CreateRenderView</span><span class="p">(</span><span class="n">NsWindowHandle</span> <span class="n">windowHandle</span><span class="p">,</span>
+        <span class="n">NsBool</span> <span class="n">fullScreen</span> <span class="o">=</span> <span class="nb">false</span><span class="p">,</span> <span class="n">NsSize</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">NsSize</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Creates a RenderTarget</span>
+    <span class="c1">/// \param width Width in pixels of the desired render target</span>
+    <span class="c1">/// \param height Height in pixels of the desired render target</span>
+    <span class="c1">/// \param format Member of the SurfaceFormat enumerated type</span>
+    <span class="c1">/// \param multiSamplingCount Defines the levels of multisampling</span>
+    <span class="c1">/// \param flags Zero or more values from the RenderTargetFlags enumerated type</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IRenderTarget</span><span class="o">&gt;</span> <span class="n">CreateRenderTarget</span><span class="p">(</span><span class="n">NsSize</span> <span class="n">width</span><span class="p">,</span> <span class="n">NsSize</span> <span class="n">height</span><span class="p">,</span> <span class="n">SurfaceFormat</span> <span class="n">format</span><span class="p">,</span>
+        <span class="n">NsSize</span> <span class="n">multiSamplingCount</span><span class="p">,</span> <span class="n">NsInt</span> <span class="n">flags</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Creates a vertex buffer</span>
+    <span class="c1">/// \param sizeInBytes Size of the vertex buffer, in bytes</span>
+    <span class="c1">/// \param freq Identify what frequency of update is expected for the buffer</span>
+    <span class="c1">/// \param data Pointer to the initialization data</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IVertexBuffer</span><span class="o">&gt;</span> <span class="n">CreateVertexBuffer</span><span class="p">(</span>
+        <span class="n">NsSize</span> <span class="n">sizeInBytes</span><span class="p">,</span> <span class="n">UpdateFrequency</span> <span class="n">freq</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Creates a index buffer</span>
+    <span class="c1">/// \param sizeInBytes Size of the index buffer, in bytes</span>
+    <span class="c1">/// \param freq Identify what frequency of update is expected for the buffer</span>
+    <span class="c1">/// \param index32 If true indices are 32 bits each. 16 bits if false</span>
+    <span class="c1">/// \param data Pointer to the initialization data</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IIndexBuffer</span><span class="o">&gt;</span> <span class="n">CreateIndexBuffer</span><span class="p">(</span>
+        <span class="n">NsSize</span> <span class="n">sizeInBytes</span><span class="p">,</span> <span class="n">UpdateFrequency</span> <span class="n">freq</span><span class="p">,</span> <span class="n">IndexFormat</span> <span class="n">format</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Creates a vertex source</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IVertexSource</span><span class="o">&gt;</span> <span class="n">CreateVertexSource</span><span class="p">(</span><span class="k">const</span> <span class="n">VertexSourceDesc</span><span class="o">&amp;</span> <span class="n">vertexSourceDesc</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Creates a command buffer</span>
+    <span class="k">virtual</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">CommandBuffer</span><span class="o">&gt;</span> <span class="n">CreateCommandBuffer</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Executes a command buffer (it could be executed in another thread)</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">Apply</span><span class="p">(</span><span class="k">const</span> <span class="n">Ptr</span><span class="o">&lt;</span><span class="n">CommandBuffer</span><span class="o">&gt;&amp;</span> <span class="n">commands</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">/// Wait until all the commands from applied command buffers have been sent to the GPU</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">WaitForIdle</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+<p>Basically, it offers function to create renderviews, rendertargets, vertexbuffers, indexbuffers, vertexsources and command buffers. All those resources are explained in the <a class="reference external" href="Render.RenderSystem.Resources.html">RenderSystem Resources</a> entry.</p>
+<p>As a normal <a class="reference external" href="Core.Kernel.KernelSystems.html">Kernel System</a>, when you want to use the RenderSystem you add it to the kernel. That way the Kernel will initialize it. After that, it can be retrieved to be used.</p>
+<div class="highlight"><pre><span class="c1">// Add the DirectX9 renderer to the kernel</span>
+<span class="n">kernel</span><span class="o">-&gt;</span><span class="n">AddSystem</span><span class="p">(</span><span class="n">NSS</span><span class="p">(</span><span class="s">&quot;DX9RenderSystem&quot;</span><span class="p">),</span> <span class="n">NSS</span><span class="p">(</span><span class="s">&quot;RenderSystem&quot;</span><span class="p">));</span>
+
+<span class="c1">/// ...</span>
+
+<span class="c1">// Whenever the rendersystem is needed, you get it from the kernel</span>
+<span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IRenderSystem</span><span class="o">&gt;</span> <span class="n">renderSystem</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">-&gt;</span><span class="n">GetSystem</span><span class="p">(</span><span class="n">NSS</span><span class="p">(</span><span class="s">&quot;RenderSystem&quot;</span><span class="p">));</span>
+
+<span class="c1">// And now, two windows are created</span>
+<span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IRenderView</span><span class="o">&gt;</span> <span class="n">rv1</span> <span class="o">=</span> <span class="n">renderSystem</span><span class="o">-&gt;</span><span class="n">CreateRenderView</span><span class="p">(</span><span class="n">hWnd1</span><span class="p">);</span>
+<span class="n">Ptr</span><span class="o">&lt;</span><span class="n">IRenderView</span><span class="o">&gt;</span> <span class="n">rv0</span> <span class="o">=</span> <span class="n">renderSystem</span><span class="o">-&gt;</span><span class="n">CreateRenderView</span><span class="p">(</span><span class="n">hWnd0</span><span class="p">);</span>
+</pre></div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

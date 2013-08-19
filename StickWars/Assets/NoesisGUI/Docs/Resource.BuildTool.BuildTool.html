@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>BuildTool documentation</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="buildtool-documentation">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">BuildTool documentation</h1>
+
+<p>BuildTool is a command line executable that allows interacting with the resource database used by Noesis. As data in Noesis is processed in the same way than code, BuildTool can be seen as a data compiler in the same way that gcc is a code compiler. When a data resource is built the result is a binary that is optimized for the target platform. For example, when building an image it is converted to <a class="reference external" href="http://en.wikipedia.org/wiki/S3_Texture_Compression">DXT</a> in DirectX or <a class="reference external" href="http://en.wikipedia.org/wiki/PVRTC">PVRTC</a> in iOS. Or for example, when building a .XAML the xml is parsed and converted to optimal binary format to avoid doing it at runtime.</p>
+<p>BuildTool is located in the <em>/Bin</em> directory of the SDK and is expected to be used from the command line.</p>
+<pre class="literal-block">
+&gt; Resource.BuildTool.exe
+
+------------------------------------------------------------------------------
+ Build Tool - NoesisEngine Data Builder v0.50
+------------------------------------------------------------------------------
+
+ Usage:
+
+     BuildTool info resource [--platform PlatformId]
+
+     BuildTool list [--platform PlatformId]
+     BuildTool list package [--platform PlatformId]
+
+     BuildTool scan [--autoadd] [--platform PlatformId]
+     BuildTool scan package [--autoadd] [--platform PlatformId]
+
+     BuildTool build [--type ResourceId] [--platform PlatformId]
+     BuildTool build package [--type ResourceId] [--platform PlatformId]
+     BuildTool build resource [--platform PlatformId]
+
+     BuildTool rebuild [--type ResourceId] [--platform PlatformId]
+     BuildTool rebuild package [--type ResourceId] [--platform PlatformId]
+     BuildTool rebuild resource [--platform PlatformId]
+
+     BuildTool clean [--platform PlatformId]
+     BuildTool clean package [--platform PlatformId]
+
+ Registered resource types:
+
+     Shader
+     Texture
+     UI
+     Font
+
+ Registered platforms:
+
+     DX9
+     GL
+     GLES
+     ANDROID
+     IOS
+</pre>
+<div class="section" id="database-organization">
+<h1>Database organization</h1>
+<p>The database is organized in the following way:</p>
+<ul class="simple">
+<li><strong>Sources</strong> are organized in <a class="reference external" href="Resource.BuildTool.DataPackages.html">DataPackages</a>. The root is located at $(SDK_ROOT)/Data/Packages. This is the folder where you store data like .xaml, .png, .font. Each resource is identified by a .make file that is always located next to each resource. For example, the resource Window.xaml will have a Window.xaml.make next to it. The .make file stores information crucial for the resource. These pair of files must be always considered as a unit. You must always delete, rename or move both files. Next section explains how this .make files are created. If you are working with a source repository, this is the folder that must be under control.</li>
+<li>The <strong>cache</strong> folder, located at $(SDK_ROOT)Bin/Data, where preprocessed resources are stored. Note that there is a sub-folder for each platform. This is the unique data that is needed in run-time. In fact, this folder must be copied from the SDK to your project to be distributed with your binaries. More on this later.</li>
+</ul>
+</div>
+<div class="section" id="managing-platforms">
+<h1>Managing platforms</h1>
+<p>All the operations that can be performed by BuildTool are specific to the platform that is passed using the switch '--platform.' If you don't use this switch a default platform is automatically selected.</p>
+</div>
+<div class="section" id="xamlplayer-interaction">
+<h1>XamlPlayer interaction</h1>
+<p><a class="reference external" href="Gui.Core.FirstSteps.html">XamlPlayer</a> interacts automatically with the resources database. You don't need to use the BuildTool to visualize resources for the <strong>active</strong> platform. But in case you need to generate a cache for a different platform you need to use BuildTool.</p>
+</div>
+<div class="section" id="adding-new-resources">
+<h1>Adding new resources</h1>
+<p>Whenever you copy, rename, move or delete files in the sources directory a <strong>scan</strong> operation must be performed. If the database is under control of a remote repository it is recommended to scan the database each time you update from the repository.</p>
+<p>Note that the scan only adds resources that have a corresponding .make next to them. In case you want to automatically create a .make for recognized extensions you must use the switch '--autoadd'</p>
+<pre class="literal-block">
+&gt; Resource.BuildTool.exe scan
+
+------------------------------------------------------------------------------
+ Build Tool - NoesisEngine Data Builder v0.50
+------------------------------------------------------------------------------
+
+  &gt; Scan Data Packages
+    Gui/Tutorials: 10 new resources
+  &lt; Scan Data Packages [0.276741 sg]
+</pre>
+</div>
+<div class="section" id="building-data">
+<h1>Building data</h1>
+<p>The build operation detects changes in resources and builds them. Whenever you change any file inside a data package a build operation must be performed. The database is smart enough to automatically detect changes although you can build a specific resource if you want. When you want to force a build the command <strong>rebuild</strong> can be used.</p>
+<pre class="literal-block">
+&gt; Resource.BuildTool.exe build
+
+------------------------------------------------------------------------------
+ Build Tool - NoesisEngine Data Builder v0.50
+------------------------------------------------------------------------------
+
+  Build Platform: DX9
+
+  &gt; Build Package Gui/Samples
+    &gt; Building Gui/Samples/Images/Aladin/aladin.xaml
+    &gt; Building Gui/Samples/ImageBrushTile.xaml
+    &gt; Building Gui/Samples/RadioButton.xaml
+    &gt; Building Gui/Samples/Images/button_blue_play.png
+    &gt; Building Gui/Samples/Images/melon2-viewbox.png
+    &gt; Building Gui/Samples/Text.xaml
+    &gt; Building Gui/Samples/Images/button_blue_pause.png
+    &gt; Building Gui/Samples/SDKTutorial/UI.xaml
+    &gt; Building Gui/Samples/StatusBar.xaml
+    &gt; Building Gui/Samples/Fonts/K22 Ambelyn Condensed.font
+    &gt; Building Gui/Samples/ImageBrushStretch.xaml
+    &gt; Building Gui/Samples/Images/recycle_bin.png
+    &gt; Building Gui/Samples/Fonts/Digital-7.font
+    &gt; Building Gui/Samples/Brushes.xaml
+    &gt; Building Gui/Samples/Tiger.xaml
+    &gt; Building Gui/Samples/ContextMenu.xaml
+    &gt; Building Gui/Samples/Projection.xaml
+    &gt; Building Gui/Samples/Fonts/Roboto.font
+    &gt; Building Gui/Samples/DockPanel.xaml
+    &gt; Building Gui/Samples/Images/game_pad.png
+    &gt; Building Gui/Samples/ListView.xaml
+    &gt; Building Gui/Samples/Images/notepad.png
+    &gt; Building Gui/Samples/ComboBox.xaml
+    &gt; Building Gui/Samples/Images/folder.png
+    &gt; Building Gui/Samples/Lion.xaml
+    &gt; Building Gui/Samples/ImageStretch.xaml
+    &gt; Building Gui/Samples/Images/tile.png
+    &gt; Building Gui/Samples/Images/monitor.png
+    &gt; Building Gui/Samples/Images/calendar.png
+    &gt; Building Gui/Samples/Slider.xaml
+    &gt; Building Gui/Samples/Images/transparent-img.png
+    &gt; Building Gui/Samples/Images/melon2.png
+    &gt; Building Gui/Samples/ImageAtlas.xaml
+    &gt; Building Gui/Samples/ListBox.xaml
+    &gt; Building Gui/Samples/Images/camera.png
+    &gt; Building Gui/Samples/ToolBar.xaml
+  &lt; Build Package Gui/Samples [3.895083 sg]
+
+  Total time =  3.90s
+</pre>
+</div>
+<div class="section" id="exporting-data-to-your-own-applications">
+<h1>Exporting data to your own applications</h1>
+<p>You must copy the <strong>cache</strong> directory from the SDK to the executable directory of your application. This is the unique directory that is needed at runtime. To optimize the size of this folder it is very important that you only copy the platforms that your application will be using. We provide minimal integration samples for each supported platform that have the cache folder copied to the right destination. Take those projects as a reference for doing the same with yours.</p>
+<p>By default, at runtime, the cache is expected to be found at <em>$(EXE_PATH)/Data/$(PLATFORM)</em></p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

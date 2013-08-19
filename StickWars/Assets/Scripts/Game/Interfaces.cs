@@ -77,4 +77,5 @@ public interface IBuilding
 	GameObject ParentObject { get; }
 	IUnit CreateUnit();
 	IUnit UpgradeUnit();
+	void ShowOptions();
 }

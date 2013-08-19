@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Primitive Drawing</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="primitive-drawing">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Primitive Drawing</h1>
+
+<p>This section is a little example that guides you through the different steps that are needed to draw primitives.</p>
+<p>We are going to accumulate all the commands in a command buffer that is reset the first time.</p>
+<div class="highlight"><pre><span class="n">commands</span><span class="o">-&gt;</span><span class="n">Reset</span><span class="p">();</span>
+</pre></div>
+<div class="section" id="setting-and-clearing-the-render-targets">
+<h1>Setting and clearing the render targets</h1>
+<p>The first thing that need to be done is setting a valid render target and a valid depthbuffer. After setting those surfaces, they are cleared.</p>
+<div class="highlight"><pre><span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetColorBuffer</span><span class="p">(</span><span class="n">renderView</span><span class="p">);</span>
+<span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetDepthBuffer</span><span class="p">(</span><span class="n">depthStentil</span><span class="p">);</span>
+<span class="n">commands</span><span class="o">-&gt;</span><span class="n">Clear</span><span class="p">(</span><span class="nb">true</span><span class="p">,</span> <span class="mh">0xffff0000</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="mf">1.0f</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="activating-a-shader">
+<h1>Activating a shader</h1>
+<p>The next step is setting a valid shader and its constant buffers. Shader creation is described in the <a class="reference external" href="Render.RenderSystem.Shaders.html">Shaders</a> section.</p>
+<div class="highlight"><pre><span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetShader</span><span class="p">(</span><span class="n">shader</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetConstantBuffer</span><span class="p">(</span><span class="n">cb0</span><span class="p">);</span>
+<span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetConstantBuffer</span><span class="p">(</span><span class="n">cb1</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="binding-vertices-and-indices">
+<h1>Binding vertices and indices</h1>
+<p>In this stage, both the vertex source and the index buffer is bound to the device. If the primitive that we are going to draw didn't need indices you would omit that step.</p>
+<div class="highlight"><pre><span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetVertices</span><span class="p">(</span><span class="n">vertices</span><span class="p">);</span>
+<span class="n">commands</span><span class="o">-&gt;</span><span class="n">SetIndices</span><span class="p">(</span><span class="n">indices</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="draw-the-primitive">
+<h1>Draw the primitive</h1>
+<p>And the last step is drawing the primitive.</p>
+<div class="highlight"><pre><span class="n">commands</span><span class="o">-&gt;</span><span class="n">DrawIndexed</span><span class="p">(</span><span class="n">PrimitiveType_TriangleList</span><span class="p">,</span> <span class="n">baseVertexIndex</span><span class="p">,</span> <span class="n">minIndex</span><span class="p">,</span> <span class="n">numVertices</span><span class="p">,</span> <span class="n">startIndex</span><span class="p">,</span>
+    <span class="n">numIndices</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="section" id="committing-the-commands-to-the-device">
+<h1>Committing the commands to the device</h1>
+<p>Each time we want to render that primitive we apply the previously generated command buffer.</p>
+<div class="highlight"><pre><span class="n">renderSystem</span><span class="o">-&gt;</span><span class="n">Apply</span><span class="p">(</span><span class="n">commands</span><span class="p">);</span>
+</pre></div>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

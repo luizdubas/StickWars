@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Type Converters</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="type-converters">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Type Converters</h1>
+
+<p>Type Converters are classes that implement ITypeConverter interface to allow converting between different types. The conversions can be made in two ways:</p>
+<blockquote>
+<ul class="simple">
+<li>From: converts from the specified type into the type of the converter</li>
+<li>To: converts a converter's type value into the specified type</li>
+</ul>
+</blockquote>
+<p>For the conversions, there are methods that test if the conversion between types is possible (CanConvertFrom and CanConvertTo) and methods that do the conversion (ConvertFrom, ConvertFromString, ConvertTo and ConvertToString). The most common use for a Type Converter is using the ConvertFromString method when parsing text files.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">ITypeConverter</span><span class="o">&gt;</span> <span class="n">tc</span> <span class="o">=</span> <span class="n">NsCreateComponent</span><span class="o">&lt;</span><span class="n">BooleanConverter</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">tc</span><span class="o">-&gt;</span><span class="n">CanConvertFrom</span><span class="p">(</span><span class="n">TypeOf</span><span class="o">&lt;</span><span class="n">NsString</span><span class="o">&gt;</span><span class="p">()))</span>
+<span class="p">{</span>
+    <span class="n">NsBool</span> <span class="n">value</span> <span class="o">=</span> <span class="n">Boxing</span><span class="o">::</span><span class="n">Unbox</span><span class="o">&lt;</span><span class="n">NsBool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">tc</span><span class="o">-&gt;</span><span class="n">ConvertFromString</span><span class="p">(</span><span class="n">NST</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">)));</span>
+    <span class="n">NS_ASSERT</span><span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="nb">true</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">tc</span><span class="o">-&gt;</span><span class="n">CanConvertTo</span><span class="p">(</span><span class="n">TypeOf</span><span class="o">&lt;</span><span class="n">NsString</span><span class="o">&gt;</span><span class="p">()))</span>
+<span class="p">{</span>
+    <span class="n">NsString</span> <span class="n">str</span> <span class="o">=</span> <span class="n">tc</span><span class="o">-&gt;</span><span class="n">ConvertToString</span><span class="p">(</span><span class="n">Boxing</span><span class="o">::</span><span class="n">Box</span><span class="o">&lt;</span><span class="n">NsBool</span><span class="o">&gt;</span><span class="p">(</span><span class="nb">true</span><span class="p">));</span>
+    <span class="n">NS_ASSERT</span><span class="p">(</span><span class="n">str</span> <span class="o">==</span> <span class="n">NST</span><span class="p">(</span><span class="s">&quot;True&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+<div class="section" id="basic-converters">
+<h1>Basic Converters</h1>
+<p>There are some predefined converters for the basic types in the TypeConverter package:</p>
+<blockquote>
+<ul class="simple">
+<li>BooleanConverter: for boolean type</li>
+<li>IntegerConverter&lt;T&gt;: where T is any of the integer types (NsInt, NsUInt, NsInt64, etc...)</li>
+<li>FloatConverter&lt;T&gt;: where T can be NsFloat32 or NsFloat64</li>
+<li>CharConverter: for NsChar type</li>
+<li>StringConverter: for NsString type</li>
+<li>SymbolConverter: for NsSymbol type</li>
+<li>EnumConverter&lt;T&gt;: where T is an enum type</li>
+</ul>
+</blockquote>
+<p>The following table shows the available conversions using the basic converters</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="8">ConvertFrom</th>
+</tr>
+<tr><th class="head">Converter</th>
+<th class="head">Bool</th>
+<th class="head">Integer</th>
+<th class="head">Float</th>
+<th class="head">Char</th>
+<th class="head">String</th>
+<th class="head">Symbol</th>
+<th class="head">Enum</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>BooleanConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>IntegerConverter</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>FloatConverter</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>CharConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>StringConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>SymbolConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>EnumConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="8">ConvertTo</th>
+</tr>
+<tr><th class="head">Converter</th>
+<th class="head">Bool</th>
+<th class="head">Integer</th>
+<th class="head">Float</th>
+<th class="head">Char</th>
+<th class="head">String</th>
+<th class="head">Symbol</th>
+<th class="head">Enum</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>BooleanConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>IntegerConverter</td>
+<td>Yes</td>
+<td>Yes (any)</td>
+<td>Yes (any)</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>FloatConverter</td>
+<td>Yes</td>
+<td>Yes (any)</td>
+<td>Yes (any)</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>CharConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>StringConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>SymbolConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr><td>EnumConverter</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="other-converters">
+<h1>Other Converters</h1>
+<p>Converters for other types can be created implementing the ITypeConverter interface, or deriving from one the helper base classes:</p>
+<blockquote>
+<ul class="simple">
+<li>BaseConverterOneWay: Base class for converters that only implement the conversion From and To string</li>
+<li>BaseConverterBothWays: Base class for converters that only implement the conversion From string</li>
+<li>Converter: Helper class to create converters for classes that implement the method <em>static (type) Parse(const NsChar* str)</em> and only supports the conversion From and To string</li>
+</ul>
+</blockquote>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

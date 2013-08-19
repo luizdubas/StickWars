@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Components</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="components">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Components</h1>
+
+<p>A component is a <strong>polymorphic object</strong> that can only be created in dynamic memory. Components inherit from <em>BaseComponent</em>. They have polymorphic reflection information and support reference counting for automatic life management.</p>
+<p>These classes have an overhead of the vtable (pointer) + the reference counter (int32). Components are managed through the Ptr smart pointer. Components support also the concept of implementing interfaces. An interface is a virtual pure class without data and deriving from Interface. The Ptr smart pointer is able to cast between different interfaces and implementation classes using the run-time type information available through the reflection system. Life time of components is automatically managed by smart pointers. Components must not be destroyed with delete. They are automatically destroyed by the Ptr&lt;&gt; template (that invokes the Release() method)</p>
+<ul class="simple">
+<li><a class="reference external" href="Core.Kernel.ComponentCreation.html">Creating Components</a></li>
+<li><a class="reference external" href="Core.Kernel.ComponentReferenceCounting.html">Reference Counting in Components</a></li>
+<li><a class="reference external" href="Core.Kernel.ComponentSmartPointer.html">SmartPointers using the Ptr&lt;&gt; template</a></li>
+</ul>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

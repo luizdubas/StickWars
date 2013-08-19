@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>NoesisGUI Changelog</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="noesisgui-changelog">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">NoesisGUI Changelog</h1>
+
+<div class="section" id="version-1-0-2">
+<h1>Version 1.0.2</h1>
+<ul class="simple">
+<li>Fixed: [Unity] Deferred lighting issues</li>
+<li>Fixed: [Unity] Render artifacts with DirectX. NoesisGUI was corrupting the scene of Unity</li>
+<li>Fixed: [Unity] OpenGL stencil buffer glitches</li>
+<li>Fixed: [Unity] Render performance was very poor on some GPU cards</li>
+<li>Fixed: [Unity] Unity scripts updated, robustness against errors improved</li>
+<li>Fixed: [Unity] LoadScene is now possible in Unity</li>
+<li>Fixed: [Unity] Problem with properties in c#. They were not properly serialized. Read-only properties crashing.</li>
+<li>Fixed: [Unity] Input event args are now correctly exported to Unity</li>
+<li>Fixed: [Unity] Shift key was ignored due to a bug in Unity Event.current notification</li>
+<li>Fixed: [Unity] Navigation tab working now for Unity</li>
+<li>Shader used for masks optimized in GL ES</li>
+<li>Improved batching of draw image</li>
+<li>Fixed: Compatibility problem in Windows8, noesis library was not unloaded correctly</li>
+<li>Gui/3rdParty package copied to <a class="reference external" href="https://github.com/Noesis/noesisgui-contrib">https://github.com/Noesis/noesisgui-contrib</a></li>
+<li>Fixed broken links to Tutorials. Now, each tutorial is a zip included inside the documentation</li>
+<li>Improvements to index documentation. Now tutorials for native and unity are separated</li>
+<li>Improvements to Styling Tutorial. Sample using Themes added.</li>
+<li>Improvements to Text Tutorial informing about .font resources</li>
+<li>Grid issues:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Static functions for setting grid attached properties were using the incorrect type.</li>
+<li>Modifications of grid attached properties were not notifying to the parent grid. The same happened for DockPanel Dock attached property.</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>TextBox events (KeyDown, KeyUp, TextInput, etc) were not calling user handlers.</li>
+</ul>
+</div>
+<div class="section" id="version-1-0-1">
+<h1>Version 1.0.1</h1>
+<ul class="simple">
+<li>Unity: NoesisGUI menu moved from Component to Window top menu entry because Unity3D is buggy and our menu was disappearing sometimes.</li>
+<li>Text tutorial improved.</li>
+<li>README file and root index.html added to .unitypackage.</li>
+<li>Minor changes to Unity tutorial.</li>
+<li>SamplesGallery builds needed resources automatically. Now it doesn't crash the first time it is executed.</li>
+<li>Fixed: XamlPlayer crashing when maximized</li>
+<li>Fixed: Unity was unable to build .xaml resources when the active platform was not PC &amp; MAC.</li>
+<li>Fixed: Improved Unity stability. Crashes when clicking Play or Stop resolved.</li>
+<li>Fixed: inheriting from extended classes in Unity was not working.</li>
+<li>Fixed: Added namespace to Unity class name so xamls designed in Blend using namespaces work correctly.</li>
+<li>Fixed: Binding FallbackValue was not serialized correctly when it contains a boxed value.</li>
+<li>Fixed: ControlGallery TextBlock sample was missing.</li>
+<li>Fixed: Clipping problems in Unity 4.2.</li>
+</ul>
+</div>
+<div class="section" id="version-1-0-0">
+<h1>Version 1.0.0</h1>
+<ul class="simple">
+<li>All tutorials have been improved. Many examples were outdated. Now every sample that is mentioned in the documentation is included in the package Gui/Tutorials and can be viewed with XamlPlayer. Following the suggestions from beta testers we have explained those concepts that were not clear.</li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.ExtendingTutorial.html">Extending NoesisGUI</a>.</li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.CommandsTutorial.html">Commands</a></li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.BindingsTutorial.html">Bindings</a></li>
+<li>API for integration NoesisGUI within an application has been simplified.</li>
+<li>Unity improvements:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>Setting a SDK is not needed anymore.</li>
+<li>File Resources .xaml and .font can be stored in any directory of the project. There are no restrictions now.</li>
+<li>Links for documentation included inside unity.</li>
+<li>New samples added.</li>
+<li>New platforms added: OS X and iOS.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="version-0-9-9">
+<h1>Version 0.9.9</h1>
+<div class="section" id="features">
+<h2>Features</h2>
+<ul class="simple">
+<li>OpenGL renderer optimized. Many improvements have been incorporated.</li>
+<li>Improved OpenGL ES 2.X implementation optimized for tiled based architectures. Now samples run fine in Android.</li>
+<li>New platform: iOS. iPhone and iPad supported with iOS 5 or later.</li>
+<li>New SDK platform: Mac OS X v10.5 or later. This SDK is yet experimental and not as complete as the Windows version.</li>
+<li>Support for multisample added in GL. For now only the extensions APPLE_framebuffer_multisample, EXT_framebuffer_multisample and EXT_multisampled_render_to_texture are supported.</li>
+<li>Opacity Groups (aka Render to Texture) have been heavily optimized. Now, you must indicate the resolution of off-screen surfaces when constructing a xaml renderer. By default, two extra textures of the same resolution are created.</li>
+<li>Improvements to the <a class="reference external" href="Gui.Core.SDKGuide.html">Integration Tutorial</a>. iOS integration described. Simplified interface for loading a xaml and setting up the renderer.</li>
+<li>Tessellation quality improved. Now the aspect of curves at medium quality is better.</li>
+<li>Glyph atlases are now a single channel (A8) texture on mobile platforms.</li>
+<li>Added default style support that is loaded by default with each xaml. Can be overridden by IUISystem::SetTheme().</li>
+<li>Added support for strings in ResourceDictionary.</li>
+<li>Unity improvements:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>New unity directory layout following the suggestions from the forum.</li>
+<li>UserControls can be created now on Unity.</li>
+<li><a class="reference external" href="Gui.Core.Unity3DTutorial.html">Unity3d Tutorial</a> updated with UserControl, Binding and Commands information.</li>
+<li>Primitives sample updated with a ListBox and a ColorPicker.</li>
+<li>New LoadXaml function.</li>
+<li>Extended classes are automatically registered now.</li>
+<li>NoesisGui API is now inside the namespace Noesis.</li>
+<li>Added Noesis.Reflection.DoLaunchChangedEvent() function to implement INotifyPropertyChange in Unity extended classes.</li>
+<li>New demo, Shooter Demo, distributed as an standalone unity project.</li>
+<li>Video tutorial created with the Shooter Demo. &lt;<a class="reference external" href="http://vimeo.com/65549290">http://vimeo.com/65549290</a>&gt;`_.</li>
+<li>Added a Command (MVVM) example.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="bug-fixes">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: Masking (Stencil) was not working properly on several scenarios.</li>
+<li>Fixed: DependencyProperty was not taking into account Condition.SourceName to search for the property in the appropriate type.</li>
+<li>Fixed: DynamicResourceExpression was not returning UnsetValue when resource key was not found.</li>
+<li>Fixed: VisualState and VisualTransition were not implementing IUITreeNode and name lookups failed.</li>
+<li>Fixed: BindingExpression was failing when DataContext was being set from code.</li>
+<li>Fixed: Thickness, Point and Size parsers accepting now &quot; &quot; and &quot;,&quot; as separators.</li>
+<li>Fixed: UnityDeviceDX9 rendering xamls to textures and to camera in the same scene were failing.</li>
+<li>Fixed: Problems reloading NoesisGUI components in standalone mode.</li>
+<li>Fixed: Crash when rendering to a texture that was not being used.</li>
+<li>Fixed: Atlases between surfaces was not shared properly (same glyphs were inserted several times).</li>
+<li>Fixed: When closing a Pop-up sometimes it was clearing any binding set in the IsOpen property.</li>
+<li>Fixed: TextBox handling Unicode characters properly.</li>
+<li>Fixed: Bugged animation in Button Pressed state in NoesisStyle.</li>
+<li>PlaneProjection FOV adjusted to match WPF.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-8">
+<h1>Version 0.9.8</h1>
+<div class="section" id="id1">
+<h2>Features</h2>
+<ul class="simple">
+<li>Many improvements in the integration layer between NoesisUI C++ API and Mono. Now, Noesis classes can be extended to create new controls. All samples upgraded with the new improvements.</li>
+<li>Unity pipeline simplified. Now changes to assets are automatically detected. You can be editing a XAML, save the changes and the results are automatically shown on Unity.</li>
+<li>New Unity sample: Primitives.</li>
+<li><a class="reference external" href="Gui.Core.Unity3DTutorial.html">Unity3d Tutorial</a> updated.</li>
+<li>Android platform. This is the first release to include runtime support for Android. Both standalone and Unity environment are supported. Although this is still a preliminary work and many optimizations are pending, all the samples are working properly.</li>
+<li>Improvements to the <a class="reference external" href="Gui.Core.SDKGuide.html">Integration Tutorial</a>. Android integration described.</li>
+<li>Functions in GUI receiving a BaseComponent* that accept a boxed value, are now overloaded with a string parameter to make it easier to use in this case (90% of the time). The functions affected are:</li>
+</ul>
+<blockquote>
+<ul class="simple">
+<li>IList: Set, Add, Insert</li>
+<li>ContentControl: SetContent</li>
+<li>ContentPresenter: SetContent</li>
+<li>FrameworkElement: SetTag</li>
+</ul>
+</blockquote>
+<ul class="simple">
+<li>Added more documentation to <a class="reference external" href="Gui.Core._ClassHierarchy.html">Class Hierarchy</a> list. All main classes are now documented.</li>
+<li>OpenGL renderer optimized.</li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.OpenSceneGraphTutorial.html">OpenSceneGraph integration</a>.</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: Unity crash when the device is lost.</li>
+<li>Fixed: Items in ItemsControl not updated when using ItemSource external collection.</li>
+<li>Fixed: xaml being modified with Unity editor in play mode</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-7">
+<h1>Version 0.9.7</h1>
+<div class="section" id="id5">
+<h2>Features</h2>
+<ul class="simple">
+<li>New Unity demos: MasterMind, RenderToTexture and Primitives.</li>
+<li>New sample: CarHud</li>
+<li>Implemented render to texture in Unity</li>
+<li>UnityExporter console application deprecated. A new tool is implemented directly inside the editor of Unity3d</li>
+<li>Improvements to <a class="reference external" href="Gui.Core.Unity3DTutorial.html">Unity3d Tutorial</a>, describing all the things that are new</li>
+<li>Several improvements to text rendering. Subpixel positioning implemented.</li>
+<li>OpenGL RenderSystem implementation</li>
+<li>Improvements to the <a class="reference external" href="Gui.Core.SDKGuide.html">Integration Tutorial</a>. OpenGL integration described</li>
+<li>XamlPlayer: Drag&amp;Drop feature removed. It was confusing to the user where resources could be dragged from</li>
+<li>XamlPlayer: new resource browser panel added to select the XAML to load</li>
+<li>XamlPlayer: animations panel now shows a list of storyboards each one with its own play / pause / stop buttons.</li>
+<li>XamlPlayer: wait for vsync when rendering. When the window is not active, it stops continuously rendering</li>
+<li>Improvements to the <a class="reference external" href="Gui.Core._ClassHierarchy.html">Class Hierarchy</a> documentation. All supported classes, with properties and events are summarized.</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: If available the OS/2 table of OpenType fonts is used. Same behavior than WPF.</li>
+<li>Fixed: DrawText snapping parameter removed. Now text is like the rest of primitives, that are aligned at integer positions</li>
+<li>Fixed: Text rendering with alpha was not correct</li>
+<li>Fixed: tessellation of circles generated extra triangles in some scenarios</li>
+<li>Improvements to BuildTool that sometimes never returned. Background and foreground color properly restored</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-6">
+<h1>Version 0.9.6</h1>
+<div class="section" id="id10">
+<h2>Features</h2>
+<ul class="simple">
+<li>New demo: TicTacToe.</li>
+<li>New demo: SamplesGallery. Added as a scene to the unity package too.</li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.LayoutPanelTutorial.html">Layout &amp; Panels</a>.</li>
+<li>New tutorial: <a class="reference external" href="Gui.Core.Ogre3DTutorial.html">OGRE Tutorial</a>.</li>
+<li>New samples: Brushes, Butterfly, Canvas, DockPanel, Grid, Palette, ProgressBar, StackPanel, StatusBar, ToolBar, Tiger, WrapPanel.</li>
+<li>Improvements to the Unity runtime. Now it is smaller and faster. Errors are properly handled now.</li>
+<li>Changes to Enums in C#. For example, HorizontalAlignment_Center is now HorizontalAlignment.Center.</li>
+</ul>
+</div>
+<div class="section" id="id11">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Many bugs fixed related to bindings of NoesisGui to C# (affecting the Unity runtime).</li>
+<li>Fixed: Unity runtime crashing on exit.</li>
+<li>Fixed: LineGeometry was not calculating correctly its bounds when a non identity transform was used.</li>
+<li>Fixed: Compilation errors with Visual Studio 2010.</li>
+<li>Fixed: UserControl was not copying correctly triggers during loading process.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-5">
+<h1>Version 0.9.5</h1>
+<div class="section" id="id12">
+<h2>Features</h2>
+<ul class="simple">
+<li>New tutorial: <a class="reference external" href="Gui.Core.Unity3DTutorial.html">Unity3d Tutorial</a></li>
+<li>Improvements to the <a class="reference external" href="Gui.Core.SDKGuide.html">Integration Tutorial</a></li>
+<li>Fonts with embedded bitmaps were not properly rendered.</li>
+<li>New IStoryboard interface.</li>
+<li>Implemented PauseStoryboard, ResumeStoryboard and StopStoryboard triggers actions.</li>
+<li>Added Pause/Resume/Stop buttons to XamlPlayer animations panel.</li>
+<li>Improvements to stroke generation.</li>
+<li>DirectX InputSystem no longer used in the SDK.</li>
+<li>PixelWidth and PixelHeight properties added to BitmapSource and TextureSource.</li>
+<li>Many functions have been changed from receiving a smart pointer to a raw pointer.</li>
+</ul>
+</div>
+<div class="section" id="id15">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: EventTrigger was not invoking trigger actions with the correct target and namescope.</li>
+<li>Fixed: Focused Button was not launching Click event when space bar was pressed.</li>
+<li>Fixed: PropertyPath path was being serialized twice.</li>
+<li>Fixed: When a merged dictionary contains more than one merged dictionary, an incorrect error was thrown.</li>
+<li>Fixed: PushTransform matrix multiplication order in UIElement was wrong</li>
+<li>Fixed: Compilation errors with Visual Studio 2010</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-4">
+<h1>Version 0.9.4</h1>
+<div class="section" id="id16">
+<h2>Features</h2>
+<ul class="simple">
+<li>New exporter for <a class="reference external" href="http://www.texturepacker.com/">TexturePacker</a> inside <em>Gui/3rdParty/Content/TexturePacker</em>. With this plugin atlases that are compatible with NoesisGui can be generated. See the <a class="reference external" href="Gui.Core.ImagesTutorial.html">Images Tutorial</a>.</li>
+<li>Animations on sample <em>Time.xaml</em> are now not launched automatically, use the animation panel to launch them.</li>
+<li>Support for Triggers in DataTemplates.</li>
+<li>ListView control implemented with column reordering, and <em>ListView.xaml</em> sample added to Gui/Samples.</li>
+<li>Improvements to text rendering quality.</li>
+<li>Support for stroking text in TextBlock. See included <em>Text.xaml</em> example in Gui/Samples.</li>
+<li>TextBox control implemented with Copy/Cut/Paste commands. <em>TextBox.xaml</em> example added to Gui/Samples.</li>
+<li>ScrollBar and Slider controls now react to key input gestures when control is focused.</li>
+</ul>
+</div>
+<div class="section" id="id17">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: Track element was not taking IsDirectionReversed into account in arrange code to layout DecreaseButton and IncreaseButton correctly.</li>
+<li>Fixed: Crash building a Style without a TargetType.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-3">
+<h1>Version 0.9.3</h1>
+<div class="section" id="id18">
+<h2>Features</h2>
+<ul class="simple">
+<li>Added ImageSource.Width and ImageSource.Height properties.</li>
+<li>ImageSource now uses image resolution to calculate its size (width and height) in device independent units.</li>
+<li>All TileBrush tiling modes (None, Tile, FlipX, FlipY, FlipXY) correctly implemented.</li>
+<li>New <a class="reference external" href="Gui.Core.ImagesTutorial.html">tutorial</a> for images added. Related examples added: ImageAtlas, ImageBrushStretch, ImageBrushTile and ImageBrushViewBox.</li>
+<li>Automatic atlases no longer generated. Now atlases must be created manually.</li>
+<li>Image.Source and ImageBrush.ImageSource properties are now of ImageSource type. Added ImageSourceConverter to convert image paths into a valid ImageSource (TextureSource if a texture compiler is available, or BitmapSource otherwise).</li>
+<li>XamlPlayer now shows and can launch animations found in the Resources property of the loaded XAML root.</li>
+<li>New option in XamlPlayer to view loaded XAML in wireframe mode.</li>
+<li>Support for Style.BasedOn property implemented.</li>
+</ul>
+</div>
+<div class="section" id="id19">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: GridView.ColumnHeaderContainerStyle property was registered with a wrong name.</li>
+<li>Fixed: ClipToBounds was not correctly implemented.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-2">
+<h1>Version 0.9.2</h1>
+<div class="section" id="id20">
+<h2>Features</h2>
+<ul class="simple">
+<li>Xaml files that define a ResourceDictionary are now cached when they are loaded for the first time.</li>
+<li>Mouse CaptureMode SubTree implemented.</li>
+<li>Now ComboBoxes, Menus and ContextMenus capture the mouse while its Popup is open.</li>
+<li>Added a Find() function to IDictionary so Contains() + Get() consecutive calls can be optimized.</li>
+<li>INameScope FindName() now returns a raw pointer.</li>
+<li>IUITreeNode FindNodeResource() and FindNodeName() now return a raw pointer.</li>
+</ul>
+</div>
+<div class="section" id="id21">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: Behaviour of Popup and its StaysOpen property was not correct.</li>
+<li>Fixed: Problems with HitTest clipping and opacity groups inside Popup elements.</li>
+<li>Fixed: The order of events raised when Keyboard focus changed is now correct: if the PreviewGotKeyboardFocus event or the PreviewLostKeyboardFocus event is handled, keyboard focus does not change.</li>
+<li>Fixed: Destroying a ContextMenu or ToolTip while its popup is open was crashing.</li>
+<li>Fixed: Referencing resources of a merged dictionary inside another merged dictionary was failing.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-1">
+<h1>Version 0.9.1</h1>
+<div class="section" id="id22">
+<h2>Features</h2>
+<ul class="simple">
+<li>Added ResetInputState() to IRenderer, so mouse buttons and keys that were pressed can be reseted when an application is deactivated.</li>
+<li>Optimized Border geometry generation using StreamGeometryContext, and now is robust against limit cases (corners bigger than border size, etc.).</li>
+<li>UIResource dependencies are now stored as GUID instead of strings (it is recommended to rebuild UI resources).</li>
+<li>Implemented PushClip drawing context command (to be used within OnRender).</li>
+<li>Added Timeline Completed event to reflection so it can be used from XAML.</li>
+<li>Optimized PropertyPath memory space used by instances, and path is now parsed and serialized to avoid parsing in runtime as much as possible (it is recommended to rebuild UI resources).</li>
+<li>Added static methods to RelativeSource to obtain unique instances of Self, TemplatedParent, or PreviousData relative sources.</li>
+<li>Improvements to XamlReader to detect errors writing markup extensions or the {} escape sequence.</li>
+</ul>
+</div>
+<div class="section" id="id23">
+<h2>Bug fixes</h2>
+<ul class="simple">
+<li>Fixed: DependencyProperties that Inherits didn't notify OnSubPropertyChanged correctly.</li>
+<li>Fixed: Grid layout of star cells was failing when there were 2 or more cells with the same measure size.</li>
+<li>Fixed: Track that was part of a ScrollBar didn't specify a minimum size for the Thumb control.</li>
+<li>Fixed: BlendTutorial color selector sliders were not correctly initialized.</li>
+<li>Fixed: ListBox in single selection mode was failing when Ctrl clicking an item.</li>
+<li>Fixed: Some DependencyObject derived classes were not constructing the UI tree correctly, causing failures during resource look up.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="version-0-9-0">
+<h1>Version 0.9.0</h1>
+<p>First version released in the private beta program.</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

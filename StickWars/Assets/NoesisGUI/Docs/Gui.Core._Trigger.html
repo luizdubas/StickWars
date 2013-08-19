@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Trigger</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="trigger">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Trigger</h1>
+
+<p>Represents a trigger that applies property values or performs actions conditionally.</p>
+<p><a class="reference external" href="http://msdn.microsoft.com/en-us/library/system.windows.trigger.aspx">http://msdn.microsoft.com/en-us/library/system.windows.trigger.aspx</a></p>
+<div class="section" id="inheritance-hierarchy">
+<h1>Inheritance Hierarchy</h1>
+<div class="line-block">
+<div class="line"><a class="reference external" href="Gui.Core._BaseTrigger.html">BaseTrigger</a></div>
+<div class="line-block">
+<div class="line">Trigger</div>
+</div>
+</div>
+<p><a class="reference external" href="Gui.Core._ClassHierarchy.html">Class Hierarchy Index</a></p>
+</div>
+<div class="section" id="properties">
+<h1>Properties</h1>
+<div class="section" id="from-trigger">
+<h2>From Trigger</h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="24%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</th>
+<th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Property</td>
+<td>Gets or sets the property that returns the value that is compared with the Value property of the trigger. The comparison is a reference equality check.</td>
+</tr>
+<tr><td><img alt="RO" src="icon_ro.png" /></td>
+<td>Setters</td>
+<td>Gets a collection of Setter objects, which describe the property values to apply when the specified condition has been met.</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>SourceName</td>
+<td>Gets or sets the name of the object with the property that causes the associated setters to be applied.</td>
+</tr>
+<tr><td><img alt="None" src="icon_none.png" /></td>
+<td>Value</td>
+<td>Gets or sets the value to be compared with the property value of the element. The comparison is a reference equality check.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="from-basetrigger">
+<h2>From <a class="reference external" href="Gui.Core._BaseTrigger.html">BaseTrigger</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="4%" />
+<col width="21%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><div class="first last line-block">
+<div class="line"><br /></div>
+</div>
+</th>
+<th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><img alt="RO" src="icon_ro.png" /></td>
+<td>EnterActions</td>
+<td>Gets a collection of <a class="reference external" href="Gui.Core._TriggerAction.html">TriggerAction</a> objects to apply when the trigger object becomes active.
+This property does not apply to the EventTrigger class</td>
+</tr>
+<tr><td><img alt="RO" src="icon_ro.png" /></td>
+<td>ExitActions</td>
+<td>Gets a collection of <a class="reference external" href="Gui.Core._TriggerAction.html">TriggerAction</a> objects to apply when the trigger object becomes inactive. This property does not apply to the EventTrigger class</td>
+</tr>
+</tbody>
+</table>
+<img alt="legend_dp-ro.png" src="legend_dp-ro.png" />
+</div>
+</div>
+<div class="section" id="events">
+<h1>Events</h1>
+<p>Trigger has no events</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

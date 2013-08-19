@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Boxing and Unboxing values</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="boxing-and-unboxing-values">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Boxing and Unboxing values</h1>
+
+<p>Sometimes basic types or simple classes (see <a class="reference external" href="Core.Kernel.SDKHierarchy.html">SDKHierarchy</a>) need to be converted to components. A component adds the overhead of the polymorphism to the class, the reference counter and the allocation in the heap, but in some scenarios this is needed. For example, the [wiki:TypeConverter TypeConverter architecture] use this mechanism.</p>
+<p>The mechanism of converting a non-component instance to a component is called <strong>boxing</strong> and is performed using the Boxing::Box() operation:</p>
+<div class="highlight"><pre><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">BaseComponent</span><span class="o">&gt;</span> <span class="n">boxed</span> <span class="o">=</span> <span class="n">Boxing</span><span class="o">::</span><span class="n">Box</span><span class="o">&lt;</span><span class="n">NsFloat32</span><span class="o">&gt;</span><span class="p">(</span><span class="mf">50.0f</span><span class="p">);</span>
+</pre></div>
+<p>The reverse operation is called <strong>unboxing</strong>. A boxed value is unboxed using Boxing::Unbox():</p>
+<div class="highlight"><pre><span class="n">NsFloat32</span> <span class="n">val</span> <span class="o">=</span> <span class="n">Boxing</span><span class="o">::</span><span class="n">Unbox</span><span class="o">&lt;</span><span class="n">NsFloat32</span><span class="o">&gt;</span><span class="p">(</span><span class="n">boxed</span><span class="p">);</span>
+</pre></div>
+<p>Although boxing is optimized internally (for example using pools to avoid memory allocations) it should be avoided whenever possible because it cannot be considered a fast operation.</p>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

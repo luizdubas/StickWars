@@ -13,7 +13,7 @@ GameObject:
   - 65: {fileID: 6500000}
   m_Layer: 0
   m_Name: BowTrainingGround
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 36.4251976, y: 36.914772, z: 10.2958174}
+  m_Size: {x: 40, y: 40, z: 10.2958174}
   m_Center: {x: 0, y: -.0732832104, z: -.0916445479}
 --- !u!1001 &100100000
 Prefab:

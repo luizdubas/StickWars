@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Animation in Blend</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="animation-in-blend">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Animation in Blend</h1>
+
+<div class="section" id="introduction">
+<h1>Introduction</h1>
+<p><strong>Working with animations</strong></p>
+<p>With XAML files it's very easy to add animation to any visual element on the screen. Using a tool like Blend eases this process even more. What follows next is a brief introduction to the animation system in Noesis Engine using Blend.</p>
+<p>More information about animations in NoesisGUI can be found in the <a class="reference external" href="Gui.Core.AnimationTutorial.html">animation tutorial</a></p>
+<p><strong>The storyboard</strong></p>
+<p>All the animations created from Blend are based on a timeline called Storyboard. Inside a Storyboard, animation changes are inserted like in a music score, using groups of keyframes that affects a number of properties. The animation tells which property is going to be animated, and the keyframes inside the animation specify which values is going to take de property over the time.</p>
+<p><strong>Where to apply a sotryboard</strong></p>
+<p>Storyboards can be applied in 3 situations:</p>
+<ul class="simple">
+<li>As a response to a routed event (using an Event Trigger, both used directly over an object or inside a style or template)</li>
+<li>As a response to the activation or deactivation of a property (inside a style or a template)</li>
+<li>In a VisualState (inside a template)</li>
+</ul>
+</div>
+<div class="section" id="a-simple-animation">
+<h1>A simple animation</h1>
+<p>Let's take a simple Rectangle to make some animations to it.</p>
+<img alt="Animation0.png" src="Animation0.png" />
+<p>After drawing the rectangle, go to the &quot;Objects and Timeline&quot; window, and click on the &quot;New&quot; button on the right to create a new Storyboard.</p>
+<img alt="Animation1.png" src="Animation1.png" />
+<p>Give a name to the Storyboard and create it.</p>
+<img alt="Animation2.png" src="Animation2.png" />
+<p>Now in the &quot;Objects and Timeline&quot; window the newly created storyboard appears. Moving the time bar in the timeline sets the exact time when property changes will be executed during the animation</p>
+<img alt="Animation3.png" src="Animation3.png" />
+<p>When a new animation is created, Blend enters in the recording state automatically. What this means is that any change that you do in the design window or in the element properties are being recorded into the animation timeline, just in the time where the time bar is pointing (0 seconds at start).</p>
+<img alt="Animation4.png" src="Animation4.png" />
+<p>Now we can start animating our rectangle. We are going to start changing the color of the background to red in 0 seconds, and then we want to start a progressive change to green until animation reaches 1 second. So we move the time bar to time 0 seconds, and change the background property to red value while the recording button is still active (in red). The change in the background property is registered in the timeline as a new keyframe in the position where the time bar is located in this exact moment.</p>
+<img alt="Animation5.png" src="Animation5.png" />
+<p>To insert the green value we move the time bar to 1 second and change the color of the rectangle. Blend will represent this in the timeline as a continous line.</p>
+<img alt="Animation6.png" src="Animation6.png" />
+<p>Once a keyframe is inserted, the transition from the previous KeyFrame can be modified selecting the property value in the timeline window and modifying the KeySpline or EasingFunction.</p>
+<p>With the KeySpline window the transition curve can be fine tuned to the user desires. In this example we create a transition that starts slowly to change, then in the middle of the transition it speeds up, and finally it ends slowly again reaching the next keyframe value.</p>
+<img alt="Animation7.png" src="Animation7.png" />
+<p>With the EasingFunction window the user can choose between a number of predefined effects that affets the exit from the previous keyframe to the actual (Out), the entrance to the new keyframe value (In) or both.</p>
+<img alt="Animation8.png" src="Animation8.png" />
+<p>Some of the predefined effects have additional values that can be tweaked by the user.</p>
+<img alt="Animation9.png" src="Animation9.png" />
+<p>We can also control the number of repetions that the animation is going to be executed. For this, we can right click over the animated property in the timeline.</p>
+<img alt="Animation10.png" src="Animation10.png" />
+<p>And set the number of repetitions, or select &quot;Forever&quot; so the animation is playing countinously</p>
+<img alt="Animation11.png" src="Animation11.png" />
+<p>Finally, we can assign the animation to a EventTrigger so it starts, for example, when the mouse enters the rectangle. We can use the Triggers panel for this.</p>
+<img alt="Animation12.png" src="Animation12.png" />
+</div>
+<div class="section" id="animations-using-visualstates">
+<h1>Animations using VisualStates</h1>
+<p>The VisualStates system is a powerful mechanism to change and animate properties based on the internal state of objects. The states are hard-coded inside every control, and the template elements can react to the states using animations that play when a change between states occurs.</p>
+<p>For our example, we put a button into the design view, and then we edit its template. The States panel will show something like this.</p>
+<img alt="VisualStates0.png" src="VisualStates0.png" />
+<p>Selecting the &quot;Normal&quot; state we could create the default template we are going to use for our button. In this case, a red ellipse is drawn.</p>
+<img alt="VisualStates1.png" src="VisualStates1.png" />
+<p>Now we want that when the button is in the &quot;MouseOver&quot; state, the color of our ellipse changes to Blue. So we select the &quot;MouseOver&quot; state, and as the recoding button is active (exactly the same as when we were creating an animation) we can change the value of the elipse to blue, so Blend detects the change and creates a new storyboard for the &quot;MouseOver&quot; state. In this case, Blend assigns the &quot;MouseOver&quot; name to the storyboard, because it's going to be executed only when the button enters in that state.</p>
+<img alt="VisualStates2.png" src="VisualStates2.png" />
+<p>The VisualStates provides a very easy a powerful way to create animations. Beside the Storyboard that is played for every state, a dynamic animation is created to make a smooth transition between the property values set in every state. The duration of this dynamic animation and the curve that is applied to make the transitions can be controlled using the &quot;Default transition&quot; icon present in every group of VisualStates. For example, if we want a transition time of 0.5s using a Bounce animation curve, we could enter the following values.</p>
+<img alt="VisualStates3.png" src="VisualStates3.png" />
+<p>And even the transition values between specific states could be introduced. This allows even more control on the animations. For example, we could specify a different duration and effect for the transition from &quot;Normal&quot; to &quot;MouseOver&quot;</p>
+<img alt="VisualStates4.png" src="VisualStates4.png" />
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

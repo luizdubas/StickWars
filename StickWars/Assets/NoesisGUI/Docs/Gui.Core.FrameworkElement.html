@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>FrameworkElement</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="frameworkelement">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">FrameworkElement</h1>
+
+<p><a class="reference external" href="http://msdn.microsoft.com/en-us/library/system.windows.frameworkelement.aspx">http://msdn.microsoft.com/en-us/library/system.windows.frameworkelement.aspx</a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="3%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="3">Methods</th>
+</tr>
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ApplyTemplate</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>BeginInit</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>BeginStoryboard</td>
+<td>No</td>
+<td>Implemented as Storyboard::Start</td>
+</tr>
+<tr><td>BringIntoView</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>EndInit</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>FindName</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>FindResource</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>GetBindingExpression</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>GetFlowDirection</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MoveFocus</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>OnApplyTemplate</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>PredictFocus</td>
+<td>No</td>
+<td>Implemented as KeyboardNavigation::PredictFocus</td>
+</tr>
+<tr><td>RegisterName</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SetBinding</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SetFlowDirection</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SetResourceReference</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ShouldSerializeResources</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ShouldSerializeStyle</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ShouldSerializeTriggers</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>TryFindResource</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>UnregisterName</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="4%" />
+<col width="4%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="4">Dependency Properties</th>
+</tr>
+<tr><th class="head">Name</th>
+<th class="head">Att</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ActualHeightProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ActualWidthProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>BindingGroupProperty</td>
+<td>No</td>
+<td>No</td>
+<td>Not declared</td>
+</tr>
+<tr><td>ContextMenuProperty</td>
+<td>No</td>
+<td>No</td>
+<td>Owned by ContextMenuService (TODO)</td>
+</tr>
+<tr><td>CursorProperty</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>DataContextProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>FlowDirectionProperty</td>
+<td>Yes</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>FocusVisualStyleProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ForceCursorProperty</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>HeightProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>HorizontalAlignmentProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>InputScopeProperty</td>
+<td>No</td>
+<td>No</td>
+<td>Owned by InputMethod (TODO)</td>
+</tr>
+<tr><td>LanguageProperty</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>LayoutTransformProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MarginProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MaxHeightProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MaxWidthProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MinHeightProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>MinWidthProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>NameProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>OverridesDefaultStyleProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>StyleProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>TagProperty</td>
+<td>No</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ToolTipProperty</td>
+<td>No</td>
+<td>No</td>
+<td>Owned by ToolTipService (TODO)</td>
+</tr>
+<tr><td>UseLayoutRoundingProperty</td>
+<td>No</td>
+<td>No</td>
+<td>Not declared</td>
+</tr>
+<tr><td>VerticalAlignmentProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>WidthProperty</td>
+<td>No</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="77%" />
+<col width="6%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="3">Properties</th>
+</tr>
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>IsInitialized</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>IsLoaded</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Parent</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Resources</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>TemplatedParent</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Triggers</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="4%" />
+<col width="49%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="3">Routed Events</th>
+</tr>
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ContextMenuClosingEvent</td>
+<td>Yes</td>
+<td>Owned by ContextMenuService (TODO)</td>
+</tr>
+<tr><td>ContextMenuOpeningEvent</td>
+<td>Yes</td>
+<td>Owned by ContextMenuService (TODO)</td>
+</tr>
+<tr><td>LoadedEvent</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ToolTipClosingEvent</td>
+<td>Yes</td>
+<td>Owned by ToolTipService (TODO)</td>
+</tr>
+<tr><td>ToolTipOpeningEvent</td>
+<td>Yes</td>
+<td>Owned by ToolTipService (TODO)</td>
+</tr>
+<tr><td>RequestBringIntoViewEvent</td>
+<td>Yes</td>
+<td>Public delegate not implemented (TODO)</td>
+</tr>
+<tr><td>SizeChangedEvent</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>UnloadedEvent</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="71%" />
+<col width="6%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head" colspan="3">Events</th>
+</tr>
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Initialized</td>
+<td>No</td>
+<td>Not declared</td>
+</tr>
+<tr><td>SourceUpdated</td>
+<td>No</td>
+<td>Not declared</td>
+</tr>
+<tr><td>TargetUpdated</td>
+<td>No</td>
+<td>Not declared</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

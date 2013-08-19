@@ -31,7 +31,7 @@ public class CameraControllerInGame : MonoBehaviour{
 	}
 	
 	void Awake( ){
-		enable = false;
+		//enable = false;
 		
 		leftMargin = 0;
 		rightMargin = 0;
@@ -43,7 +43,7 @@ public class CameraControllerInGame : MonoBehaviour{
 		
 		map = null;
 		
-		cameraGameObject = GameObject.Find("Camera");
+		cameraGameObject = this.gameObject; //Consider that it'll always be attached to the Camera object
 		
 		cameraGameObject.transform.position = Vector3.zero;
 		cameraGameObject.transform.rotation = Quaternion.identity;

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>DependencyObject</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="dependencyobject">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">DependencyObject</h1>
+
+<div class="section" id="introduction">
+<h1>Introduction</h1>
+<p>The DependencyObject base class enables derived objects to use the dependency property system.</p>
+<p>It also provides the following services and characteristics:</p>
+<ul class="simple">
+<li>Dependency property hosting support. You register a dependency property by calling the RegisterProperty or RegisterPropertyRO (read-only property) method, and storing the created property as a public static field in your class.</li>
+<li>Attached property hosting support. You register an attached property by calling the RegisterProperty method, and storing the created property as a public static field in your class. Your attached property can then be set on any class that derives from DependencyObject.</li>
+<li>Get, set, and clear utility methods for values of any dependency properties that exist on the DependencyObject.</li>
+<li>Metadata, coerce value support, property changed notification, and override callbacks for dependency properties or attached properties. Also, the DependencyObject class facilitates the per-owner property metadata for a dependency property.</li>
+</ul>
+<p>It is the common base class for classes derived from Visual, UIElement, or Freezable.</p>
+</div>
+<div class="section" id="implementation">
+<h1>Implementation</h1>
+<p>Supposing we have a class deriving from DependencyObject:</p>
+<div class="highlight"><pre><span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">/// A button that raises Click event after a delay time</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="k">class</span> <span class="nc">DelayedButton</span><span class="o">:</span> <span class="k">public</span> <span class="n">Button</span>
+<span class="p">{</span>
+    <span class="n">NS_DECLARE_REFLECTION</span><span class="p">(</span><span class="n">DelayedButton</span><span class="p">,</span> <span class="n">Button</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+<p>Inheritors must take care of some important points about Noesis Engine implementation of the DependencyObject:</p>
+<ol class="arabic simple">
+<li>DependencyObject is an <strong>ISerializable</strong> class. It automatically serializes all dependency properties stored locally in the object (default values or inherited values are not serialized). But instance members of derived classes must be serialized manually within their Serialize/Unserialize functions.</li>
+</ol>
+<blockquote>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">DelayedButton</span><span class="o">::</span><span class="n">Serialize</span><span class="p">(</span><span class="n">SerializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">NS_SERIALIZE_PARENT</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    <span class="n">data</span><span class="o">-&gt;</span><span class="n">Serialize</span><span class="p">(</span><span class="n">NST</span><span class="p">(</span><span class="s">&quot;OtherInfo&quot;</span><span class="p">),</span> <span class="n">mOtherInfo</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DelayedButton</span><span class="o">::</span><span class="n">Unserialize</span><span class="p">(</span><span class="n">UnserializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">NsUInt32</span> <span class="n">version</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">NS_UNSERIALIZE_PARENT</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">version</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">Unserialize</span><span class="p">(</span><span class="n">NST</span><span class="p">(</span><span class="s">&quot;OtherInfo&quot;</span><span class="p">),</span> <span class="n">mOtherInfo</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">NS_ERROR</span><span class="p">(</span><span class="n">NST</span><span class="p">(</span><span class="s">&quot;Invalid version&quot;</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</blockquote>
+<ol class="arabic simple" start="2">
+<li>DependencyObject is an <strong>IComponentInitializer</strong> class. Before object is initialized, all value modifications are not notified, and expressions are not evaluated (that means that resources and bindings are not resolved). As was the case with serialization, derived classes must initialize instance members that are not dependency properties overriding the <strong>OnInit</strong> function. Inheritors must call parent implementation to not break dependency object initialization:</li>
+</ol>
+<blockquote>
+<div class="highlight"><pre><span class="kt">void</span> <span class="n">DelayedButton</span><span class="o">::</span><span class="n">OnInit</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">ParentClass</span><span class="o">::</span><span class="n">OnInit</span><span class="p">();</span>
+
+    <span class="n">InitComponent</span><span class="p">(</span><span class="n">mOtherInfo</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</blockquote>
+<ol class="arabic simple" start="3">
+<li>DependencyObject provides an <strong>OnPropertyChanged</strong> function to notify inheritors of property changes. Inheritors must call parent implementation to not break the notification system:</li>
+</ol>
+<blockquote>
+<div class="highlight"><pre><span class="n">NsBool</span> <span class="n">DelayedButton</span><span class="o">::</span><span class="n">OnPropertyChanged</span><span class="p">(</span><span class="k">const</span> <span class="n">DependencyPropertyChangedEventArgs</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">NsBool</span> <span class="n">handled</span> <span class="o">=</span> <span class="n">ParentClass</span><span class="o">::</span><span class="n">OnPropertyChanged</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">handled</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">prop</span> <span class="o">==</span> <span class="n">DelayProperty</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// property change management here</span>
+            <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">handled</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</blockquote>
+</div>
+<div class="section" id="wpf-compatibility">
+<h1>WPF Compatibility</h1>
+<p><a class="reference external" href="http://msdn.microsoft.com/en-us/library/system.windows.dependencyobject.aspx">http://msdn.microsoft.com/en-us/library/system.windows.dependencyobject.aspx</a></p>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><strong>Methods:</strong></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="59%" />
+<col width="4%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>ClearValue</td>
+<td>Yes</td>
+<td>Renamed to ClearLocalValue</td>
+</tr>
+<tr><td>CoerceValue</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>GetValue</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>InvalidateProperty</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>ReadLocalValue</td>
+<td>Yes</td>
+<td>Renamed to GetLocalValue</td>
+</tr>
+<tr><td>SetCurrentValue</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>SetValue</td>
+<td>Yes</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><strong>Properties:</strong></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="77%" />
+<col width="6%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Sup</th>
+<th class="head">Comments</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>DependencyObjectType</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>IsSealed</td>
+<td>No</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

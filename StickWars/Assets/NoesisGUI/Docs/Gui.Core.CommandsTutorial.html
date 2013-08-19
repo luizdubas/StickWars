@@ -1,0 +1,471 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Commands</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="commands">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Commands</h1>
+
+<p><img alt="zip" class="align-middle" src="zip.png" /> <a class="reference external" href="Commands.zip">Tutorial Data</a></p>
+<p>Commanding is an input mechanism which provides input handling at a more semantic level than device input. Whereas events are tied to details about specific user actions (such as a Button being clicked or a ListBoxItem being selected), commands represent actions independent from their user interface exposure. Examples of commands are the Copy, Cut, and Paste operations found on many applications. Applications often expose these actions through many mechanisms simultaneously: MenuItems in a Menu, MenuItems on a ContextMenu, Buttons on a ToolBar, keyboard shortcuts, and so on.</p>
+<p>Commands have several purposes. The first purpose is to separate the semantics and the object that invokes a command from the logic that executes the command. This allows for multiple and disparate sources to invoke the same command logic, and it allows the command logic to be customized for different targets. For example, the editing operations Copy, Cut, and Paste, which are found in many applications, can be invoked by using different user actions if they are implemented by using commands. An application might allow a user to cut selected objects or text by either clicking a button, choosing an item in a menu, or using a key combination, such as CTRL+X. By using commands, you can bind each type of user action to the same logic.</p>
+<p>Another purpose of commands is to indicate whether an action is available. To continue the example of cutting an object or text, the action only makes sense when something is selected. If a user tries to cut an object or text without having anything selected, nothing would happen. To indicate this to the user, many applications disable buttons and menu items so that the user knows whether it is possible to perform an action. A command can indicate whether an action is possible by implementing the <em>CanExecute</em> method. A button can subscribe to the <em>CanExecuteChanged</em> event and be disabled if CanExecute returns false or be enabled if CanExecute returns true.</p>
+<p>The semantics of a command can be consistent across applications and classes, but the logic of the action is specific to the particular object acted upon. The key combination CTRL+X invokes the Cut command in text classes, image classes, and Web browsers, but the actual logic for performing the Cut operation is defined by the application that performs the cut. A <em>RoutedCommand</em> enables clients to implement the logic. A text object may cut the selected text into the clipboard, while an image object may cut the selected image. When an application handles the <em>Executed</em> event, it has access to the target of the command and can take appropriate action depending on the target's type.</p>
+<div class="section" id="built-in-commands">
+<h1>Built-In Commands</h1>
+<p>A command is any object implementing the <em>ICommand</em> interface, which defines three simple members:</p>
+<ul class="simple">
+<li><em>Execute</em>: the method that executes the command-specific logic.</li>
+<li><em>CanExecute</em>: a method returning true if the command is enabled or false if it is disabled.</li>
+<li><em>CanExecuteChanged</em>: an event that is raised whenever the value of CanExecute changes.</li>
+</ul>
+<p>If you want to create Cut, Copy, and Paste commands, you could define and implement three classes implementing ICommand, find a place to store them (perhaps as static fields of your main Window), call Execute from relevant event handlers (when CanExecute returns true), and handle the CanExecuteChanged event to toggle the IsEnabled property on the relevant pieces of user interface. This doesn't sound much better than simply using events, however.</p>
+<p>Fortunately, controls such as Button, CheckBox, and MenuItem have logic to interact with any command on your behalf. They expose a simple Command property (of type ICommand). When set, these controls automatically call the command's Execute method (when CanExecute returns true) whenever their Click event is raised. In addition, they automatically keep their value for IsEnabled synchronized with the value of CanExecute by leveraging the CanExecuteChanged event. By supporting all this via a simple property assignment, all of this logic is available from XAML.</p>
+<p>Even more fortunately, NoesisGUI Framework defines a bunch of commands already, so you don't have to implement ICommand objects for Cut, Copy, and Paste and worry about where to store them, just use the predefined commands inside the <em>ApplicationCommands</em> structure.</p>
+<div class="highlight"><pre><span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="c1">/// Binds a RoutedCommand to the event handlers that implement the command.</span>
+<span class="c1">////////////////////////////////////////////////////////////////////////////////////////////////////</span>
+<span class="k">struct</span> <span class="n">NS_GUI_CORE_API</span> <span class="n">ApplicationCommands</span>
+<span class="p">{</span>
+    <span class="c1">/// Commands</span>
+    <span class="c1">//@{</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">CancelPrintCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">CloseCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">ContextMenuCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">CopyCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">CorrectionListCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">CutCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">DeleteCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">FindCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">HelpCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">NewCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">OpenCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">PasteCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">PrintCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">PrintPreviewCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">PropertiesCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">RedoCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">ReplaceCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">SaveCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">SaveAsCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">SelectAllCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">StopCommand</span><span class="p">;</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">RoutedUICommand</span><span class="o">*</span> <span class="n">UndoCommand</span><span class="p">;</span>
+    <span class="c1">//@}</span>
+
+    <span class="n">NS_DECLARE_REFLECTION</span><span class="p">(</span><span class="n">ApplicationCommands</span><span class="p">,</span> <span class="n">Core</span><span class="o">::</span><span class="n">NoParent</span><span class="p">)</span>
+<span class="p">};</span>
+</pre></div>
+<p>Each of these properties does not return a unique type implementing ICommand. Instead, they are all instances of <em>RoutedUICommand</em>, a class that not only implements ICommand, but supports bubbling just like a routed event.</p>
+<div class="highlight"><pre><span class="nt">&lt;Grid</span>
+  <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+  <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;DockPanel</span> <span class="na">Width=</span><span class="s">&quot;300&quot;</span> <span class="na">Height=</span><span class="s">&quot;300&quot;</span> <span class="na">Background=</span><span class="s">&quot;#505860&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Menu</span> <span class="na">DockPanel.Dock=</span><span class="s">&quot;Top&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;File&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;Edit&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;Copy&quot;</span> <span class="na">Command=</span><span class="s">&quot;ApplicationCommands.Copy&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;Cut&quot;</span> <span class="na">Command=</span><span class="s">&quot;ApplicationCommands.Cut&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;Paste&quot;</span> <span class="na">Command=</span><span class="s">&quot;ApplicationCommands.Paste&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/MenuItem&gt;</span>
+            <span class="nt">&lt;MenuItem</span> <span class="na">Header=</span><span class="s">&quot;Help&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/Menu&gt;</span>
+        <span class="nt">&lt;StackPanel</span> <span class="na">HorizontalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;TextBox</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;TextBox</span> <span class="na">Width=</span><span class="s">&quot;200&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,0&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/StackPanel&gt;</span>
+    <span class="nt">&lt;/DockPanel&gt;</span>
+<span class="nt">&lt;/Grid&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="custom-commands">
+<h1>Custom Commands</h1>
+<p>You can define new commands by inheriting from BaseCommand base class.</p>
+<div class="highlight"><pre><span class="cp">#include &lt;Noesis.h&gt;</span>
+<span class="cp">#include &lt;NsCore/ReflectionImplement.h&gt;</span>
+<span class="cp">#include &lt;NsCore/Delegate.h&gt;</span>
+<span class="cp">#include &lt;NsCore/TypeId.h&gt;</span>
+<span class="cp">#include &lt;NsGui/BaseCommand.h&gt;</span>
+
+<span class="k">class</span> <span class="nc">DelegateCommand</span><span class="o">:</span> <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Gui</span><span class="o">::</span><span class="n">BaseCommand</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">typedef</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">Delegate</span><span class="o">&lt;</span><span class="kt">void</span> <span class="p">()</span><span class="o">&gt;</span> <span class="n">ActionDelegate</span><span class="p">;</span>
+
+    <span class="n">DelegateCommand</span><span class="p">(</span><span class="k">const</span> <span class="n">ActionDelegate</span><span class="o">&amp;</span> <span class="n">action</span><span class="p">)</span><span class="o">:</span> <span class="n">BaseCommand</span><span class="p">(</span><span class="n">NsSymbol</span><span class="o">::</span><span class="n">Null</span><span class="p">(),</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// From ICommand</span>
+    <span class="c1">//@{</span>
+    <span class="n">NsBool</span> <span class="n">CanExecute</span><span class="p">(</span><span class="n">BaseComponent</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Execute</span><span class="p">(</span><span class="n">BaseComponent</span><span class="o">*</span> <span class="n">param</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">_action</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+<span class="nl">private:</span>
+    <span class="n">ActionDelegate</span> <span class="n">_action</span><span class="p">;</span>
+
+    <span class="n">NS_IMPLEMENT_INLINE_REFLECTION</span><span class="p">(</span><span class="n">DelegateCommand</span><span class="p">,</span> <span class="n">BaseCommand</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">NsMeta</span><span class="o">&lt;</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">TypeId</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;DelegateCommand&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>Here we implemented a simple command that invokes a delegate whenever command gets executed.</p>
+</div>
+<div class="section" id="mvvm-example-with-commands">
+<h1>MVVM example with Commands</h1>
+<p>In the <a class="reference external" href="http://en.wikipedia.org/wiki/Model_View_ViewModel">MVVM</a> pattern, there are two particular interfaces that are interesting to know:</p>
+<ul class="simple">
+<li><strong>INotifyPropertyChanged</strong>, an interface that lets ViewModels notify the UI when a property changes</li>
+<li><strong>ICommand</strong>, an interface that allows the UI to execute code on ViewModels</li>
+</ul>
+<p>The following example has a simple behavior: when the user presses a button, read the text in the input field and output &quot;Hello &lt;input&gt;&quot;. A simple implementation of the view might look like this:</p>
+<div class="highlight"><pre><span class="nt">&lt;UserControl</span>
+    <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;</span>
+    <span class="na">xmlns:x=</span><span class="s">&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;UserControl.Resources&gt;</span>
+        <span class="nt">&lt;ViewModel</span> <span class="na">x:Key=</span><span class="s">&quot;ViewModel&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/UserControl.Resources&gt;</span>
+
+    <span class="nt">&lt;Border</span> <span class="na">DataContext=</span><span class="s">&quot;{StaticResource ViewModel}&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;StackPanel</span> <span class="na">Orientation=</span><span class="s">&quot;Horizontal&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;TextBox</span> <span class="na">Margin=</span><span class="s">&quot;3&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;21&quot;</span> <span class="na">Width=</span><span class="s">&quot;100&quot;</span>
+                <span class="na">Text=</span><span class="s">&quot;{Binding Input, Mode=TwoWay}&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;Button</span> <span class="na">Content=</span><span class="s">&quot;Say Hello&quot;</span> <span class="na">Margin=</span><span class="s">&quot;3&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;21&quot;</span>
+                <span class="na">Command=</span><span class="s">&quot;{Binding SayHelloCommand}&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;TextBlock</span> <span class="na">Margin=</span><span class="s">&quot;3&quot;</span> <span class="na">VerticalAlignment=</span><span class="s">&quot;Center&quot;</span> <span class="na">FontSize=</span><span class="s">&quot;21&quot;</span>
+                <span class="na">Text=</span><span class="s">&quot;{Binding Output}&quot;</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/StackPanel&gt;</span>
+    <span class="nt">&lt;/Border&gt;</span>
+
+<span class="nt">&lt;/UserControl&gt;</span>
+</pre></div>
+<p>The ViewModel to support that logic looks like this:</p>
+<div class="highlight"><pre><span class="cp">#include &lt;Noesis.h&gt;</span>
+<span class="cp">#include &lt;NsCore/ReflectionImplement.h&gt;</span>
+<span class="cp">#include &lt;NsCore/BaseComponent.h&gt;</span>
+<span class="cp">#include &lt;NsCore/ISerializable.h&gt;</span>
+<span class="cp">#include &lt;NsCore/SerializationData.h&gt;</span>
+<span class="cp">#include &lt;NsCore/UnserializationData.h&gt;</span>
+<span class="cp">#include &lt;NsCore/Delegate.h&gt;</span>
+<span class="cp">#include &lt;NsCore/Symbol.h&gt;</span>
+<span class="cp">#include &lt;NsCore/String.h&gt;</span>
+<span class="cp">#include &lt;NsCore/TypeId.h&gt;</span>
+<span class="cp">#include &lt;NsGui/INotifyPropertyChange.h&gt;</span>
+
+<span class="n">NS_DECLARE_SYMBOL</span><span class="p">(</span><span class="n">Output</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ViewModel</span><span class="o">:</span> <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">BaseComponent</span><span class="p">,</span>
+    <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Gui</span><span class="o">::</span><span class="n">INotifyPropertyChange</span><span class="p">,</span>
+    <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">ISerializable</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ViewModel</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_command</span> <span class="o">=</span> <span class="o">*</span><span class="k">new</span> <span class="n">DelegateCommand</span><span class="p">(</span><span class="n">MakeDelegate</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">SayHello</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">ViewModel</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_destroyedEvent</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">GetInput</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_input</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">SetInput</span><span class="p">(</span><span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_input</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">GetOutput</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_output</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">SetOutput</span><span class="p">(</span><span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">output</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_output</span> <span class="o">!=</span> <span class="n">output</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_output</span> <span class="o">=</span> <span class="n">output</span><span class="p">;</span>
+            <span class="n">_changedEvent</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">NSS</span><span class="p">(</span><span class="n">Output</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DelegateCommand</span><span class="o">&gt;&amp;</span> <span class="n">GetSayHelloCommand</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_command</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// From INotifyPropertyChange</span>
+    <span class="c1">//@{</span>
+    <span class="n">PropertyChangedEvent</span><span class="o">&amp;</span> <span class="n">PropertyChanged</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_changedEvent</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">DestroyedDelegate</span><span class="o">&amp;</span> <span class="n">Destroyed</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_destroyedEvent</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+    <span class="c1">/// From ISerializable</span>
+    <span class="c1">//@{</span>
+    <span class="n">NsUInt32</span> <span class="n">GetVersion</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">SerializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">Serialize</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">);</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">Serialize</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="n">_output</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Unserialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">UnserializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">NsUInt32</span> <span class="n">version</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">version</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">data</span><span class="o">-&gt;</span><span class="n">Unserialize</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">);</span>
+            <span class="n">data</span><span class="o">-&gt;</span><span class="n">Unserialize</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="n">_output</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">NS_ERROR</span><span class="p">(</span><span class="s">&quot;Unknown version %u&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">PostUnserialize</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">SayHello</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">SetOutput</span><span class="p">(</span><span class="n">NsString</span><span class="o">::</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;Hello, %s&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">));</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DelegateCommand</span><span class="o">&gt;</span> <span class="n">_command</span><span class="p">;</span>
+
+    <span class="n">NsString</span> <span class="n">_input</span><span class="p">;</span>
+    <span class="n">NsString</span> <span class="n">_output</span><span class="p">;</span>
+
+    <span class="n">PropertyChangedEvent</span> <span class="n">_changedEvent</span><span class="p">;</span>
+    <span class="n">DestroyedDelegate</span> <span class="n">_destroyedEvent</span><span class="p">;</span>
+
+    <span class="n">NS_IMPLEMENT_INLINE_REFLECTION</span><span class="p">(</span><span class="n">ViewModel</span><span class="p">,</span> <span class="n">BaseComponent</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">NsMeta</span><span class="o">&lt;</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">TypeId</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;ViewModel&quot;</span><span class="p">);</span>
+        <span class="n">NsImpl</span><span class="o">&lt;</span><span class="n">INotifyPropertyChange</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="n">NsImpl</span><span class="o">&lt;</span><span class="n">ISerializable</span><span class="o">&gt;</span><span class="p">();</span>
+
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">GetInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">SetInput</span><span class="p">);</span>
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">GetOutput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">SetOutput</span><span class="p">);</span>
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;SayHelloCommand&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel</span><span class="o">::</span><span class="n">GetSayHelloCommand</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+<p>We made use of our previous Command implementation example.</p>
+<p>Probably, it will be a good idea to abstract all the Notifiable code to a base class that can be reused for other ViewModels</p>
+<div class="highlight"><pre><span class="cp">#include &lt;Noesis.h&gt;</span>
+<span class="cp">#include &lt;NsCore/ReflectionImplement.h&gt;</span>
+<span class="cp">#include &lt;NsCore/BaseComponent.h&gt;</span>
+<span class="cp">#include &lt;NsCore/ISerializable.h&gt;</span>
+<span class="cp">#include &lt;NsCore/SerializationData.h&gt;</span>
+<span class="cp">#include &lt;NsCore/UnserializationData.h&gt;</span>
+<span class="cp">#include &lt;NsCore/Delegate.h&gt;</span>
+<span class="cp">#include &lt;NsCore/Symbol.h&gt;</span>
+<span class="cp">#include &lt;NsCore/String.h&gt;</span>
+<span class="cp">#include &lt;NsCore/TypeId.h&gt;</span>
+<span class="cp">#include &lt;NsGui/INotifyPropertyChange.h&gt;</span>
+
+<span class="k">class</span> <span class="nc">BaseViewModel</span><span class="o">:</span> <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">BaseComponent</span><span class="p">,</span>
+    <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Gui</span><span class="o">::</span><span class="n">INotifyPropertyChange</span><span class="p">,</span>
+    <span class="k">public</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">ISerializable</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">BaseViewModel</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">BaseViewModel</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_destroyedEvent</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// From INotifyPropertyChanged</span>
+    <span class="c1">//@{</span>
+    <span class="n">PropertyChangedEvent</span><span class="o">&amp;</span> <span class="n">PropertyChanged</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_changedEvent</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">DestroyedDelegate</span><span class="o">&amp;</span> <span class="n">Destroyed</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_destroyedEvent</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+    <span class="c1">/// From ISerializable</span>
+    <span class="c1">//@{</span>
+    <span class="n">NsUInt32</span> <span class="n">GetVersion</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">SerializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Unserialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">UnserializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">NsUInt32</span> <span class="n">version</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">PostUnserialize</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+<span class="nl">protected:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">OnPropertyChanged</span><span class="p">(</span><span class="n">NsSymbol</span> <span class="n">propName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_changedEvent</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">propName</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="n">PropertyChangedEvent</span> <span class="n">_changedEvent</span><span class="p">;</span>
+    <span class="n">DestroyedDelegate</span> <span class="n">_destroyedEvent</span><span class="p">;</span>
+
+    <span class="n">NS_IMPLEMENT_INLINE_REFLECTION</span><span class="p">(</span><span class="n">BaseViewModel</span><span class="p">,</span> <span class="n">BaseComponent</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">NsImpl</span><span class="o">&lt;</span><span class="n">INotifyPropertyChange</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="n">NsImpl</span><span class="o">&lt;</span><span class="n">ISerializable</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">//NS_DECLARE_SYMBOL(Output)</span>
+
+<span class="k">class</span> <span class="nc">ViewModel2</span><span class="o">:</span> <span class="k">public</span> <span class="n">BaseViewModel</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ViewModel2</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">_command</span> <span class="o">=</span> <span class="o">*</span><span class="k">new</span> <span class="n">DelegateCommand</span><span class="p">(</span><span class="n">MakeDelegate</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">SayHello</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">ViewModel2</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">GetInput</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_input</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">SetInput</span><span class="p">(</span><span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">input</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_input</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">GetOutput</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_output</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">SetOutput</span><span class="p">(</span><span class="k">const</span> <span class="n">NsString</span><span class="o">&amp;</span> <span class="n">output</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_output</span> <span class="o">!=</span> <span class="n">output</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">_output</span> <span class="o">=</span> <span class="n">output</span><span class="p">;</span>
+            <span class="n">OnPropertyChanged</span><span class="p">(</span><span class="n">NSS</span><span class="p">(</span><span class="n">Output</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DelegateCommand</span><span class="o">&gt;&amp;</span> <span class="n">GetSayHelloCommand</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">_command</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// From ISerializable</span>
+    <span class="c1">//@{</span>
+    <span class="kt">void</span> <span class="n">Serialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">SerializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">Serialize</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">);</span>
+        <span class="n">data</span><span class="o">-&gt;</span><span class="n">Serialize</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="n">_output</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">Unserialize</span><span class="p">(</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">UnserializationData</span><span class="o">*</span> <span class="n">data</span><span class="p">,</span> <span class="n">NsUInt32</span> <span class="n">version</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">version</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">data</span><span class="o">-&gt;</span><span class="n">Unserialize</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">);</span>
+            <span class="n">data</span><span class="o">-&gt;</span><span class="n">Unserialize</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="n">_output</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">NS_ERROR</span><span class="p">(</span><span class="s">&quot;Unknown version %u&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">//@}</span>
+
+<span class="nl">private:</span>
+    <span class="kt">void</span> <span class="n">SayHello</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">SetOutput</span><span class="p">(</span><span class="n">NsString</span><span class="o">::</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;Hello, %s&quot;</span><span class="p">,</span> <span class="n">_input</span><span class="p">));</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&lt;</span><span class="n">DelegateCommand</span><span class="o">&gt;</span> <span class="n">_command</span><span class="p">;</span>
+
+    <span class="n">NsString</span> <span class="n">_input</span><span class="p">;</span>
+    <span class="n">NsString</span> <span class="n">_output</span><span class="p">;</span>
+
+    <span class="n">NS_IMPLEMENT_INLINE_REFLECTION</span><span class="p">(</span><span class="n">ViewModel2</span><span class="p">,</span> <span class="n">BaseViewModel</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">NsMeta</span><span class="o">&lt;</span><span class="n">Noesis</span><span class="o">::</span><span class="n">Core</span><span class="o">::</span><span class="n">TypeId</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;ViewModel2&quot;</span><span class="p">);</span>
+
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;Input&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">GetInput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">SetInput</span><span class="p">);</span>
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;Output&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">GetOutput</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">SetOutput</span><span class="p">);</span>
+        <span class="n">NsProp</span><span class="p">(</span><span class="s">&quot;SayHelloCommand&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ViewModel2</span><span class="o">::</span><span class="n">GetSayHelloCommand</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>SDK Structure</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="sdk-structure">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">SDK Structure</h1>
+
+<p>Noesis Engine physical structure is described in this section.</p>
+<img alt="EngineFolderTree.jpg" src="EngineFolderTree.jpg" />
+<p>What follows is a description of each of the sub-folders under NoesisSDK.</p>
+<div class="section" id="rdparty">
+<h1>/3rdParty</h1>
+<p>In this folder, external libraries and programs are stored.</p>
+<img alt="EngineFolderTree-3rdParty.jpg" src="EngineFolderTree-3rdParty.jpg" />
+<p>There is a directory for each library. It will contain a <em>ThirdParty.def</em> file that describes the package and defines rules to be used in Noesis Engine. If third party code is available, a folder named <em>Local</em> will contain an adapted copy of the library version used by Noesis Engine.</p>
+</div>
+<div class="section" id="bin">
+<h1>/Bin</h1>
+<p>Binaries are stored in this folder: executables, dynamic libraries and symbol files. The first time you deploy NoesisSDK, this folder is empty. Compiling a distribution will generate the proper binaries in this folder.</p>
+<p>There are no subdirectories inside this folder. All the configurations are stored at the same level. The configuration name is used as a prefix, for example:</p>
+<ul class="simple">
+<li>Debug.Kernel.dll</li>
+<li>Debug.Kernel.pdb</li>
+<li>Release.Kernel.dll</li>
+<li>Release.Kernel.pdb</li>
+</ul>
+<p>Binaries of different platforms must not be mixed. There must be a SDK for each platform, each one with its own Bin directory.</p>
+</div>
+<div class="section" id="src">
+<h1>/Src</h1>
+<p>This is the folder where all the source code can be found. It is structured in four folders: Meta, Packages, Templates and Tools.</p>
+<img alt="EngineFolderTree-Src.jpg" src="EngineFolderTree-Src.jpg" />
+</div>
+<div class="section" id="src-meta">
+<h1>/Src/Meta</h1>
+<p>Metadata for each package is located here. The metadata defines the information associated to a package. For example, name and description. Dependencies to other packages are defined here too. The metadata is vital for NsToolkit to work properly.</p>
+<p>The metadata directory have information for all the packages although you are working with only a subset of them in your distribution.</p>
+</div>
+<div class="section" id="src-packages">
+<h1>/Src/Packages</h1>
+<p>This is the folder where all the packages are stored. For each module there is a directory and inside it, a directory for each package. Packages are structured in two folders:</p>
+<ul class="simple">
+<li><strong>Include</strong>: contains public headers for a package. These are the files that other packages depending on this one can use.</li>
+<li><strong>Src</strong>: contains private source and header files for a package. Other packages will not be able to use directly this files.</li>
+</ul>
+</div>
+<div class="section" id="src-templates">
+<h1>/Src/Templates</h1>
+<p>Templates for each kind of source file are located here. You can use those files instead of starting from scratch.</p>
+</div>
+<div class="section" id="src-tools">
+<h1>/Src/Tools</h1>
+<p>Applications that are not considered packages and that are useful for developing applications with NoesisSDK are stored here. NoesisConsole is an example of tool located here.</p>
+</div>
+<div class="section" id="data">
+<h1>/Data</h1>
+<p>Data files are stored inside this directory. Data is structured like source code, it contains a Meta folder and a Packages folder.</p>
+<img alt="EngineFolderTree-Data.jpg" src="EngineFolderTree-Data.jpg" />
+</div>
+<div class="section" id="data-meta">
+<h1>/Data/Meta</h1>
+<p>The same as in Src.</p>
+</div>
+<div class="section" id="data-packages">
+<h1>/Data/Packages</h1>
+<p>Packages folder contains a subdirectory for each module and inside it, a directory for each data package. Data packages are structured in two folders: Content and DB.</p>
+<ul class="simple">
+<li><strong>Content</strong>: contains all data sources: .tga, .dds, .dae, etc.</li>
+<li><strong>DB/Make</strong>: the subdirectory /Make contains a file for each data source with build instructions to generate the final application resources.</li>
+</ul>
+</div>
+<div class="section" id="include">
+<h1>/Include</h1>
+<p>This is where you can find the includes that you are using in a given distribution. NsToolkit will copy the needed include files from each used package to this directory. This directory is useful to external applications that want to use the SDK.</p>
+<p>NsToolkit does not yet generate this information. So the only file you will find in this directory is Noesis.h</p>
+</div>
+<div class="section" id="lib">
+<h1>/Lib</h1>
+<p>Link libraries are generated in this directory. There is a folder for each configuration.</p>
+</div>
+<div class="section" id="config">
+<h1>/Config</h1>
+<p>Each build configuration is defined here. For each configuration there is a folder with files describing how to configure a project for each platform. NsToolkit uses this information to generate the projects: makefiles, visual studio projects, etc.</p>
+</div>
+<div class="section" id="nstoolkit">
+<h1>/NsToolkit</h1>
+<p>NsToolkit, a tool implemented in Python, is the heart of Noesis Engine. NSToolkit is used to generate distributions, update source code, compile, check for dependencies, etc.</p>
+<p>Apart from the script files, in this directory there is a vital file: NsToolkit.conf. This file is used to configure NSToolkit and to define the set of root packages that define a distribution. NsToolkit.conf.sample can be used as a template to create NsToolkit.conf</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

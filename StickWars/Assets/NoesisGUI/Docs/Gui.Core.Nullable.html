@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Nullables</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="nullables">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Nullables</h1>
+
+<p>A Nullable is a class that can represent the normal range of values for its underlying value type, plus an additional null value. For example, Nullable&lt;NsBool&gt; can be assigned a boolean value or it can be assigned the null value, meaning &quot;not assigned&quot;.</p>
+<p>Nullables have the following main methods:</p>
+<blockquote>
+<ul class="simple">
+<li>HasValue: indicates if a valid value or a null is stored</li>
+<li>GetValue: gets the stored value for its underlying type. This method assumes that a valid value is stored, so the programmer can check before calling it if HasValue is true.</li>
+</ul>
+</blockquote>
+<p>Nullables can be constructed from an undelying type value, and can be compared and assigned against the type value or nullables of the same type.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span class="n">Nullable</span><span class="o">&lt;</span><span class="n">NsInt</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">;</span>
+<span class="n">a</span><span class="p">.</span><span class="n">HasValue</span><span class="p">();</span> <span class="c1">// Returns false</span>
+
+<span class="n">Nullable</span><span class="o">&lt;</span><span class="n">NsInt</span><span class="o">&gt;</span> <span class="n">b</span><span class="p">(</span><span class="mi">1234</span><span class="p">);</span>
+<span class="n">b</span><span class="p">.</span><span class="n">HasValue</span><span class="p">();</span> <span class="c1">// Returns true</span>
+<span class="n">b</span><span class="p">.</span><span class="n">GetValue</span><span class="p">();</span> <span class="c1">// Returns 1234</span>
+<span class="n">b</span> <span class="o">==</span> <span class="mi">1234</span><span class="p">;</span> <span class="c1">// true</span>
+<span class="n">b</span> <span class="o">!=</span> <span class="mi">1234</span><span class="p">);</span> <span class="c1">// false</span>
+<span class="n">b</span> <span class="o">==</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// false</span>
+
+<span class="n">Nullable</span><span class="o">&lt;</span><span class="n">NsInt</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">;</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">;</span>
+<span class="n">c</span> <span class="o">==</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// true</span>
+</pre></div>
+<div class="section" id="type-converter">
+<h1>Type Converter</h1>
+<p>Nullables have an associated <a class="reference external" href="Core.TypeConverter.TypeConverter.html">Type Converter</a> called <a class="reference external" href="Gui.Core.NullableConverter.html">Nullable Converter</a> to allow converting between types</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

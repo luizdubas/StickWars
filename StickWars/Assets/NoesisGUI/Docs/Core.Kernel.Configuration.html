@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>Engine Configuration</title>
+<link rel="stylesheet" href="style/noesis.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="engine-configuration">
+<div>
+    <div class="headerbg">
+        <center><img src="NoesisLogo.png" class="headerimg"/></center>
+    </div>
+    <div class="headermenu">
+        <a href="Gui.Core.Index.html" class="headerlink">Documentation Index</a>
+    </div>
+</div>
+<h1 class="title">Engine Configuration</h1>
+
+<p>NoesisEngine has different levels of configuration asociated with the different layers of the engine.</p>
+<div class="section" id="kernel">
+<h1>Kernel</h1>
+<p>Kernel and kernel modules are configured through two complementary methods: a configuration file and the application command line.</p>
+<p>Configuration file should be considered as a file for debug. So it should activate debug behavior. It is expected that this file is not going to be used in final versions. At the time the configuration file is readed, there is no filesystem ready, so this file cannot be hidden inside a package. It is compatible with command line options. Some of the options can be set as command line options without writing a configuration file. Command line options have higher priority than configuration file options.</p>
+<div class="section" id="configuration-file-specifications">
+<h2>Configuration File Specifications</h2>
+<p>The configuration file is optional and must be placed next to the executable file and must be named with the name of the executable followed by .config (sample.exe -&gt; sample.config).
+Options are specified as <em>option_name = option_value</em> lines.</p>
+<p>Valid examples:</p>
+<div class="highlight"><pre>User = John
+UserName = &quot;John Smith&quot;
+Layout.Window.Width = 800
+Layout.Window.Height = 600
+Layout.Window.FullScreen = False
+</pre></div>
+<p>Invalid examples:</p>
+<div class="highlight"><pre>UserName = John Smith
+UserName = &quot;John Smith
+User Name = &quot;John Smith&quot;
+&quot;User Name&quot; = &quot;John Smith&quot;
+</pre></div>
+</div>
+<div class="section" id="command-line-specifications">
+<h2>Command Line Specifications</h2>
+<p>Command line must contain executable file name as the first argument (althoug an empty command line is also valid). Options are specified as <em>-option_name option_value</em> pairs.</p>
+<p>Valid example:</p>
+<div class="highlight"><pre>sample.exe -User John -UserName &quot;John Smith&quot; -Layout.Window.Width 800 -Layout.Window.Height 600
+</pre></div>
+<p>Invalid examples:</p>
+<div class="highlight"><pre>-User John
+sample.exe -UserName John Smith
+sample.exe -UserName &quot;John Smith
+sample.exe -&quot;User Name&quot; &quot;John Smith&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="kernelsystems">
+<h1>KernelSystems</h1>
+<p>A <a class="reference external" href="Core.Kernel.KernelSystems.html">kernel system</a> could be configured through the ConfigSystem. Settings can be added to the ConfigSystem before a kernel system is initialized that can be used by system initialization.</p>
+<p>TODO: Ver como van a registrarse los comandos</p>
+<p>TODO: BaseKernelSystem creara automaticamente un dominio en el ConfigSystem para cada sistema.</p>
+</div>
+<div class="section" id="script">
+<h1>Script</h1>
+<p>TODO</p>
+</div>
+<br/>
+<div>
+    <div class="headerbg">
+        <div class="footertext" style="height:32px; background:#262626;">
+            &nbsp;<br/>2013 (C) Noesis Technologies
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
