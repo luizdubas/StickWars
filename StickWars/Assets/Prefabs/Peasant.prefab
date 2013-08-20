@@ -603,6 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 348963a5c482fcf4ab96fb6bc595325b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _healthBarTexture: {fileID: 2800000, guid: 6d623d74261df51438d9c32454d93859, type: 3}
 --- !u!137 &13700000
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

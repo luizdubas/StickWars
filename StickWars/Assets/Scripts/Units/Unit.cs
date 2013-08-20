@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour, IUnit
 	bool _selected;
 	IUnitClass _unitClass;
 	Player _owner;
+	public Texture2D _healthBarTexture;
 	
 	public Player Owner {
 		get {
@@ -56,6 +57,14 @@ public class Unit : MonoBehaviour, IUnit
 		_unitClass = new PeasantClass();
 		_hp = _unitClass.HP;
 		Debug.Log("Unit initialized: "+_id+" "+_unitClass.Name);
+	}
+
+	public void OnGUI(){
+		Vector3 pos = Camera.main.WorldToViewportPoint (this.transform.position);
+		Debug.Log ("pos x"+pos.x+" pos y "+pos.y+" pos z  "+pos.z);
+		Vector3 pos2 = Camera.main.WorldToScreenPoint (this.transform.position);
+		Debug.Log ("pos x"+pos2.x+" pos y "+pos2.y+" pos z  "+pos2.z);
+		GUI.DrawTexture (new Rect (pos2.x, pos2.y, 50, 15), _healthBarTexture);
 	}
 	
 	#region IUnit implementation

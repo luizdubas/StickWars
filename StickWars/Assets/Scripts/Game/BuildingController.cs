@@ -24,7 +24,8 @@ public class BuildingController : MonoBehaviour
 			
 			if( Physics.Raycast( ray, out hit) ){
 				if(hit.collider.gameObject.tag == "Building"){
-					Debug.Log ("Acertou construçao");
+					AbstractBuilding building = hit.collider.gameObject.GetComponent<AbstractBuilding>();
+					if(building != null) building.ShowOptions();
 				}
 			}	
 		}

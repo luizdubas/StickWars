@@ -1,30 +1,32 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PeasantHouse : MonoBehaviour, IBuilding 
+public class PeasantHouse : AbstractBuilding
 {
 	int _unitNumber;
-	public GameObject _unitToCreate;
 	Queue<string> _peasantQueue;
 	bool _showGUI;
 	Player _owner;
 
-	public int HP {
+	public GameObject _unitToCreate;
+	public GUISkin _skin;
+
+	public override int HP {
 		get {
 			return 200;
 		}
 	}
 	
-	public Player Owner{
+	public override Player Owner{
 		get { return _owner; }
 		set { _owner = value; }
 	}
 	
-	public Vector3 BuildingPosition{
+	public override Vector3 BuildingPosition{
 		get { return this.gameObject.transform.position; }
 	}
 	
-	public GameObject ParentObject{
+	public override GameObject ParentObject{
 		get { return this.gameObject; }
 	}
 	
@@ -46,14 +48,29 @@ public class PeasantHouse : MonoBehaviour, IBuilding
 		}*/
 	}
 	
+	public void OnGUI()
+	{
+		GUI.skin = _skin;
+		GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, new Vector3 (Screen.width / 1280f, Screen.height / 768f, 1));
+		if (_showGUI) {			
+			if(GUI.Button(new Rect(20, 40f, 128, 128),"",_skin.GetStyle("AddPeasant"))){
+				CreateUnit();
+			}	
+			if(GUI.Button(new Rect(200, 40f, 128, 128),"",_skin.GetStyle("CancelAction"))){
+				_showGUI = false;
+			}
+		}
+	}
+	
 	#endregion
 	
 	#region IBuilding implementation
-	public void ShowOptions () {
+	public override void ShowOptions () {
+		Debug.Log("HERE!! PeasantHouse->ShowOptions()");
 		_showGUI = true;
 	}
 
-	public IUnit CreateUnit ()
+	public override IUnit CreateUnit ()
 	{
 		Vector3 position = new Vector3(BuildingPosition.x,0,BuildingPosition.z + 34);
 		GameObject peasant = GameObject.Instantiate( _unitToCreate, 
@@ -69,14 +86,7 @@ public class PeasantHouse : MonoBehaviour, IBuilding
 		return peasantUnit;
 	}
 
-	public void OnGUI()
-	{
-		if (_showGUI) {
-
-		}
-	}
-
-	public IUnit UpgradeUnit ()
+	public override IUnit UpgradeUnit ()
 	{
 		return null;
 	}
