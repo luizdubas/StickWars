@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 05dab5e22e3789d4bb4091639d93d388
+guid: c655ee2df5a8d5747aba7bd6fd313cce
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
@@ -7,7 +7,7 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: PeasantHouse
+    4300000: Plane
     9500000: //RootNode
   materials:
     importMaterials: 1

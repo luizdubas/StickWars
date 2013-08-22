@@ -13,7 +13,7 @@ GameObject:
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
   - 64: {fileID: 6400000}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GoldSource
   m_TagString: Resource
   m_Icon: {fileID: 0}

@@ -40,7 +40,7 @@ public interface IUnit
 {
 	int ID { get; }
 	Player Owner { get; set; }
-	bool Selected { get; }
+	bool Selected { get; set; }
 	GameObject ParentObject { get; }
 	int HP { get; set; }
 	IUnitClass UnitClass { get; set; }
@@ -52,7 +52,7 @@ public interface IUnit
 	void AttackBuilding(IBuilding building);
 	void Build(IBuilding building);
 	void Destroy(IBuilding building);
-	void OnSelected();
+	void SetColor(Color playerColor);
 }
 
 public interface IUnitClass
@@ -62,6 +62,7 @@ public interface IUnitClass
 	int Attack { get; }
 	int Defense { get; }
 	int AttackRange { get; }
+	int AttackSpeed { get; }
 	int MovementSpeed { get; }
 	int SecondsToCreate { get; }
 	bool CanBuild { get; }

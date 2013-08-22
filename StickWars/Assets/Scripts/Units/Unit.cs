@@ -5,11 +5,13 @@ public class Unit : MonoBehaviour, IUnit
 {
 	public static int UNIT_ID = 0;
 	int _id;
-	int _hp;
+	public int _hp;
 	bool _selected;
 	IUnitClass _unitClass;
 	Player _owner;
-	public Texture2D _healthBarTexture;
+	LineRenderer _lineRenderer;
+	GameObject _selectionIndicator;
+	MatchController _controller;
 	
 	public Player Owner {
 		get {
@@ -28,6 +30,12 @@ public class Unit : MonoBehaviour, IUnit
 	
 	public bool Selected{
 		get { return _selected; }
+		set { 
+			_selected = value;
+			if (Owner.IsMain) {
+				_selectionIndicator.SetActive (_selected);
+			}
+		}
 	}
 	
 	public GameObject ParentObject{
@@ -59,12 +67,29 @@ public class Unit : MonoBehaviour, IUnit
 		Debug.Log("Unit initialized: "+_id+" "+_unitClass.Name);
 	}
 
-	public void OnGUI(){
-		Vector3 pos = Camera.main.WorldToViewportPoint (this.transform.position);
-		Debug.Log ("pos x"+pos.x+" pos y "+pos.y+" pos z  "+pos.z);
-		Vector3 pos2 = Camera.main.WorldToScreenPoint (this.transform.position);
-		Debug.Log ("pos x"+pos2.x+" pos y "+pos2.y+" pos z  "+pos2.z);
-		GUI.DrawTexture (new Rect (pos2.x, pos2.y, 50, 15), _healthBarTexture);
+	public void Awake(){
+		_lineRenderer = this.gameObject.GetComponent<LineRenderer> ();
+		foreach(Transform t in this.gameObject.transform){
+			if(t.name == "selection"){
+				_selectionIndicator = t.gameObject;
+				break;
+			}
+		}
+		_selectionIndicator.SetActive (false);
+	}
+
+	public void Update()
+	{
+		if (_controller == null) {
+			_controller = (MatchController) GameObject.FindObjectOfType(typeof(MatchController));
+			//DEBUG DELETE LATER
+			if (Owner == null) {
+				Owner = _controller.ControlledPlayer;
+				SetColor(Owner._stickColor);
+			}
+		}
+		float percent = _hp / (float)_unitClass.HP;
+		_lineRenderer.SetWidth (percent, percent);
 	}
 	
 	#region IUnit implementation
@@ -107,11 +132,22 @@ public class Unit : MonoBehaviour, IUnit
 	{
 		throw new NotImplementedException ();
 	}
-	
-	public void OnSelected ()
-	{
-		_selected = true;
+
+	public void SetColor(Color playerColor){
+		foreach(Transform t in this.gameObject.transform){
+			if(t.name == "peasant"){
+				foreach(Transform modelChildren in t.transform){
+					if(modelChildren.name == "Body"){
+						modelChildren.gameObject.renderer.material.color = playerColor;
+					}else if(modelChildren.name == "Head"){
+						modelChildren.gameObject.renderer.material.SetColor("_OutlineColor", playerColor);
+					}
+				}
+				break;
+			}
+		}
 	}
+
 	#endregion
 }
 

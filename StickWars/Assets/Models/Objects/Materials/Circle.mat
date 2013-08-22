@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Circle
-  m_Shader: {fileID: 4800000, guid: 054a31a99d11e49d110086ba44295342, type: 3}
+  m_Shader: {fileID: 4800000, guid: b36dd916dc0283d429049f72f55935ab, type: 3}
   m_ShaderKeywords: []
   m_SavedProperties:
     serializedVersion: 2
@@ -31,12 +31,28 @@ Material:
         first:
           name: _Outline
         second: .0125223873
+      data:
+        first:
+          name: _RimMin
+        second: 0
+      data:
+        first:
+          name: _RimMax
+        second: .326923102
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: .0164632071, g: 0, b: .404411793, a: 1}
+        second: {r: .00897992961, g: 0, b: .220588207, a: 1}
       data:
         first:
           name: _OutlineColor
         second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _SColor
+        second: {r: 0, g: .0017748411, b: .0367646813, a: 1}
+      data:
+        first:
+          name: _RimColor
+        second: {r: .29411763, g: .29411763, b: .29411763, a: .152941182}

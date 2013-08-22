@@ -35,6 +35,12 @@ public class PeasantClass : IUnitClass
 			return 1;
 		}
 	}
+	
+	public int AttackSpeed {
+		get {
+			return 2;
+		}
+	}
 
 	public int MovementSpeed {
 		get {

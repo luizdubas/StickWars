@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   - 65: {fileID: 6500000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PeasantCastle
   m_TagString: Building
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 687525dd853ff0e408220d289654a89d, type: 2}
+  - {fileID: 2100000, guid: 7d408be2f862a2b44969bd32babce60e, type: 2}
   - {fileID: 2100000, guid: da988777eafdd4b448e27415780d509c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitToCreate: {fileID: 0}
+  _skin: {fileID: 11400000, guid: d8d4737e064f93a4f81d8f807a8f95a4, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

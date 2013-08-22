@@ -1,11 +1,16 @@
 fileFormatVersion: 2
-guid: 6d623d74261df51438d9c32454d93859
+guid: e932c54d6500f9c46b63c4d9d03387d2
+labels:
+- toon
+- toonygooch
+- shader
+- ramp
 TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
-    linearTexture: 1
+    enableMipMap: 1
+    linearTexture: 0
     correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
@@ -20,17 +25,17 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: -1
     mipBias: -1
     wrapMode: 1
-  nPOTScale: 0
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  alphaIsTransparency: 1
-  textureType: 2
+  alphaIsTransparency: 0
+  textureType: -1
   buildTargetSettings: []
   userData: 

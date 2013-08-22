@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: castleTowers
-  m_Shader: {fileID: 4800000, guid: 9ce107479d11178d11005b9844295342, type: 3}
+  m_Shader: {fileID: 4800000, guid: 90402f5bce1d4844db387eef6ece2606, type: 3}
   m_ShaderKeywords: []
   m_SavedProperties:
     serializedVersion: 2
@@ -37,13 +37,25 @@ Material:
       data:
         first:
           name: _Outline
-        second: .00493570603
+        second: .00790642854
+      data:
+        first:
+          name: _RimPower
+        second: 2.11538458
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: .800000012, g: .800000012, b: .800000012, a: 1}
+        second: {r: .517647088, g: .517647088, b: .517647088, a: 1}
       data:
         first:
           name: _OutlineColor
         second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _SColor
+        second: {r: 0, g: 0, b: 0, a: 1}
+      data:
+        first:
+          name: _RimColor
+        second: {r: .800000012, g: .800000012, b: .800000012, a: .600000024}
