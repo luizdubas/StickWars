@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
   - 120: {fileID: 12000000}
+  - 65: {fileID: 6500000}
   m_Layer: 10
   m_Name: Peasant
   m_TagString: Unit
@@ -251,7 +252,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400032}
   - 137: {fileID: 13700000}
-  - 64: {fileID: 6400000}
   m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
@@ -268,7 +268,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400034}
   - 137: {fileID: 13700002}
-  - 64: {fileID: 6400002}
   m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
@@ -601,32 +600,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100040}
   m_Mesh: {fileID: 4300000, guid: c655ee2df5a8d5747aba7bd6fd313cce, type: 3}
---- !u!64 &6400000
-MeshCollider:
+--- !u!65 &6500000
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100032}
+  m_GameObject: {fileID: 100000}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 1
-  m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: d313d022130310c4185ff83632cebce3, type: 3}
---- !u!64 &6400002
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100034}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_SmoothSphereCollisions: 1
-  m_Convex: 0
-  m_Mesh: {fileID: 4300002, guid: d313d022130310c4185ff83632cebce3, type: 3}
+  m_Size: {x: 5, y: 14, z: 5}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!95 &9500000
 Animator:
   m_ObjectHideFlags: 1

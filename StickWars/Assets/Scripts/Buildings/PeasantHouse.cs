@@ -8,6 +8,9 @@ public class PeasantHouse : AbstractBuilding
 	bool _showGUI;
 	Player _owner;
 	int _createdUnits; //ONLY FOR DEBUG // DELETE LATER!!!!!!
+	int _secondsToWait = 1;
+	float _timer = 0;
+	bool _creatingUnit = false;
 
 	public GameObject _unitToCreate;
 	public GUISkin _skin;
@@ -42,6 +45,18 @@ public class PeasantHouse : AbstractBuilding
 	
 	// Update is called once per frame
 	void Update () {
+		if (_creatingUnit) {
+			_timer -= Time.fixedDeltaTime;
+			Debug.Log ("creating timer: "+_timer);
+			if(_timer <= 0){
+				CreateUnit ();
+				if(_peasantQueue.Count > 0){
+					_timer = _secondsToWait;
+				}else{
+					_creatingUnit = false;
+				}
+			}
+		}
 		//DEBUG DELETE LATER
 		if (Owner == null) {
 			MatchController matchController =(MatchController) GameObject.FindObjectOfType(typeof(MatchController));
@@ -72,10 +87,11 @@ public class PeasantHouse : AbstractBuilding
 	}
 
 	private void QueueUnit(){
+		if (!_creatingUnit)
+			_timer = _secondsToWait;
 		_peasantQueue.Enqueue("peasant"+_unitNumber);
 		_unitNumber++;
-		//esperar o numero de segundo para criar e ai sim criar a unidade
-		CreateUnit();
+		_creatingUnit = true;
 	}
 
 	public override IUnit CreateUnit ()

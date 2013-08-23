@@ -68,7 +68,6 @@ public class Player
 				ClearSelectedUnits();
 				_selectionEnded = false;
 				if(hit.collider.GetComponent<Unit>() != null){
-					hit.collider.GetComponent<Unit>().Selected = true;
 					_selectedUnitsToSave = new RaycastHit[1];
 					_selectedUnitsToSave[0] = hit;
 				}
@@ -83,15 +82,10 @@ public class Player
 		if( Input.GetButtonUp("Fire1") ){
 			_selectionEnded = true;
 			screenSelectionStartPoint = Input.mousePosition;
-			if(_multiSelection){
-				SaveSelectedUnits();
-			}
-			else if(_selectedUnitsToSave.Length == 1){
-				_selectedUnits.Add(_selectedUnitsToSave[0].collider.GetComponent<Unit>());
-			}
+			SaveSelectedUnits();
 			_selectedUnitsToSave = new RaycastHit[0];
-			_selectionBox.localScale = new Vector3(0,0,0);
-			_selectionBox.position = new Vector3(0,0,0);
+			_selectionBox.localScale = new Vector3(1,1,1);
+			_selectionBox.position = new Vector3(10,1000,-10);
 		}
 		
 	}
@@ -127,30 +121,26 @@ public class Player
 	void SaveSelectedUnits(){
 		ClearSelectedUnits ();
 		_selectionEnded = true;
-		foreach(RaycastHit hit in _selectedUnitsToSave){
-			if(hit.collider.GetComponent<Unit>() == null) continue;
-			_selectedUnits.Add (hit.transform.GetComponent<Unit>());
-			hit.transform.GetComponent<Unit>().Selected = true;
+		if (_selectedUnitsToSave != null && _selectedUnitsToSave.Length > 0) {
+			Debug.Log ("Saving!!!");
+			foreach (RaycastHit hit in _selectedUnitsToSave) {
+				if (hit.collider.GetComponent<Unit> () == null)
+						continue;
+				_selectedUnits.Add (hit.transform.GetComponent<Unit> ());
+				hit.transform.GetComponent<Unit> ().Selected = true;
+			}
 		}
 	}
 
 	void PreviewSelectedUnits(){
 		_multiSelection = (Vector2.Distance(screenSelectionStartPoint, Input.mousePosition) > _minMouseDrag);
 		if (_multiSelection) {
-			Debug.Log ("Trying to multiselect");
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
 			if(Physics.Raycast(ray, out hit, Mathf.Infinity, 1<<(int)LayerConstants.GROUND)){
 				_selectionBox.localScale = new Vector3(100,1,hit.point.z-sceneSelectionStartPoint.z);
 				_selectionBox.position = new Vector3(sceneSelectionStartPoint.x, sceneSelectionStartPoint.y, sceneSelectionStartPoint.z+(_selectionBox.lossyScale.z/2));
 				_selectedUnitsToSave = _selectionBox.rigidbody.SweepTestAll(new Vector3(hit.point.x-sceneSelectionStartPoint.x,0,0), Mathf.Abs(hit.point.x-sceneSelectionStartPoint.x));
-				for(var i=0;i<_selectedUnitsToSave.Length;i++){
-					//Test if every collider is a Unit and on the same Team
-					if(_selectedUnitsToSave[i].collider.GetComponent<Unit>() == null){return;}
-					if(_selectedUnitsToSave[i].collider.GetComponent<Unit>().Owner == this){
-						_selectedUnitsToSave[i].collider.GetComponent<Unit>().Selected = true;
-					}
-				}
 			}
 		}
 	}
