@@ -59,7 +59,6 @@ public class Player
 		if( Input.GetButtonDown("Fire1") ){
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-			
 			if(Physics.Raycast(ray, out hit, Mathf.Infinity, 1<<(int)LayerConstants.GROUND)){
 				sceneSelectionStartPoint = hit.point;
 			}

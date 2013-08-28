@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class PeasantHouse : AbstractBuilding
 {
 	int _unitNumber;
-	Queue<string> _peasantQueue;
+	Queue<PeasantQueueItem> _peasantQueue;
 	bool _showGUI;
 	Player _owner;
 	int _createdUnits; //ONLY FOR DEBUG // DELETE LATER!!!!!!
@@ -14,6 +14,7 @@ public class PeasantHouse : AbstractBuilding
 
 	public GameObject _unitToCreate;
 	public GUISkin _skin;
+	public GameObject _birthPointIndicator;
 
 	public override int HP {
 		get {
@@ -38,7 +39,7 @@ public class PeasantHouse : AbstractBuilding
 
 	// Use this for initialization
 	void Start () {
-		_peasantQueue = new Queue<string>();
+		_peasantQueue = new Queue<PeasantQueueItem>();
 		_unitNumber = 0;
 		_createdUnits = 0;
 	}
@@ -48,6 +49,9 @@ public class PeasantHouse : AbstractBuilding
 		if (_creatingUnit) {
 			_timer -= Time.fixedDeltaTime;
 			Debug.Log ("creating timer: "+_timer);
+			PeasantQueueItem item = _peasantQueue.Peek ();
+			float percent = 1 - _timer;
+			//item.BirthPoint.GetComponent<ParticleSystem> ().particleEmitter = (8 * percent) + 2;
 			if(_timer <= 0){
 				CreateUnit ();
 				if(_peasantQueue.Count > 0){
@@ -82,14 +86,17 @@ public class PeasantHouse : AbstractBuilding
 	
 	#region IBuilding implementation
 	public override void ShowOptions () {
-		Debug.Log("HERE!! PeasantHouse->ShowOptions()");
 		_showGUI = true;
 	}
 
 	private void QueueUnit(){
 		if (!_creatingUnit)
 			_timer = _secondsToWait;
-		_peasantQueue.Enqueue("peasant"+_unitNumber);
+		Vector3 position = new Vector3(BuildingPosition.x + (5 * _unitNumber),0,BuildingPosition.z + 34);
+		PeasantQueueItem item = new PeasantQueueItem ("peasant" + _unitNumber, position);
+		position.y = -6;
+		item.BirthPoint = GameObject.Instantiate(_birthPointIndicator, position, Quaternion.Euler (new Vector3 (270, 0, 0)) ) as GameObject;
+		_peasantQueue.Enqueue(item);
 		_unitNumber++;
 		_creatingUnit = true;
 	}
@@ -99,12 +106,12 @@ public class PeasantHouse : AbstractBuilding
 		Vector3 position = new Vector3(BuildingPosition.x + (5 * _createdUnits),0,BuildingPosition.z + 34);
 		GameObject peasant = GameObject.Instantiate( _unitToCreate, 
 				position, Quaternion.identity ) as GameObject;
-		peasant.name = _peasantQueue.Dequeue();
+		PeasantQueueItem item = _peasantQueue.Dequeue();
+		GameObject.DestroyImmediate (item.BirthPoint);
+		peasant.name = item.Name;
 		Unit peasantUnit = peasant.GetComponent<Unit>();
-		//Debug.Log("Peasant is null? "+(peasantUnit == null));
 		if(peasantUnit != null)
 		{
-			//Debug.Log("Here!!!");
 			peasantUnit.Owner = Owner;
 			peasantUnit.SetColor(Owner._stickColor);
 		}
@@ -118,5 +125,17 @@ public class PeasantHouse : AbstractBuilding
 	}
 
 	#endregion
+}
+
+public struct PeasantQueueItem{
+	public string Name;
+	public Vector3 Position;
+	public GameObject BirthPoint;
+
+	public PeasantQueueItem(string name, Vector3 position){
+		Name = name;
+		Position = position;
+		BirthPoint = null;
+	}
 }
 
