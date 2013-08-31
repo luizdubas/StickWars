@@ -9,6 +9,7 @@ public class Player
 	private List<IBuilding> _buildings = new List<IBuilding>();
 	private int _sticks;
 	private int _circles;
+	private int _gold;
 	private bool _isHuman;
 	private bool _isMain;
 	public Color _stickColor;
@@ -160,6 +161,18 @@ public class Player
 
 	public List<IUnit> SelectedUnits{
 		get { return _selectedUnits; }
+	}
+
+	public int Sticks{
+		get { return _sticks; }
+	}
+
+	public int Circles{
+		get { return _circles; }
+	}
+
+	public int Gold{
+		get { return _gold; }
 	}
 
 	#endregion

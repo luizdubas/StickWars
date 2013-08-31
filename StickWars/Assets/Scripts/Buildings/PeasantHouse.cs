@@ -92,9 +92,8 @@ public class PeasantHouse : AbstractBuilding
 	private void QueueUnit(){
 		if (!_creatingUnit)
 			_timer = _secondsToWait;
-		Vector3 position = new Vector3(BuildingPosition.x + (5 * _unitNumber),0,BuildingPosition.z + 34);
+		Vector3 position = new Vector3(BuildingPosition.x + (5 * _unitNumber),8,BuildingPosition.z + 34);
 		PeasantQueueItem item = new PeasantQueueItem ("peasant" + _unitNumber, position);
-		position.y = -6;
 		item.BirthPoint = GameObject.Instantiate(_birthPointIndicator, position, Quaternion.Euler (new Vector3 (270, 0, 0)) ) as GameObject;
 		_peasantQueue.Enqueue(item);
 		_unitNumber++;
@@ -103,10 +102,9 @@ public class PeasantHouse : AbstractBuilding
 
 	public override IUnit CreateUnit ()
 	{
-		Vector3 position = new Vector3(BuildingPosition.x + (5 * _createdUnits),0,BuildingPosition.z + 34);
-		GameObject peasant = GameObject.Instantiate( _unitToCreate, 
-				position, Quaternion.identity ) as GameObject;
 		PeasantQueueItem item = _peasantQueue.Dequeue();
+		GameObject peasant = GameObject.Instantiate( _unitToCreate, 
+		                                            item.Position, Quaternion.identity ) as GameObject;
 		GameObject.DestroyImmediate (item.BirthPoint);
 		peasant.name = item.Name;
 		Unit peasantUnit = peasant.GetComponent<Unit>();

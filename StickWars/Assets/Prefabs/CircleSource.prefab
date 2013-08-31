@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 95: {fileID: 9500000}
   - 114: {fileID: 11400000}
-  - 64: {fileID: 6400000}
+  - 65: {fileID: 6500000}
   m_Layer: 11
   m_Name: CircleSource
   m_TagString: Resource
@@ -27,8 +27,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: -.707106888, y: 0, z: -0, w: .707106769}
-  m_LocalPosition: {x: 16, y: 0, z: 8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 16, y: 0, z: 0}
+  m_LocalScale: {x: .629999995, y: .639999986, z: .639999986}
   m_Children: []
   m_Father: {fileID: 0}
 --- !u!23 &2300000
@@ -56,8 +56,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_Mesh: {fileID: 4300000, guid: 22d4ce9778b1d194f8d261923424cc70, type: 3}
---- !u!64 &6400000
-MeshCollider:
+--- !u!65 &6500000
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -66,9 +66,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 1
-  m_Convex: 1
-  m_Mesh: {fileID: 4300000, guid: 22d4ce9778b1d194f8d261923424cc70, type: 3}
+  m_Size: {x: 7.89775276, y: 7.80628014, z: 1.68995464}
+  m_Center: {x: .0350774527, y: .0896989331, z: -4.34550476}
 --- !u!95 &9500000
 Animator:
   m_ObjectHideFlags: 1
