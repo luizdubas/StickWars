@@ -73,10 +73,10 @@ public class PeasantHouse : AbstractBuilding
 		GUI.skin = _skin;
 		GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, new Vector3 (Screen.width / 1280f, Screen.height / 768f, 1));
 		if (_showGUI) {			
-			if(GUI.Button(new Rect(20, 40f, 128, 128),"",_skin.GetStyle("AddPeasant"))){
+			if(GUI.Button(new Rect(446, 296, 128, 128),"",_skin.GetStyle("AddPeasant"))){
 				QueueUnit();
 			}	
-			if(GUI.Button(new Rect(200, 40f, 128, 128),"",_skin.GetStyle("CancelAction"))){
+			if(GUI.Button(new Rect(736, 296, 128, 128),"",_skin.GetStyle("CancelAction"))){
 				_showGUI = false;
 			}
 		}
