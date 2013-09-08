@@ -72,7 +72,9 @@ public interface IUnitClass
 
 public interface IBuilding
 {
+	string Name { get; }
 	int HP { get; }
+	float SecondsToCreate { get; }
 	Player Owner { get; set; }
 	Vector3 BuildingPosition { get; }
 	GameObject ParentObject { get; }

@@ -16,9 +16,21 @@ public class PeasantHouse : AbstractBuilding
 	public GUISkin _skin;
 	public GameObject _birthPointIndicator;
 
+	public override string Name {
+		get {
+			return "PeasantHouse";
+		}
+	}
+
 	public override int HP {
 		get {
 			return 200;
+		}
+	}
+
+	public override float SecondsToCreate {
+		get {
+			return 5;
 		}
 	}
 	
@@ -78,6 +90,7 @@ public class PeasantHouse : AbstractBuilding
 			}	
 			if(GUI.Button(new Rect(736, 296, 128, 128),"",_skin.GetStyle("CancelAction"))){
 				_showGUI = false;
+				Owner.GUIHidden ();
 			}
 		}
 	}
@@ -87,6 +100,7 @@ public class PeasantHouse : AbstractBuilding
 	#region IBuilding implementation
 	public override void ShowOptions () {
 		_showGUI = true;
+		Owner.ShowingGUI ();
 	}
 
 	private void QueueUnit(){

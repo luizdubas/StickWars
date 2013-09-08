@@ -13,6 +13,7 @@ public class Player
 	private bool _isHuman;
 	private bool _isMain;
 	public Color _stickColor;
+	public GameObject[] _ghostObjects;
 
 	private Transform _selectionBox;
 	private Vector2 screenSelectionStartPoint;
@@ -27,6 +28,9 @@ public class Player
 	private float _xUnitPer3DUnit;
 	private float _yUnitPer3DUnit;
 	private int _minMouseDrag = 10;
+	private bool _mouseOnGui = false;
+	private bool _showBuildingOptions = false;
+	private GameObject _grid;
 	
 	public Player (bool isHuman, bool isMain)
 	{		
@@ -41,51 +45,54 @@ public class Player
 	public void AddUnit(IUnit unit){
 		_units.Add (unit);
 	}
-	
+
 	public void AddBuilding(IBuilding building){
 		_buildings.Add (building);
 	}
 
-	public void Start(Transform selectionBox){
+	public void Start(Transform selectionBox, GameObject grid, ref GameObject[] ghostObjects){
 		_selectionBox = selectionBox;
 		_selectionBox.parent = null;
+		_ghostObjects = ghostObjects;
+		_grid = grid;
 		ConvertSceneToScreenScale ();
 	}
 	
 	// Update is called once per frame
 	public void Update () {
 
-
 		//Unit Selection Region
-		if( Input.GetButtonDown("Fire1") ){
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit hit;
-			if(Physics.Raycast(ray, out hit, Mathf.Infinity, 1<<(int)LayerConstants.GROUND)){
-				sceneSelectionStartPoint = hit.point;
-			}
-
-			if( Physics.Raycast( ray, out hit, 1<<(int)LayerConstants.UNITS) ){
-				ClearSelectedUnits();
-				_selectionEnded = false;
-				if(hit.collider.GetComponent<Unit>() != null){
-					_selectedUnitsToSave = new RaycastHit[1];
-					_selectedUnitsToSave[0] = hit;
+		if (!_mouseOnGui) {
+			if (Input.GetButtonDown ("Fire1")) {
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				RaycastHit hit;
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity, 1 << (int)LayerConstants.GROUND)) {
+						sceneSelectionStartPoint = hit.point;
 				}
+
+				if (Physics.Raycast (ray, out hit, 1 << (int)LayerConstants.UNITS)) {
+						ClearSelectedUnits ();
+						_selectionEnded = false;
+						if (hit.collider.GetComponent<Unit> () != null) {
+								_selectedUnitsToSave = new RaycastHit[1];
+								_selectedUnitsToSave [0] = hit;
+						}
+				}
+				screenSelectionStartPoint = Input.mousePosition;
 			}
-			screenSelectionStartPoint = Input.mousePosition;
-		}
 
-		if (Input.GetButton ("Fire1")) {
-			PreviewSelectedUnits();
-		}
+			if (Input.GetButton ("Fire1")) {
+					PreviewSelectedUnits ();
+			}
 
-		if( Input.GetButtonUp("Fire1") ){
-			_selectionEnded = true;
-			screenSelectionStartPoint = Input.mousePosition;
-			SaveSelectedUnits();
-			_selectedUnitsToSave = new RaycastHit[0];
-			_selectionBox.localScale = new Vector3(1,1,1);
-			_selectionBox.position = new Vector3(10,1000,-10);
+			if (Input.GetButtonUp ("Fire1")) {
+					_selectionEnded = true;
+					screenSelectionStartPoint = Input.mousePosition;
+					SaveSelectedUnits ();
+					_selectedUnitsToSave = new RaycastHit[0];
+					_selectionBox.localScale = new Vector3 (1, 1, 1);
+					_selectionBox.position = new Vector3 (10, 1000, -10);
+			}
 		}
 		
 	}
@@ -103,7 +110,15 @@ public class Player
 			        guiSkin.customStyles[0]
 			        );
 		}
-		
+		if(_showBuildingOptions){
+			GUI.skin = guiSkin;
+			GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, new Vector3 (Screen.width / 1280f, Screen.height / 768f, 1));
+			_mouseOnGui = true;
+			if(GUI.Button(new Rect(340, 640, 128, 128),"",guiSkin.GetStyle("AddPeasantHouse"))){
+				_mouseOnGui = true;
+				ShowGhostBuilding (0);
+			}
+		}
 	}
 	#region Unit Selection
 
@@ -123,11 +138,15 @@ public class Player
 		_selectionEnded = true;
 		if (_selectedUnitsToSave != null && _selectedUnitsToSave.Length > 0) {
 			Debug.Log ("Saving!!!");
+			bool hasBuilders = false;
 			foreach (RaycastHit hit in _selectedUnitsToSave) {
 				if (hit.collider.GetComponent<Unit> () == null)
 						continue;
-				_selectedUnits.Add (hit.transform.GetComponent<Unit> ());
-				hit.transform.GetComponent<Unit> ().Selected = true;
+				Unit unit = hit.transform.GetComponent<Unit> ();
+				_selectedUnits.Add (unit);
+				unit.Selected = true;
+				if (unit.UnitClass.CanBuild)
+					hasBuilders = true;
 			}
 		}
 	}
@@ -157,6 +176,15 @@ public class Player
 			unit.Selected = false;
 		}
 		_selectedUnits.Clear ();
+		_showBuildingOptions = false;
+	}
+
+	public void ShowingGUI(){
+		_mouseOnGui = true;
+	}
+
+	public void GUIHidden(){
+		_mouseOnGui = false;
 	}
 
 	public List<IUnit> SelectedUnits{
@@ -177,4 +205,21 @@ public class Player
 
 	#endregion
 
+	#region Building
+
+	public void ShowGhostBuilding(int building){
+		Ray rayCursor = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hitCursor;
+		Vector3 position = Vector3.zero;
+		if (Physics.Raycast (rayCursor, out hitCursor, Mathf.Infinity, 1 << (int)LayerConstants.GROUND)) {
+			position = new Vector3 (hitCursor.point.x, 7, hitCursor.point.z);
+		}
+		GameObject ghostBuilding = GameObject.Instantiate(_grid, position, Quaternion.Euler (new Vector3 (270, 0, 0)) ) as GameObject;
+		Vector3 size = _ghostObjects [building].renderer.bounds.size;
+		ghostBuilding.transform.localScale = new Vector3(size.x / 2 , size.z / 2, 1);
+		ghostBuilding.GetComponent<GhostBuilding> ()._objectToConstruct = _ghostObjects [building];
+		_showBuildingOptions = false;
+	}
+
+	#endregion
 }

@@ -5,18 +5,11 @@ using System.Collections.Generic;
 public class MatchController : MonoBehaviour{	
 
 	private List<Player> _players;
-	private Vector2 screenSelectionStartPoint;
-	private Vector2 screenSelectionEndPoint;
-	private Vector3 sceneSelectionStartPoint;
-	private Vector3 sceneSelectionEndPoint;
 	private Player _controlledPlayer;
-	private List<IUnit> _selectedUnits = new List<IUnit>();
-	private List<RaycastHit> _selectedUnitsToSave  = new List<RaycastHit>();
-	private bool _multiSelection = false;
-	private bool _selectionEnded = false;
-	private int _minMouseDrag = 10;
 	
 	public GUISkin guiSkin;
+	public GameObject[] _ghostBuildings;
+	public GameObject _grid;
 	
 	public MatchController (){
 	}
@@ -34,13 +27,12 @@ public class MatchController : MonoBehaviour{
 		_players.Add (human);
 		_players.Add (computer);
 		Transform selectionBox = transform.Find("Selection Box");
-		_controlledPlayer.Start (selectionBox);
+		_controlledPlayer.Start (selectionBox, _grid, ref _ghostBuildings);
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		_controlledPlayer.Update ();
-		
 	}
 	
 	void OnGUI() {

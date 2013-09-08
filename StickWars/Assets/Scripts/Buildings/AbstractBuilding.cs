@@ -30,6 +30,18 @@ public class AbstractBuilding : MonoBehaviour, IBuilding
 		}
 	}
 
+	public virtual float SecondsToCreate {
+		get {
+			throw new NotImplementedException ();
+		}
+	}
+
+	public virtual string Name {
+		get {
+			throw new NotImplementedException ();
+		}
+	}
+
 	public virtual Player Owner {
 		get {
 			throw new NotImplementedException ();

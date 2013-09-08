@@ -100,6 +100,6 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  additionalBone: 1
+  additionalBone: 0
   animationType: 1
   userData: 
