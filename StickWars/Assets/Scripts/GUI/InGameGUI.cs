@@ -40,8 +40,8 @@ public class InGameGUI : MonoBehaviour {
 			if(!buttonPressed)
 				_showConstruction = !_showConstruction;
 		}
-		/*GUI.Label (new Rect (52, 8 + positionY, 120, 40), _controller.ControlledPlayer.Sticks.ToString());
-		GUI.Label (new Rect (242, 8 + positionY, 120, 40), _controller.ControlledPlayer.Circles.ToString());
-		GUI.Label (new Rect (432, 8 + positionY, 120, 40), _controller.ControlledPlayer.Gold.ToString());*/
+				GUI.Box (new Rect (1, 1, 330, 43), "", _skin.GetStyle ("ResourcesHeader"));
+		GUI.Label (new Rect (21, 5, 120, 45), _controller.ControlledPlayer.Sticks.ToString());
+		GUI.Label (new Rect (211, 5, 120, 45), _controller.ControlledPlayer.Circles.ToString());
 	}
 }
