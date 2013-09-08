@@ -1,5 +1,5 @@
 //#define ASTARDEBUG
-//#define ASTAR_FAST_NO_EXCEPTIONS
+#define ASTAR_FAST_NO_EXCEPTIONS
 using System;
 using Pathfinding;
 using Pathfinding.Serialization.JsonFx;
@@ -384,7 +384,8 @@ for every node {
 				JsonReader reader = new JsonReader(entryText,readerSettings);
 				
 				//NavGraph graph = tmp.Deserialize(reader);//reader.Deserialize<NavGraph>();
-				reader.PopulateObject (tmp);
+				object temporary = tmp;
+				reader.PopulateObject (ref temporary);
 				
 				graphs[i] = tmp;
 				if (graphs[i].guid.ToString () != meta.guids[i])
@@ -569,7 +570,8 @@ for every node {
 					string entryText = GetString (entry);
 					
 					JsonReader reader = new JsonReader(entryText,readerSettings);
-					reader.PopulateObject (graphEditors[i]);
+					object temporary = graphEditors[i];
+					reader.PopulateObject (ref temporary);
 					break;
 				}
 			}
