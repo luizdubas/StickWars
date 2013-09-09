@@ -38,7 +38,8 @@ private PathFinding pathFinder;
 		cameraController.setCameraPosition( new Vector3( 250, 50, -200 ) );
 		cameraController.setCameraRotation( new Vector3( 50, 180, 0 ) );
 		
-		cameraController.setMargins( 40, -70, -40, -20 );
+			//	                     l   t    r    b
+		cameraController.setMargins( 50, 5, -50, 105 );
 		cameraController.setMinMaxZoom( 10, 40 );
 		
 		cameraController.setMap( map );
@@ -57,8 +58,6 @@ private PathFinding pathFinder;
 		map.MapGameObject = GameObject.Find( "ground" );
 		
 		map.buildMap();
-		
-		map.createRandomsObstacles( 1000, map.ObstaclePrefab );
 	}
 	
 	void Update () {

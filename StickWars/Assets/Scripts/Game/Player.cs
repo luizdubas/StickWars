@@ -78,28 +78,42 @@ public class Player
 				}
 
 				if (Physics.Raycast (ray, out hit, 1 << (int)LayerConstants.UNITS)) {
-						ClearSelectedUnits ();
-						_selectionEnded = false;
-						if (hit.collider.GetComponent<Unit> () != null) {
-								_selectedUnitsToSave = new RaycastHit[1];
-								_selectedUnitsToSave [0] = hit;
-						}
+					ClearSelectedUnits ();
+					_selectionEnded = false;
+					if (hit.collider.GetComponent<Unit> () != null) {
+							_selectedUnitsToSave = new RaycastHit[1];
+							_selectedUnitsToSave [0] = hit;
+					}
 				}
 				screenSelectionStartPoint = Input.mousePosition;
 			}
 
 			if (Input.GetButton ("Fire1")) {
-					PreviewSelectedUnits ();
+				PreviewSelectedUnits ();
 			}
 
 			if (Input.GetButtonUp ("Fire1")) {
-					_selectionEnded = true;
-					screenSelectionStartPoint = Input.mousePosition;
-					SaveSelectedUnits ();
-					_selectedUnitsToSave = new RaycastHit[0];
-					_selectionBox.localScale = new Vector3 (1, 1, 1);
-					_selectionBox.position = new Vector3 (10, 1000, -10);
+				_selectionEnded = true;
+				screenSelectionStartPoint = Input.mousePosition;
+				SaveSelectedUnits ();
+				_selectedUnitsToSave = new RaycastHit[0];
+				_selectionBox.localScale = new Vector3 (1, 1, 1);
+				_selectionBox.position = new Vector3 (10, 1000, -10);
 			}
+			
+			if (Input.GetButtonUp ("Fire2") && _selectedUnits.Count > 0) {
+				Vector3 target;
+				RaycastHit hit;
+				if (Physics.Raycast	(Camera.main.ScreenPointToRay (Input.mousePosition), out hit, Mathf.Infinity)) {
+					target = hit.point;
+					
+					foreach( IUnit unity  in _selectedUnits ){
+						PathFindingController pfc = ( (Unit) unity ).gameObject.GetComponent<PathFindingController>();
+						pfc.move( target );
+					}
+				}
+			}
+			
 		}
 		
 	}

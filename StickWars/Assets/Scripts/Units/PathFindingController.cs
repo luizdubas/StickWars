@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Pathfinding;
 
 [RequireComponent(typeof(Seeker))]
 public class PathFindingController : AIPath{
@@ -10,13 +11,13 @@ public class PathFindingController : AIPath{
 	/** Speed relative to velocity with which to play animations */
 	public float animationSpeed = 0.2F;
 	
-	private Camera cam;
+	//The max distance from the AI to a waypoint for it to continue to the next waypoint
+	public float nextWaypointDistance = 3;
+	//The waypoint we are currently moving towards
+	private int currentWaypoint = 0;
 
 	// Use this for initialization
 	void Start (){
-		cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-		
-		SearchPath();
 	}
 	
 	public override Vector3 GetFeetPosition (){
@@ -24,15 +25,21 @@ public class PathFindingController : AIPath{
 	}
 	
 	
-	public override void OnTargetReached () {
-		SearchPath();
+	public override void OnTargetReached () {	
+	}
+	
+	 public void OnPathComplete (Path p) {
+		
 	}
 	
 	// Update is called once per frame
 	void Update (){
-		RaycastHit hit;
-		if (Physics.Raycast	(cam.ScreenPointToRay (Input.mousePosition), out hit, Mathf.Infinity)) {
-			target.position = hit.point;
+			
+		if (path == null) {
+			return;
+		}
+		if (target != null) {
+			return;
 		}
 		
 		Vector3 velocity;
@@ -63,6 +70,24 @@ public class PathFindingController : AIPath{
 		} else {
 			velocity = Vector3.zero;
 		}
+		
+		/*
+		//Direction to the next waypoint
+		Vector3 dir = (path.vectorPath[currentWaypoint]-transform.position).normalized;
+		dir *= speed * Time.deltaTime;
+		controller.SimpleMove (dir);
+		//Check if we are close enough to the next waypoint
+		//If we are, proceed to follow the next waypoint
+		if (Vector3.Distance (transform.position,path.vectorPath[currentWaypoint]) < nextWaypointDistance) {
+			currentWaypoint++;
+			return;
+		}
+		*/
+		
+	}
+	
+	public void move(Vector3 target){
+		seeker.StartPath(transform.position, target, OnPathComplete);
 	}
 }
 
