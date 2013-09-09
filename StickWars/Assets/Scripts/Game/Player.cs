@@ -31,6 +31,8 @@ public class Player
 	private bool _mouseOnGui = false;
 	private bool _showBuildingOptions = false;
 	private GameObject _grid;
+	private IBuilding _selectedBuilding;
+
 	
 	public Player (bool isHuman, bool isMain)
 	{		
@@ -66,8 +68,13 @@ public class Player
 			if (Input.GetButtonDown ("Fire1")) {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit, Mathf.Infinity, 1 << (int)LayerConstants.GROUND)) {
+				int groundLayer = 1 << (int)LayerConstants.GROUND;
+				int buildingLayer = 1 << (int)LayerConstants.BUILDINGS;
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity, groundLayer | buildingLayer)) {
+					if (hit.collider.gameObject.layer == (int)LayerConstants.GROUND) {
 						sceneSelectionStartPoint = hit.point;
+						UnselectBuild ();
+					}
 				}
 
 				if (Physics.Raycast (ray, out hit, 1 << (int)LayerConstants.UNITS)) {
@@ -109,15 +116,6 @@ public class Player
 			        "", 
 			        guiSkin.customStyles[0]
 			        );
-		}
-		if(_showBuildingOptions){
-			GUI.skin = guiSkin;
-			GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, new Vector3 (Screen.width / 1280f, Screen.height / 768f, 1));
-			_mouseOnGui = true;
-			if(GUI.Button(new Rect(340, 640, 128, 128),"",guiSkin.GetStyle("AddPeasantHouse"))){
-				_mouseOnGui = true;
-				ShowGhostBuilding (0);
-			}
 		}
 	}
 	#region Unit Selection
@@ -206,6 +204,19 @@ public class Player
 	#endregion
 
 	#region Building
+	
+	public void SelectBuild(IBuilding building){
+		_selectedBuilding = building;
+		ClearSelectedUnits ();
+	}
+
+	public void UnselectBuild(){
+		_selectedBuilding = null;
+	}
+
+	public IBuilding SelectedBuilding{
+		get { return _selectedBuilding; }
+	}
 
 	public void ShowGhostBuilding(int building){
 		Ray rayCursor = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -218,6 +229,7 @@ public class Player
 		Vector3 size = _ghostObjects [building].renderer.bounds.size;
 		ghostBuilding.transform.localScale = new Vector3(size.x / 2 , size.z / 2, 1);
 		ghostBuilding.GetComponent<GhostBuilding> ()._objectToConstruct = _ghostObjects [building];
+		ghostBuilding.GetComponent<GhostBuilding> ()._owner = this;
 		_showBuildingOptions = false;
 	}
 

@@ -5,7 +5,6 @@ public class PeasantHouse : AbstractBuilding
 {
 	int _unitNumber;
 	Queue<PeasantQueueItem> _peasantQueue;
-	bool _showGUI;
 	Player _owner;
 	int _createdUnits; //ONLY FOR DEBUG // DELETE LATER!!!!!!
 	int _secondsToWait = 1;
@@ -80,27 +79,14 @@ public class PeasantHouse : AbstractBuilding
 		}
 	}
 	
-	public void OnGUI()
-	{
-		GUI.skin = _skin;
-		GUI.matrix = Matrix4x4.TRS (new Vector3(0, 0, 0), Quaternion.identity, new Vector3 (Screen.width / 1280f, Screen.height / 768f, 1));
-		if (_showGUI) {			
-			if(GUI.Button(new Rect(446, 296, 128, 128),"",_skin.GetStyle("AddPeasant"))){
-				QueueUnit();
-			}	
-			if(GUI.Button(new Rect(736, 296, 128, 128),"",_skin.GetStyle("CancelAction"))){
-				_showGUI = false;
-				Owner.GUIHidden ();
-			}
-		}
-	}
-	
 	#endregion
 	
 	#region IBuilding implementation
-	public override void ShowOptions () {
-		_showGUI = true;
-		Owner.ShowingGUI ();
+	public override void DrawGUI () {
+		GUI.skin = _skin;
+		if(GUI.Button(new Rect(648, 3, 25, 43),"",_skin.GetStyle("AddPeasant"))){
+			QueueUnit();
+		}	
 	}
 
 	private void QueueUnit(){

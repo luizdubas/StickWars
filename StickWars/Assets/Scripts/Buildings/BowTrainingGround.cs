@@ -54,6 +54,8 @@ public class BowTrainingGround : AbstractBuilding
 		_peasantQueue = new Queue<PeasantQueueItem>();
 		_unitNumber = 0;
 		_createdUnits = 0;
+		if (_owner != null)
+			_owner.AddBuilding (this);
 	}
 
 	// Update is called once per frame
@@ -98,7 +100,7 @@ public class BowTrainingGround : AbstractBuilding
 	#endregion
 
 	#region IBuilding implementation
-	public override void ShowOptions () {
+	public override void DrawGUI () {
 		/*_showGUI = true;
 		Owner.ShowingGUI ();*/
 	}

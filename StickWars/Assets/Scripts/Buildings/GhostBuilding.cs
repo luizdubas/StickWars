@@ -53,7 +53,10 @@ public class GhostBuilding : MonoBehaviour {
 			float percent = 1 - _timer;
 			if(_timer <= 0){
 				_objectToConstruct.GetComponent<AbstractBuilding> ().Owner = _owner;
-				GameObject.Instantiate (_objectToConstruct, this.transform.position, Quaternion.Euler(new Vector3(270,0,0)));
+				GameObject createdObject = GameObject.Instantiate (_objectToConstruct, this.transform.position, Quaternion.Euler(new Vector3(270,0,0))) as GameObject;
+				if (createdObject.GetComponent<AbstractBuilding> () != null) {
+					_owner.AddBuilding (createdObject.GetComponent<AbstractBuilding> ());
+				}
 				GameObject.Destroy (_temporary);
 				GameObject.Destroy (this.gameObject);
 			}

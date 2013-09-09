@@ -19,7 +19,7 @@ public class AbstractBuilding : MonoBehaviour, IBuilding
 		throw new NotImplementedException ();
 	}
 
-	public virtual void ShowOptions ()
+	public virtual void DrawGUI ()
 	{
 		throw new NotImplementedException ();
 	}
