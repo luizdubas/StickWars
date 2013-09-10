@@ -75,11 +75,6 @@ public class BowTrainingGround : AbstractBuilding
 				}
 			}
 		}*/
-		//DEBUG DELETE LATER
-		if (Owner == null) {
-			MatchController matchController =(MatchController) GameObject.FindObjectOfType(typeof(MatchController));
-			Owner = matchController.ControlledPlayer;
-		}
 	}
 
 	public void OnGUI()
@@ -136,6 +131,17 @@ public class BowTrainingGround : AbstractBuilding
 	public override IUnit UpgradeUnit ()
 	{
 		return null;
+	}
+
+	public override int MaterialCost (MaterialType material)
+	{
+		switch(material){
+			case MaterialType.Circle:
+			return 3;
+			case MaterialType.Stick:
+			return 15;
+		}
+		return 0;
 	}
 
 	#endregion

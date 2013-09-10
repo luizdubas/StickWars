@@ -72,11 +72,6 @@ public class PeasantHouse : AbstractBuilding
 				}
 			}
 		}
-		//DEBUG DELETE LATER
-		if (Owner == null) {
-			MatchController matchController =(MatchController) GameObject.FindObjectOfType(typeof(MatchController));
-			Owner = matchController.ControlledPlayer;
-		}
 	}
 	
 	#endregion
@@ -92,12 +87,16 @@ public class PeasantHouse : AbstractBuilding
 	private void QueueUnit(){
 		if (!_creatingUnit)
 			_timer = _secondsToWait;
-		Vector3 position = new Vector3(BuildingPosition.x + (5 * _unitNumber),8,BuildingPosition.z + 34);
-		PeasantQueueItem item = new PeasantQueueItem ("peasant" + _unitNumber, position);
-		item.BirthPoint = GameObject.Instantiate(_birthPointIndicator, position, Quaternion.Euler (new Vector3 (270, 0, 0)) ) as GameObject;
-		_peasantQueue.Enqueue(item);
-		_unitNumber++;
-		_creatingUnit = true;
+				if (_owner == null)
+						Debug.Log ("algo errado");
+		if (_owner.CheckUnitCost (_unitToCreate.GetComponent<Unit> ())) {
+			Vector3 position = new Vector3 (BuildingPosition.x + (5 * _unitNumber), 8, BuildingPosition.z + 34);
+			PeasantQueueItem item = new PeasantQueueItem ("peasant" + _unitNumber, position);
+			item.BirthPoint = GameObject.Instantiate (_birthPointIndicator, position, Quaternion.Euler (new Vector3 (270, 0, 0))) as GameObject;
+			_peasantQueue.Enqueue (item);
+			_unitNumber++;
+			_creatingUnit = true;
+		}
 	}
 
 	public override IUnit CreateUnit ()
@@ -120,6 +119,17 @@ public class PeasantHouse : AbstractBuilding
 	public override IUnit UpgradeUnit ()
 	{
 		return null;
+	}
+
+	public override int MaterialCost (MaterialType material)
+	{
+		switch(material){
+			case MaterialType.Circle:
+			return 5;
+			case MaterialType.Stick:
+			return 25;
+		}
+		return 0;
 	}
 
 	#endregion

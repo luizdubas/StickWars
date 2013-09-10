@@ -7,9 +7,7 @@ public class Player
 {
 	private	List<IUnit> _units = new List<IUnit>();
 	private List<IBuilding> _buildings = new List<IBuilding>();
-	private int _sticks;
-	private int _circles;
-	private int _gold;
+	private Dictionary<MaterialType, int> _materialQuantity = new Dictionary<MaterialType, int> ();
 	private bool _isHuman;
 	private bool _isMain;
 	public Color _stickColor;
@@ -34,10 +32,11 @@ public class Player
 	private IBuilding _selectedBuilding;
 
 	
-	public Player (bool isHuman, bool isMain)
+	public Player (bool isHuman, bool isMain, Dictionary<MaterialType,int> startingQuantity)
 	{		
 		_isHuman = isHuman;
 		_isMain = isMain;
+		_materialQuantity = new Dictionary<MaterialType, int> (startingQuantity);
 	}
 
 	public bool IsMain{
@@ -118,20 +117,52 @@ public class Player
 		
 	}
 	
-	public void OnGUI(GUISkin guiSkin) {		
-		if( Input.GetButton("Fire1") && Vector2.Distance(screenSelectionStartPoint, Input.mousePosition) > _minMouseDrag ){
-			//Screen coordinates are bottom-left is (0,0) and top-right is (Screen.width, Screen.height)
-			GUI.Box( 
-			        new Rect(
-				screenSelectionStartPoint.x, 
-				Screen.height-screenSelectionStartPoint.y, 
-				Input.mousePosition.x-screenSelectionStartPoint.x, 
-				-(Input.mousePosition.y-screenSelectionStartPoint.y)), 
-			        "", 
-			        guiSkin.customStyles[0]
-			        );
+	public void OnGUI(GUISkin guiSkin) {	
+		if (!_mouseOnGui) {	
+			if (Input.GetButton ("Fire1") && Vector2.Distance (screenSelectionStartPoint, Input.mousePosition) > _minMouseDrag) {
+				//Screen coordinates are bottom-left is (0,0) and top-right is (Screen.width, Screen.height)
+				GUI.Box (
+					new Rect (
+					screenSelectionStartPoint.x, 
+					Screen.height - screenSelectionStartPoint.y, 
+					Input.mousePosition.x - screenSelectionStartPoint.x, 
+					-(Input.mousePosition.y - screenSelectionStartPoint.y)), 
+					"", 
+					guiSkin.customStyles [0]
+				);
+			}
 		}
 	}
+
+	#region Cost
+
+	public bool CheckBuildingCost(IBuilding building){
+		return CheckCost (building.MaterialCost (MaterialType.Circle), building.MaterialCost (MaterialType.Stick));
+	}
+
+	public void ApplyBuildingCost(IBuilding building){
+		_materialQuantity [MaterialType.Circle] -= building.MaterialCost (MaterialType.Circle);
+		_materialQuantity [MaterialType.Stick] -= building.MaterialCost (MaterialType.Stick);
+	}
+	
+	public bool CheckUnitCost(IUnit unit){
+		if (CheckCost(unit.UnitClass.MaterialCost(MaterialType.Circle), unit.UnitClass.MaterialCost(MaterialType.Stick))){
+			_materialQuantity [MaterialType.Circle] -= unit.UnitClass.MaterialCost (MaterialType.Circle);
+			_materialQuantity [MaterialType.Stick] -= unit.UnitClass.MaterialCost (MaterialType.Stick);
+			return true;
+		}
+		return false;
+	}
+
+	private bool CheckCost(int circleCost, int stickCost){
+		if(circleCost <= _materialQuantity[MaterialType.Circle] && stickCost <= _materialQuantity[MaterialType.Stick]){
+			return true;
+		}
+		return false;
+	}
+
+	#endregion
+
 	#region Unit Selection
 
 	void ConvertSceneToScreenScale(){
@@ -191,12 +222,9 @@ public class Player
 		_showBuildingOptions = false;
 	}
 
-	public void ShowingGUI(){
-		_mouseOnGui = true;
-	}
-
-	public void GUIHidden(){
-		_mouseOnGui = false;
+	public bool MouseOnGUI {
+		get { return _mouseOnGui; }
+		set { _mouseOnGui = value; }
 	}
 
 	public List<IUnit> SelectedUnits{
@@ -204,15 +232,15 @@ public class Player
 	}
 
 	public int Sticks{
-		get { return _sticks; }
+		get { return _materialQuantity[MaterialType.Stick]; }
 	}
 
 	public int Circles{
-		get { return _circles; }
+		get { return _materialQuantity[MaterialType.Circle]; }
 	}
 
 	public int Gold{
-		get { return _gold; }
+		get { return _materialQuantity[MaterialType.Gold]; }
 	}
 
 	#endregion

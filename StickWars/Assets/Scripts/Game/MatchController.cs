@@ -19,8 +19,12 @@ public class MatchController : MonoBehaviour{
 	// Use this for initialization
 	void Start () {
 		_players = new List<Player> ();
-		Player human = new Player (true, true);
-		Player computer = new Player (false, false);
+		Dictionary<MaterialType,int> startingQuantity = new Dictionary<MaterialType, int> ();
+		startingQuantity.Add (MaterialType.Circle, 50);
+		startingQuantity.Add (MaterialType.Stick, 100);
+		startingQuantity.Add (MaterialType.Gold, 0);
+		Player human = new Player (true, true, startingQuantity);
+		Player computer = new Player (false, false, startingQuantity);
 		human._stickColor = new Color(0,0,0.3f);
 		computer._stickColor = new Color(0.3f,0,0);
 		_controlledPlayer = human;

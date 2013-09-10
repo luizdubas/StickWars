@@ -1,7 +1,7 @@
 using System;
 
 /// <summary>
-/// Definiçao da classe de vilareijo, a classe mais basica do jogo
+/// Definiçao da classe campones, a classe mais basica do jogo
 /// </summary>
 public class PeasantClass : IUnitClass
 {
@@ -68,12 +68,12 @@ public class PeasantClass : IUnitClass
 			case MaterialType.Circle:
 				return 1;
 			case MaterialType.Stick:
-				return 3;
+				return 5;
 		}
 		return 0;
 	}
 
-	public bool CanCollect (MaterialType material)
+	public bool CanCollect ()
 	{
 		return true;
 	}

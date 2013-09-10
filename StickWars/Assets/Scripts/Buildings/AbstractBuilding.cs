@@ -63,6 +63,11 @@ public class AbstractBuilding : MonoBehaviour, IBuilding
 		}
 	}
 
+	public virtual int MaterialCost (MaterialType material)
+	{
+		throw new NotImplementedException ();
+	}
+
 	#endregion
 }
 

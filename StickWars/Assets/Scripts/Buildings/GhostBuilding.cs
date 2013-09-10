@@ -23,19 +23,24 @@ public class GhostBuilding : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!_isCreating){
+			if(Input.GetKeyDown(KeyCode.Escape)){
+				GameObject.Destroy (this.gameObject);
+			}
+
 			Ray rayCursor = Camera.main.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hitCursor;
 			if (Physics.Raycast (rayCursor, out hitCursor, Mathf.Infinity, 1 << (int)LayerConstants.GROUND)) {
 				this.transform.position = new Vector3 (hitCursor.point.x, 7, hitCursor.point.z);
 			}
 
-			_canConstruct = this.CanConstruct ();
+			_canConstruct = this.CanConstruct () && _owner.CheckBuildingCost(_objectToConstruct.GetComponent<AbstractBuilding>());
 
 			if(!_canConstruct){
 				this.renderer.material.mainTexture = _redTexture;
 			}else{
 				this.renderer.material.mainTexture = _greenTexture;
 				if( Input.GetButton("Fire1") ){
+					_owner.ApplyBuildingCost (_objectToConstruct.GetComponent<AbstractBuilding> ());
 					_timer = _objectToConstruct.GetComponent<AbstractBuilding> ().SecondsToCreate;
 					float scaleZ = this.transform.localScale.x / 2;
 					float positionY = scaleZ * 5.25f;
@@ -52,10 +57,10 @@ public class GhostBuilding : MonoBehaviour {
 			_timer -= Time.fixedDeltaTime;
 			float percent = 1 - _timer;
 			if(_timer <= 0){
-				_objectToConstruct.GetComponent<AbstractBuilding> ().Owner = _owner;
 				GameObject createdObject = GameObject.Instantiate (_objectToConstruct, this.transform.position, Quaternion.Euler(new Vector3(270,0,0))) as GameObject;
 				if (createdObject.GetComponent<AbstractBuilding> () != null) {
 					_owner.AddBuilding (createdObject.GetComponent<AbstractBuilding> ());
+					createdObject.GetComponent<AbstractBuilding> ().Owner = _owner;
 				}
 				GameObject.Destroy (_temporary);
 				GameObject.Destroy (this.gameObject);
