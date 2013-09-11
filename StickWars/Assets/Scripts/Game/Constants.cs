@@ -21,3 +21,8 @@ public enum AnimationType { Chop, Mine, Collect }
 ///Circle e como o Gold no Age of Empires, so que nele se coleta os circulos necessarios para criar os personagens
 /// </summary>
 public enum MaterialType { Stick, Circle, Gold }
+
+
+public static class ConstantProperties{
+	public const float GROUND_POSITION = 6.019565f;
+}

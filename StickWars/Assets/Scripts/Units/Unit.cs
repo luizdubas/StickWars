@@ -7,11 +7,15 @@ public class Unit : MonoBehaviour, IUnit
 	int _id;
 	public int _hp;
 	bool _selected;
+	bool _isCollecting = false;
+	bool _searchObjectToCollect = false;
+	AbstractSource _collectedObject;
 	IUnitClass _unitClass;
 	Player _owner;
 	LineRenderer _lineRenderer;
 	GameObject _selectionIndicator;
 	MatchController _controller;
+	float _timer = 0;
 	
 	public Player Owner {
 		get {
@@ -82,10 +86,25 @@ public class Unit : MonoBehaviour, IUnit
 	{
 		if (_controller == null) {
 			_controller = (MatchController) GameObject.FindObjectOfType(typeof(MatchController));
-			//DEBUG DELETE LATER
 			if (Owner == null) {
 				Owner = _controller.ControlledPlayer;
 				SetColor(Owner._stickColor);
+			}
+		}
+		if(_isCollecting){
+			if(_collectedObject == null || _collectedObject._amount == 0){
+				_isCollecting = false;
+				_collectedObject = null;
+			}
+			_timer -= Time.fixedDeltaTime;
+			if(_timer <= 0){
+				int collected = UnitClass.ResourceCapacity;
+				if (_collectedObject != null) {
+					MaterialType type = _collectedObject._type;
+					_collectedObject.CollectSource (ref collected);
+					_owner.AddMaterial (type, collected);
+					_timer = UnitClass.SecondsPerCollect;
+				}
 			}
 		}
 		float percent = _hp / (float)_unitClass.HP;
@@ -131,6 +150,21 @@ public class Unit : MonoBehaviour, IUnit
 	public void Destroy (IBuilding building)
 	{
 		throw new NotImplementedException ();
+	}
+
+	public void StartCollecting (MaterialType material){
+
+	}
+
+	public void StartCollecting (AbstractSource source){
+		_collectedObject = source;
+		_isCollecting = true;
+		_timer = UnitClass.SecondsPerCollect;
+	}
+
+	public void StopCollecting() {
+		_collectedObject = null;
+		_isCollecting = false;
 	}
 
 	public void SetColor(Color playerColor){

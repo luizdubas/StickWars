@@ -90,7 +90,7 @@ public class PeasantHouse : AbstractBuilding
 				if (_owner == null)
 						Debug.Log ("algo errado");
 		if (_owner.CheckUnitCost (_unitToCreate.GetComponent<Unit> ())) {
-			Vector3 position = new Vector3 (BuildingPosition.x + (5 * _unitNumber), 8, BuildingPosition.z + 34);
+			Vector3 position = new Vector3 (BuildingPosition.x + (5 * _unitNumber), ConstantProperties.GROUND_POSITION, BuildingPosition.z + 34);
 			PeasantQueueItem item = new PeasantQueueItem ("peasant" + _unitNumber, position);
 			item.BirthPoint = GameObject.Instantiate (_birthPointIndicator, position, Quaternion.Euler (new Vector3 (270, 0, 0))) as GameObject;
 			_peasantQueue.Enqueue (item);

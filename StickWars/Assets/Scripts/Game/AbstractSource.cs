@@ -19,6 +19,9 @@ public class AbstractSource : MonoBehaviour, IMaterialSource {
 	
 	// Update is called once per frame
 	void Update () {
+		if(_amount == 0){
+			GameObject.DestroyImmediate (this.gameObject);
+		}
 	}
 	
 	#endregion
@@ -27,9 +30,13 @@ public class AbstractSource : MonoBehaviour, IMaterialSource {
 	
 	public void CollectSource (ref int quantity)
 	{
-		if(_amount - quantity < 0)
-			quantity = _amount;
-		_amount -= quantity;
+		//Nao pode permitir que dois camponeses consigam retirar recurso ao mesmo tempo
+		//Senao um deles poderia fazer o recurso ficar negativo
+		lock (this) {
+			if (_amount - quantity < 0)
+					quantity = _amount;
+			_amount -= quantity;
+		}
 	}
 	
 	#endregion

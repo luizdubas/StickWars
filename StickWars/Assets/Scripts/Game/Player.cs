@@ -28,6 +28,7 @@ public class Player
 	private int _minMouseDrag = 10;
 	private bool _mouseOnGui = false;
 	private bool _showBuildingOptions = false;
+	private bool _ignoreClick = false;
 	private GameObject _grid;
 	private IBuilding _selectedBuilding;
 
@@ -64,15 +65,28 @@ public class Player
 
 		//Unit Selection Region
 		if (!_mouseOnGui) {
+			_ignoreClick = false;
 			if (Input.GetButtonDown ("Fire1")) {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 				int groundLayer = 1 << (int)LayerConstants.GROUND;
 				int buildingLayer = 1 << (int)LayerConstants.BUILDINGS;
-				if (Physics.Raycast (ray, out hit, Mathf.Infinity, groundLayer | buildingLayer)) {
+				int resourcesLayer = 1 << (int)LayerConstants.RESOURCES;
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity, groundLayer | buildingLayer | resourcesLayer)) {
 					if (hit.collider.gameObject.layer == (int)LayerConstants.GROUND) {
 						sceneSelectionStartPoint = hit.point;
 						UnselectBuild ();
+					}else if (hit.collider.gameObject.layer == (int)LayerConstants.RESOURCES){
+						if(_selectedUnits.Count > 0){
+							foreach(Unit unit in _selectedUnits){
+								if(unit.UnitClass.CanCollect()){
+									unit.StartCollecting (hit.collider.gameObject.GetComponent<AbstractSource>());
+									_ignoreClick = true;
+								}
+							}
+							if(_ignoreClick)
+								return;
+						}
 					}
 				}
 
@@ -118,7 +132,7 @@ public class Player
 	}
 	
 	public void OnGUI(GUISkin guiSkin) {	
-		if (!_mouseOnGui) {	
+		if (!_mouseOnGui && !_ignoreClick) {	
 			if (Input.GetButton ("Fire1") && Vector2.Distance (screenSelectionStartPoint, Input.mousePosition) > _minMouseDrag) {
 				//Screen coordinates are bottom-left is (0,0) and top-right is (Screen.width, Screen.height)
 				GUI.Box (
@@ -273,6 +287,14 @@ public class Player
 		ghostBuilding.GetComponent<GhostBuilding> ()._objectToConstruct = _ghostObjects [building];
 		ghostBuilding.GetComponent<GhostBuilding> ()._owner = this;
 		_showBuildingOptions = false;
+	}
+
+	#endregion
+
+	#region Resource Collect
+
+	public void AddMaterial(MaterialType type, int quantity){
+		_materialQuantity [type] += quantity;
 	}
 
 	#endregion

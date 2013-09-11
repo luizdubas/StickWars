@@ -34,6 +34,8 @@ public interface IUnit
 	void DefenseMode();
 	void AttackUnit(IUnit unit);
 	void AttackBuilding(IBuilding building);
+	void StartCollecting (MaterialType material);
+	void StopCollecting();
 	void Build(IBuilding building);
 	void Destroy(IBuilding building);
 	void SetColor(Color playerColor);
@@ -49,6 +51,8 @@ public interface IUnitClass
 	int AttackSpeed { get; }
 	int MovementSpeed { get; }
 	int SecondsToCreate { get; }
+	int ResourceCapacity { get; }
+	float SecondsPerCollect { get; }
 	bool CanBuild { get; }
 	int MaterialCost(MaterialType material);
 	bool CanCollect();

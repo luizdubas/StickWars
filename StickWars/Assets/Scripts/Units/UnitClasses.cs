@@ -59,6 +59,18 @@ public class PeasantClass : IUnitClass
 			return 2;
 		}
 	}
+
+	public int ResourceCapacity {
+		get {
+			return 5;
+		}
+	}
+
+	public float SecondsPerCollect {
+		get {
+			return 0.5f;
+		}
+	}
 	
 	#region IUnitClass implementation
 	
