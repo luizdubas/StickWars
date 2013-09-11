@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour, IUnit
 	LineRenderer _lineRenderer;
 	GameObject _selectionIndicator;
 	MatchController _controller;
+	PathFindingController _movementController;
 	float _timer = 0;
 	
 	public Player Owner {
@@ -73,13 +74,9 @@ public class Unit : MonoBehaviour, IUnit
 
 	public void Awake(){
 		_lineRenderer = this.gameObject.GetComponent<LineRenderer> ();
-		foreach(Transform t in this.gameObject.transform){
-			if(t.name == "selection"){
-				_selectionIndicator = t.gameObject;
-				break;
-			}
-		}
+		_selectionIndicator = this.gameObject.transform.FindChild ("selection").gameObject;
 		_selectionIndicator.SetActive (false);
+		_movementController = this.gameObject.GetComponent<PathFindingController>();
 	}
 
 	public void Update()
@@ -114,7 +111,7 @@ public class Unit : MonoBehaviour, IUnit
 	#region IUnit implementation
 	public void MoveTo (UnityEngine.Vector3 point)
 	{
-		throw new NotImplementedException ();
+		_movementController.move (point);
 	}
 
 	public void StopMovement ()

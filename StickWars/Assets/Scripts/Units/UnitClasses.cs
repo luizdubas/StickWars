@@ -68,7 +68,7 @@ public class PeasantClass : IUnitClass
 
 	public float SecondsPerCollect {
 		get {
-			return 0.5f;
+			return 1f;
 		}
 	}
 	

@@ -118,11 +118,13 @@ public class Player
 				Vector3 target;
 				RaycastHit hit;
 				if (Physics.Raycast	(Camera.main.ScreenPointToRay (Input.mousePosition), out hit, Mathf.Infinity)) {
-					target = hit.point;
-					
-					foreach( IUnit unity  in _selectedUnits ){
-						PathFindingController pfc = ( (Unit) unity ).gameObject.GetComponent<PathFindingController>();
-						pfc.move( target );
+					//so se move se clicar no chao
+					if (hit.collider.gameObject.layer == (int)LayerConstants.GROUND) {
+						target = hit.point;
+
+						foreach (IUnit unity  in _selectedUnits) {
+							unity.MoveTo (target);
+						}
 					}
 				}
 			}
