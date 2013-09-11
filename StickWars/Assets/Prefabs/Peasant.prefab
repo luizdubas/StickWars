@@ -303,7 +303,7 @@ GameObject:
   - 4: {fileID: 400038}
   - 111: {fileID: 11100002}
   m_Layer: 10
-  m_Name: peasant
+  m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -684,6 +684,7 @@ MonoBehaviour:
   closestOnPathCheck: 1
   sleepVelocity: .400000006
   animationSpeed: .200000003
+  nextWaypointDistance: 3
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 1

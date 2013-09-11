@@ -16,8 +16,11 @@ public class PathFindingController : AIPath{
 	//The waypoint we are currently moving towards
 	private int currentWaypoint = 0;
 
+	Transform unit;
+
 	// Use this for initialization
 	void Start (){
+		unit = this.gameObject.transform.FindChild ("model");
 	}
 	
 	public override Vector3 GetFeetPosition (){
@@ -25,13 +28,14 @@ public class PathFindingController : AIPath{
 	}
 	
 	
-	public override void OnTargetReached () {	
+	public override void OnTargetReached () {
+		unit.animation.Play ("Rest");
+		unit.animation.wrapMode = WrapMode.Loop;	
 	}
 	
-	 public void OnPathComplete (Path p) {
-		
+	public void OnPathComplete (Path p) {
 	}
-	
+
 	// Update is called once per frame
 	void Update (){
 			
@@ -87,6 +91,8 @@ public class PathFindingController : AIPath{
 	}
 	
 	public void move(Vector3 target){
+		unit.animation.Play ("Walk");
+		unit.animation.wrapMode = WrapMode.Loop;
 		seeker.StartPath(transform.position, target, OnPathComplete);
 	}
 }

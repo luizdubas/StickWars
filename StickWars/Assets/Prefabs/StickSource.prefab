@@ -13,7 +13,7 @@ GameObject:
   - 65: {fileID: 6500000}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: CircleSource
+  m_Name: StickSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,8 +25,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_LocalRotation: {x: -.707106888, y: 0, z: -0, w: .707106769}
-  m_LocalPosition: {x: 485, y: 6.01956511, z: -243}
+  m_LocalRotation: {x: -.707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 485, y: 6.01956511, z: -257}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 73e52fa45dfbc454f9e9eb607e2e9083, type: 2}
+  - {fileID: 2100000, guid: e9961e42931efe64bb43a7a8416defa0, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -54,7 +54,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Mesh: {fileID: 4300000, guid: a7f9125f4aa7d96459605cca8db83530, type: 3}
+  m_Mesh: {fileID: 4300000, guid: d9619f18f6cf3904c84d9535a354570c, type: 3}
 --- !u!65 &6500000
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -65,8 +65,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 5, y: 5, z: 13.8511124}
-  m_Center: {x: -.00139796734, y: .000234007894, z: 1.77054405}
+  m_Size: {x: 5, y: 5, z: 15.1921988}
+  m_Center: {x: 0, y: 0, z: 2.44108677}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,10 +78,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ccd5425d2e8e02449647357756f59c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 25
+  _amount: 50
   _squareSize: 5
-  _type: 1
-  _animation: 2
+  _type: 0
+  _animation: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
