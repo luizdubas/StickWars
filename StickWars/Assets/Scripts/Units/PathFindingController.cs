@@ -72,6 +72,8 @@ public class PathFindingController : AIPath{
 			
 			velocity = controller.velocity;
 		} else {
+			unit.animation.Play ("Rest");
+			unit.animation.wrapMode = WrapMode.Loop;	
 			velocity = Vector3.zero;
 		}
 		

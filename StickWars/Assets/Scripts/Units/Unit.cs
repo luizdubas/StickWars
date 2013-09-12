@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour, IUnit
 	public int _hp;
 	bool _selected;
 	bool _isCollecting = false;
+	bool _movingToCollect = false;
 	bool _searchObjectToCollect = false;
 	AbstractSource _collectedObject;
 	IUnitClass _unitClass;
@@ -111,6 +112,8 @@ public class Unit : MonoBehaviour, IUnit
 	#region IUnit implementation
 	public void MoveTo (UnityEngine.Vector3 point)
 	{
+		if (!_movingToCollect)
+			StopCollecting ();
 		_movementController.move (point);
 	}
 
@@ -155,8 +158,9 @@ public class Unit : MonoBehaviour, IUnit
 
 	public void StartCollecting (AbstractSource source){
 		_collectedObject = source;
-		_isCollecting = true;
+		_movingToCollect = true;
 		_timer = UnitClass.SecondsPerCollect;
+		MoveTo (source.gameObject.transform.position);
 	}
 
 	public void StopCollecting() {
@@ -176,6 +180,13 @@ public class Unit : MonoBehaviour, IUnit
 				}
 				break;
 			}
+		}
+	}
+
+	void OnCollisionEnter(Collision collision) {
+		Debug.Log ("here son of a...");
+		if(_movingToCollect && collision.collider.gameObject.layer == _collectedObject.gameObject.layer){
+			_isCollecting = true;
 		}
 	}
 
