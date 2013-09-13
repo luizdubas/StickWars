@@ -35,12 +35,12 @@ private PathFinding pathFinder;
 		
 		cameraController = GameObject.Find("Main Camera").GetComponent<CameraControllerInGame>();
 		
-		cameraController.setCameraPosition( new Vector3( 250, 50, -200 ) );
+		cameraController.setCameraPosition( new Vector3( 450, 50, -350 ) );
 		cameraController.setCameraRotation( new Vector3( 50, 180, 0 ) );
 		
 			//	                     l   t    r    b
 		cameraController.setMargins( 50, 5, -50, 105 );
-		cameraController.setMinMaxZoom( 10, 40 );
+		cameraController.setMinMaxZoom( 10, 50 );
 		
 		cameraController.setMap( map );
 		

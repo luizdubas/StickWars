@@ -95,7 +95,9 @@ public class PathFindingController : AIPath{
 		unit.animation.wrapMode = WrapMode.Loop;
 		seeker.StartPath(transform.position, target, OnPathComplete);
 	}
-
+	public void OnDisable () {
+  	  seeker.pathCallback -= OnPathComplete;
+	}
 	public void reenableMove(bool playAnimation){
 		if(playAnimation)
 		{
@@ -112,6 +114,5 @@ public class PathFindingController : AIPath{
 			unit.animation.wrapMode = WrapMode.Loop;	
 		}
 		canMove = false;
-	}
-}
+	}}
 
