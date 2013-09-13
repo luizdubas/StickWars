@@ -47,6 +47,9 @@ ModelImporter:
     7400002: Mine
     7400004: Rest
     7400006: Walk
+    7400008: Collect
+    7400010: EndCollect
+    7400012: StartCollect
     9500000: //RootNode
     11100000: //RootNode
     13700000: Body

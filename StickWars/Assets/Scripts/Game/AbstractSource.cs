@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public class AbstractSource : MonoBehaviour, IMaterialSource {
 	public int _amount = 1;
-	public int _squareSize = 1;
 	public MaterialType _type;
 	public AnimationType _animation;
 	

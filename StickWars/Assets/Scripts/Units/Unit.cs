@@ -7,17 +7,24 @@ public class Unit : MonoBehaviour, IUnit
 	int _id;
 	public int _hp;
 	bool _selected;
-	bool _isCollecting = false;
-	bool _movingToCollect = false;
-	bool _searchObjectToCollect = false;
 	AbstractSource _collectedObject;
 	IUnitClass _unitClass;
 	Player _owner;
 	LineRenderer _lineRenderer;
-	GameObject _selectionIndicator;
 	MatchController _controller;
 	PathFindingController _movementController;
 	float _timer = 0;
+	
+	bool _waitStartAnimationEnd = false;
+	bool _waitEndAnimationEnd = false;
+	bool _isCollecting = false;
+	bool _movingToCollect = false;
+	bool _searchObjectToCollect = false;
+	
+	Transform _unit;
+	Transform _leftHand, _rightHand;
+	Transform _basket;
+	GameObject _selectionIndicator;
 	
 	public Player Owner {
 		get {
@@ -73,10 +80,14 @@ public class Unit : MonoBehaviour, IUnit
 		Debug.Log("Unit initialized: "+_id+" "+_unitClass.Name);
 	}
 
-	public void Awake(){
+	public void Start(){
 		_lineRenderer = this.gameObject.GetComponent<LineRenderer> ();
 		_selectionIndicator = this.gameObject.transform.FindChild ("selection").gameObject;
 		_selectionIndicator.SetActive (false);
+		_unit = this.gameObject.transform.FindChild ("model");
+		_basket = this.gameObject.transform.FindChild ("basket");
+		_leftHand = this.gameObject.transform.Find ("model/Armature/Body_0/Shoulder_L/ArmStart_L/ArmEnd_L");
+		_rightHand = this.gameObject.transform.Find ("model/Armature/Body_0/Shoulder_R/ArmStart_R/ArmEnd_R");
 		_movementController = this.gameObject.GetComponent<PathFindingController>();
 	}
 
@@ -89,8 +100,25 @@ public class Unit : MonoBehaviour, IUnit
 				SetColor(Owner._stickColor);
 			}
 		}
+		if(_waitStartAnimationEnd && !_unit.animation.isPlaying){
+			_unit.animation.Play ("Collect");
+			_unit.animation.wrapMode = WrapMode.Loop;
+			_isCollecting = true;
+			_waitStartAnimationEnd = false;
+			_basket.parent = _leftHand;
+			_basket.localPosition = new Vector3 (-1.66f, 1.5f, -0.34f);
+			_basket.gameObject.SetActive (true);
+		}
+		if(_waitEndAnimationEnd && !_unit.animation.isPlaying){
+			_movementController.reenableMove (true);
+			_waitEndAnimationEnd = false;
+		}
 		if(_isCollecting){
 			if(_collectedObject == null || _collectedObject._amount == 0){
+				_basket.gameObject.SetActive (false);
+				_waitEndAnimationEnd = true;
+				_unit.animation.Play ("EndCollect");
+				_unit.animation.wrapMode = WrapMode.Once;
 				_isCollecting = false;
 				_collectedObject = null;
 			}
@@ -183,10 +211,13 @@ public class Unit : MonoBehaviour, IUnit
 		}
 	}
 
-	void OnCollisionEnter(Collision collision) {
-		Debug.Log ("here son of a...");
-		if(_movingToCollect && collision.collider.gameObject.layer == _collectedObject.gameObject.layer){
-			_isCollecting = true;
+	void OnTriggerEnter(Collider collider) {
+		if(_movingToCollect && collider.gameObject.layer == _collectedObject.gameObject.layer){
+			_movementController.stop (false);
+			_waitStartAnimationEnd = true;
+			_unit.animation.Play ("StartCollect");
+			_unit.animation.wrapMode = WrapMode.Once;
+			_movingToCollect = false;
 		}
 	}
 

@@ -72,8 +72,6 @@ public class PathFindingController : AIPath{
 			
 			velocity = controller.velocity;
 		} else {
-			unit.animation.Play ("Rest");
-			unit.animation.wrapMode = WrapMode.Loop;	
 			velocity = Vector3.zero;
 		}
 		
@@ -96,6 +94,24 @@ public class PathFindingController : AIPath{
 		unit.animation.Play ("Walk");
 		unit.animation.wrapMode = WrapMode.Loop;
 		seeker.StartPath(transform.position, target, OnPathComplete);
+	}
+
+	public void reenableMove(bool playAnimation){
+		if(playAnimation)
+		{
+			unit.animation.Play ("Walk");
+			unit.animation.wrapMode = WrapMode.Loop;	
+		}
+		canMove = true;
+	}
+
+	public void stop(bool playAnimation){
+		if(playAnimation)
+		{
+			unit.animation.Play ("Rest");
+			unit.animation.wrapMode = WrapMode.Loop;	
+		}
+		canMove = false;
 	}
 }
 
