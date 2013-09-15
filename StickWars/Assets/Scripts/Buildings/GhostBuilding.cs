@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Pathfinding;
 
 public class GhostBuilding : MonoBehaviour {
 
@@ -17,7 +18,7 @@ public class GhostBuilding : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -47,7 +48,9 @@ public class GhostBuilding : MonoBehaviour {
 					Vector3 tempPosition = new Vector3 (this.transform.position.x, positionY, this.transform.position.z);
 					_temporary = GameObject.Instantiate (_temporaryObject, tempPosition, Quaternion.Euler(new Vector3(270,0,0))) as GameObject;
 					_temporary.transform.localScale = new Vector3 (this.transform.localScale.x, this.transform.localScale.y, scaleZ);
-
+					
+					ApplyGameObjectInPathFind( _temporary );
+					
 					this.transform.localScale = Vector3.zero;
 					_isCreating = true;
 				}
@@ -58,6 +61,9 @@ public class GhostBuilding : MonoBehaviour {
 			float percent = 1 - _timer;
 			if(_timer <= 0){
 				GameObject createdObject = GameObject.Instantiate (_objectToConstruct, this.transform.position, Quaternion.Euler(new Vector3(270,0,0))) as GameObject;
+				
+				ApplyGameObjectInPathFind( createdObject );
+				
 				if (createdObject.GetComponent<AbstractBuilding> () != null) {
 					_owner.AddBuilding (createdObject.GetComponent<AbstractBuilding> ());
 					createdObject.GetComponent<AbstractBuilding> ().Owner = _owner;
@@ -92,5 +98,19 @@ public class GhostBuilding : MonoBehaviour {
 			}
 		}
 		return true;
+	}
+	
+	void ApplyGameObjectInPathFind( GameObject go ){
+		Bounds b = go.collider.bounds;
+		
+		float x = b.size.x;
+		float y = b.size.y;
+				
+		//4 e apenas uma borda.
+		Bounds newBounds = new Bounds( b.center, new Vector3( x + 4.0f, y + 4.0f, b.size.z ) );
+			
+		GraphUpdateObject guo = new GraphUpdateObject( newBounds );
+		AstarPath.active.UpdateGraphs (guo);
+		AstarPath.active.FlushGraphUpdates();
 	}
 }

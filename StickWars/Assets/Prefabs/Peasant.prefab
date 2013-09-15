@@ -13,7 +13,6 @@ GameObject:
   - 114: {fileID: 11400004}
   - 120: {fileID: 12000000}
   - 143: {fileID: 14300000}
-  - 114: {fileID: 11400002}
   m_Layer: 10
   m_Name: Peasant
   m_TagString: Unit
@@ -703,18 +702,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 10
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f586f285b3847808d79083bd19ef1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  priority: 1
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -731,7 +718,7 @@ MonoBehaviour:
   canSearch: 1
   canMove: 1
   speed: 9
-  turningSpeed: 15
+  turningSpeed: 30
   slowdownDistance: .600000024
   pickNextWaypointDist: 2
   forwardLook: 1
@@ -755,7 +742,7 @@ MonoBehaviour:
   detailedGizmos: 0
   saveGetNearestHints: 1
   startEndModifier:
-    priority: 2
+    priority: 1
     addPoints: 0
     exactStartPoint: 1
     exactEndPoint: 1
@@ -896,7 +883,7 @@ CharacterController:
   m_GameObject: {fileID: 100000}
   serializedVersion: 2
   m_Height: 14
-  m_Radius: 1
+  m_Radius: 2
   m_SlopeLimit: 45
   m_StepOffset: .300000012
   m_SkinWidth: .0799999982
