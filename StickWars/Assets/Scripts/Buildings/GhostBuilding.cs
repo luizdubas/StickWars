@@ -106,11 +106,12 @@ public class GhostBuilding : MonoBehaviour {
 		float x = b.size.x;
 		float y = b.size.y;
 				
-		//4 e apenas uma borda.
-		Bounds newBounds = new Bounds( b.center, new Vector3( x + 4.0f, y + 4.0f, b.size.z ) );
+		//6 e apenas uma borda.
+		Bounds newBounds = new Bounds( b.center, new Vector3( x + 6.0f, y + 6.0f, b.size.z + 6.0f ) );
 			
 		GraphUpdateObject guo = new GraphUpdateObject( newBounds );
+		
 		AstarPath.active.UpdateGraphs (guo);
-		AstarPath.active.FlushGraphUpdates();
+//		AstarPath.active.FlushGraphUpdates();
 	}
 }

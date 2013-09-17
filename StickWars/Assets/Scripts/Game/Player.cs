@@ -114,7 +114,7 @@ public class Player
 				_selectionBox.position = new Vector3 (10, 1000, -10);
 			}
 			
-			if (Input.GetButtonUp ("Fire2") && _selectedUnits.Count > 0) {
+			if (PlataformUtil.IsMoveButtonUp() && _selectedUnits.Count > 0) {
 				Vector3 target;
 				RaycastHit hit;
 				if (Physics.Raycast	(Camera.main.ScreenPointToRay (Input.mousePosition), out hit, Mathf.Infinity)) {

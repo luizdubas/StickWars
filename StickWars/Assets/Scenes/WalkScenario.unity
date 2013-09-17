@@ -1285,7 +1285,7 @@ CharacterController:
   m_GameObject: {fileID: 743312187}
   serializedVersion: 2
   m_Height: 14
-  m_Radius: 2
+  m_Radius: 2.5999999
   m_SlopeLimit: 45
   m_StepOffset: .300000012
   m_SkinWidth: .0799999982

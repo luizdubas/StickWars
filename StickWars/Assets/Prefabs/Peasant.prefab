@@ -739,7 +739,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
-  detailedGizmos: 0
+  detailedGizmos: 1
   saveGetNearestHints: 1
   startEndModifier:
     priority: 1
@@ -883,7 +883,7 @@ CharacterController:
   m_GameObject: {fileID: 100000}
   serializedVersion: 2
   m_Height: 14
-  m_Radius: 2
+  m_Radius: 2.5999999
   m_SlopeLimit: 45
   m_StepOffset: .300000012
   m_SkinWidth: .0799999982
